@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+import modulesData from '../data/modules.json';
+
+const total = modulesData.modules.length;
+---
+<Base title={site.name}>
+  <main>
+    <h1>{site.name}</h1>
+    <p>{site.tagline}</p>
+    <p>{total} connected modules. Launching {site.launchLabel}.</p>
+    <p><small>Placeholder page. The real homepage is built in a later step.</small></p>
+  </main>
+</Base>

@@ -1,0 +1,645 @@
+{
+  "_readme": "Edit this file to change the module list. Every page on the site reads from it, so counts and lists update by themselves. status: built | building | planned. singleApp: true gives the module its own page under /apps/. Do not claim a module on the site until its status is built.",
+  "modules": [
+    {
+      "slug": "dashboard",
+      "name": "Dashboard",
+      "group": "Home",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "reports",
+      "name": "Reports",
+      "group": "Home",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "analytics",
+      "name": "Analytics",
+      "group": "Home",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "tasks",
+      "name": "Tasks",
+      "group": "Tasks and Calendar",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": false
+    },
+    {
+      "slug": "calendar",
+      "name": "Calendar",
+      "group": "Tasks and Calendar",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": false
+    },
+    {
+      "slug": "approvals",
+      "name": "Approvals",
+      "group": "Tasks and Calendar",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": false
+    },
+    {
+      "slug": "appointments",
+      "name": "Appointments",
+      "group": "Tasks and Calendar",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": false
+    },
+    {
+      "slug": "discuss",
+      "name": "Discuss",
+      "group": "Messages",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "communications",
+      "name": "Communications",
+      "group": "Messages",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "forum",
+      "name": "Forum",
+      "group": "Messages",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "documents",
+      "name": "Documents",
+      "group": "Documents",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "knowledge",
+      "name": "Knowledge",
+      "group": "Documents",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "sign",
+      "name": "Sign",
+      "group": "Documents",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "policies",
+      "name": "Policies",
+      "group": "Documents",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "contracts",
+      "name": "Contracts",
+      "group": "Documents",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "forms",
+      "name": "Forms",
+      "group": "Forms and Inspections",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": true
+    },
+    {
+      "slug": "surveys",
+      "name": "Surveys",
+      "group": "Forms and Inspections",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "checklists",
+      "name": "Checklists",
+      "group": "Forms and Inspections",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "employees",
+      "name": "Employees",
+      "group": "People",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": false
+    },
+    {
+      "slug": "directory",
+      "name": "Directory",
+      "group": "People",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": false
+    },
+    {
+      "slug": "recruitment",
+      "name": "Recruitment",
+      "group": "People",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "onboarding",
+      "name": "Onboarding",
+      "group": "People",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "appraisals",
+      "name": "Appraisals",
+      "group": "People",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "training",
+      "name": "Training",
+      "group": "People",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "time-off",
+      "name": "Time Off",
+      "group": "Time",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": true
+    },
+    {
+      "slug": "timesheets-and-attendance",
+      "name": "Timesheets and Attendance",
+      "group": "Time",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": true
+    },
+    {
+      "slug": "scheduling-and-shifts",
+      "name": "Scheduling and Shifts",
+      "group": "Time",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": true
+    },
+    {
+      "slug": "payroll",
+      "name": "Payroll",
+      "group": "Payroll",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "pay-bands",
+      "name": "Pay Bands",
+      "group": "Payroll",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "benefits-and-pensions",
+      "name": "Benefits and Pensions",
+      "group": "Payroll",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "contractors",
+      "name": "Contractors",
+      "group": "Contractors and Agency",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "agency-workers",
+      "name": "Agency Workers",
+      "group": "Contractors and Agency",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "subcontractor-compliance",
+      "name": "Subcontractor Compliance",
+      "group": "Contractors and Agency",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "compliance",
+      "name": "Compliance",
+      "group": "Compliance",
+      "summary": "TODO: one-line summary",
+      "status": "built",
+      "singleApp": true
+    },
+    {
+      "slug": "governance",
+      "name": "Governance",
+      "group": "Compliance",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "esg",
+      "name": "ESG",
+      "group": "Compliance",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "health-and-safety",
+      "name": "Health and Safety",
+      "group": "Health, Safety and Quality",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": true
+    },
+    {
+      "slug": "incidents",
+      "name": "Incidents",
+      "group": "Health, Safety and Quality",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "quality",
+      "name": "Quality",
+      "group": "Health, Safety and Quality",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "corrective-actions",
+      "name": "Corrective Actions",
+      "group": "Health, Safety and Quality",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "assets",
+      "name": "Assets",
+      "group": "Assets",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": true
+    },
+    {
+      "slug": "maintenance",
+      "name": "Maintenance",
+      "group": "Assets",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "rentals",
+      "name": "Rentals",
+      "group": "Assets",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "fleet",
+      "name": "Fleet",
+      "group": "Fleet",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": true
+    },
+    {
+      "slug": "route-planning",
+      "name": "Route Planning",
+      "group": "Fleet",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "sites-and-buildings",
+      "name": "Sites and Buildings",
+      "group": "Sites and Property",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "property-and-leases",
+      "name": "Property and Leases",
+      "group": "Sites and Property",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "utilities-and-energy",
+      "name": "Utilities and Energy",
+      "group": "Sites and Property",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "waste",
+      "name": "Waste",
+      "group": "Sites and Property",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "visitor-management",
+      "name": "Visitor Management",
+      "group": "Workplace",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "security-and-access",
+      "name": "Security and Access",
+      "group": "Workplace",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "desk-and-room-booking",
+      "name": "Desk and Room Booking",
+      "group": "Workplace",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "cleaning-and-soft-services",
+      "name": "Cleaning and Soft Services",
+      "group": "Workplace",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "projects",
+      "name": "Projects",
+      "group": "Projects",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": true
+    },
+    {
+      "slug": "job-costing",
+      "name": "Job Costing",
+      "group": "Projects",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "field-service",
+      "name": "Field Service",
+      "group": "Field Service",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "service-contracts-and-slas",
+      "name": "Service Contracts and SLAs",
+      "group": "Field Service",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "helpdesk",
+      "name": "Helpdesk",
+      "group": "Customer Service",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "live-chat",
+      "name": "Live Chat",
+      "group": "Customer Service",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "client-portal",
+      "name": "Client Portal",
+      "group": "Customer Service",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "crm",
+      "name": "CRM",
+      "group": "CRM and Sales",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": true
+    },
+    {
+      "slug": "quotes-and-sales",
+      "name": "Quotes and Sales",
+      "group": "CRM and Sales",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "point-of-sale",
+      "name": "Point of Sale",
+      "group": "CRM and Sales",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "campaigns",
+      "name": "Campaigns",
+      "group": "Marketing",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "events",
+      "name": "Events",
+      "group": "Marketing",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "website-and-blog",
+      "name": "Website and Blog",
+      "group": "Marketing",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "inventory",
+      "name": "Inventory",
+      "group": "Stock and Purchasing",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "procurement",
+      "name": "Procurement",
+      "group": "Stock and Purchasing",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "suppliers",
+      "name": "Suppliers",
+      "group": "Stock and Purchasing",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "manufacturing",
+      "name": "Manufacturing",
+      "group": "Stock and Purchasing",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "invoicing",
+      "name": "Invoicing",
+      "group": "Finance",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "accounting",
+      "name": "Accounting",
+      "group": "Finance",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "subscriptions-and-recurring-billing",
+      "name": "Subscriptions and Recurring Billing",
+      "group": "Finance",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "expenses",
+      "name": "Expenses",
+      "group": "Spend",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "travel",
+      "name": "Travel",
+      "group": "Spend",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "company-cards",
+      "name": "Company Cards",
+      "group": "Spend",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "it-systems-and-access",
+      "name": "IT Systems and Access",
+      "group": "IT",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "devices",
+      "name": "Devices",
+      "group": "IT",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "password-vault",
+      "name": "Password Vault",
+      "group": "IT",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    },
+    {
+      "slug": "it-help-requests",
+      "name": "IT Help Requests",
+      "group": "IT",
+      "summary": "TODO: one-line summary",
+      "status": "planned",
+      "singleApp": false
+    }
+  ]
+}

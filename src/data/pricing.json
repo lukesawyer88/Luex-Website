@@ -1,0 +1,26 @@
+{
+  "_readme": "ALL PRICES LIVE HERE. Edit this file and every page updates. Everything is still a PLACEHOLDER until you remove 'placeholder': true. Amounts are GBP per month, excluding VAT.",
+  "placeholder": true,
+  "currency": "GBP",
+  "hub": {
+    "name": "Luex Hub",
+    "basePricePerMonth": 60,
+    "usersIncluded": 3,
+    "extraFullUserPerMonth": 20,
+    "extraLightUserPerMonth": 8,
+    "note": "Full users manage and see everything. Light users fill in forms, timesheets and read documents. Every module is included."
+  },
+  "singleApp": {
+    "note": "One module on its own. Price depends on the number of users. Upgrade to the Hub for all modules.",
+    "bands": [
+      { "label": "1 to 3 users", "minUsers": 1, "maxUsers": 3, "pricePerMonth": 15 },
+      { "label": "4 to 10 users", "minUsers": 4, "maxUsers": 10, "pricePerMonth": 29 },
+      { "label": "11 to 25 users", "minUsers": 11, "maxUsers": 25, "pricePerMonth": 59 },
+      { "label": "26 or more users", "minUsers": 26, "maxUsers": null, "pricePerMonth": 99 }
+    ]
+  },
+  "launch": {
+    "label": "January 2027",
+    "waitlistOpen": true
+  }
+}
