@@ -39,7 +39,7 @@ hero = f"""
   <section class="hero dune">
     <img class="hero-img" src="img/dune-hero.webp" width="1536" height="1024" alt="Calm desert dunes at golden hour">
     <div class="hero-in" id="heroIn">
-      <p class="kicker"><i class="ic"></i><span>One login. One bill. Every team.</span></p>
+      <p class="kicker"><i class="ic"></i><span>Every business. Every team. One place.</span></p>
       <h1 class="d110 split"><em>One</em> app to run<br>your whole business<span class="dot">.</span></h1>
       <p class="sub cap18">Rotas, timesheets, compliance and jobs, all connected.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
