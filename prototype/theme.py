@@ -183,3 +183,86 @@ page2 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-venus-mix.html").write_text(page2)
 print("wrote app-venus-mix.html", len(page2))
+
+# =============================================================== soft style (inspired by the reference)
+def rail_soft():
+    I = M.ic
+    groups = [("", [("grid", "Dashboard", "", False), ("star", "Favourites", "", False)]),
+              ("Work", [("shield", "Compliance", "8", True), ("clock", "Timesheets", "14", False), ("cal", "Time off", "3", False), ("brief", "Jobs", "2", False)]),
+              ("People and money", [("people", "People", "", False), ("pound", "Expenses", "", False)]),
+              ("", [("gear", "Settings", "", False)])]
+    nav = ""
+    for g, items in groups:
+        if g: nav += f'<p class="sg">{g}</p>'
+        for icn, label, badge, on in items:
+            b = f'<em>{badge}</em>' if badge else ""
+            nav += f'<span class="sni{" on" if on else ""}"><span class="ico">{I(icn)}</span>{label}{b}</span>'
+    return f'''<aside class="soft-rail">
+      <div class="brand"><span class="dz-lg"><i></i><i></i><i></i></span><span>LUEX</span></div>
+      <nav class="snav">{nav}</nav>
+      <div class="modepill"><span class="on">{I("sun")}</span><span>{I("moon")}</span></div>
+    </aside>'''
+
+M.P["sun"] = '<circle cx="12" cy="12" r="3.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>'
+M.P["moon"] = '<path d="M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5z"/>'
+
+def soft_frame():
+    h = f'''<div class="fit"><div class="m-page">{rail_soft()}<div class="m-main">{M.header_ai(True)}{M.tiles(2, False)}<div class="m-body">{M.main_window("listplain", False)}{M.detail(False)}</div></div></div></div>'''
+    for a, b in [("#C98A1B", "var(--amber)"), ("#2F8F5B", "var(--green)"), ("#C2413A", "var(--red)"), ("#1C1C1E", "var(--ink)")]:
+        h = h.replace(a, b)
+    return h
+
+SOFT_CSS = """
+.frame.soft { padding: 22px; background: var(--backdrop); border-radius: 26px; }
+.soft .m-page { grid-template-columns: 196px 1fr; gap: 12px; padding: 12px; border-radius: 22px; background: var(--surface); box-shadow: 0 30px 60px -30px rgba(40,30,15,.45); }
+.soft-rail { background: var(--rail); border-radius: 20px; padding: 22px 12px 14px; display: flex; flex-direction: column; box-shadow: var(--soft-sh); }
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 8px; }
+.brand span:last-child { font-size: 19px; font-weight: 500; letter-spacing: 4px; color: var(--ink); }
+.snav { margin-top: 24px; display: grid; gap: 3px; }
+.sg { margin: 14px 10px 6px; font-size: 10px; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
+.sni { display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 10px 0 6px; border-radius: 14px; font-size: 13px; color: var(--rail-ic); }
+.sni .ico { width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; }
+.sni em { margin-left: auto; font-style: normal; font-size: 10.5px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 99px; display: grid; place-items: center; background: var(--field); color: var(--ink2); }
+.sni.on { background: var(--nav-on); color: var(--nav-on-ic); box-shadow: 0 10px 18px -10px rgba(20,15,5,.55); }
+.sni.on .ico { background: var(--surface); color: var(--ink); border-radius: 50%; }
+.sni.on em { background: var(--gold); color: #141414; }
+.modepill { margin-top: auto; align-self: start; display: flex; gap: 4px; padding: 4px; border-radius: 99px; background: var(--surface); box-shadow: var(--soft-sh); }
+.modepill span { width: 40px; height: 30px; border-radius: 99px; display: grid; place-items: center; color: var(--muted); }
+.modepill .on { background: var(--nav-on); color: var(--nav-on-ic); }
+.soft .tl h4 { font-size: 30px; letter-spacing: -1.1px; }
+.soft .m-main { grid-template-rows: 58px 92px 1fr; }
+.soft .tile, .soft .mw, .soft .dw { background: var(--panel); box-shadow: var(--soft-sh); }
+.soft .tile.sel { background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--c), var(--soft-sh); }
+.soft .lr { background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.soft .lr.open { box-shadow: inset 0 0 0 1.5px var(--ink), 0 10px 20px -14px rgba(20,15,5,.45); }
+.soft .key, .soft .facts div { background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.soft .mini-ring { width: 88px; height: 88px; }
+.soft .mini-ring::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: var(--surface); box-shadow: inset 0 2px 5px rgba(0,0,0,.06), 0 8px 16px -8px rgba(40,30,15,.35); }
+.soft .mini-ring svg { position: relative; }
+.soft .mini-ring .pr { stroke: var(--gold-ring); }
+.soft .user, .soft .srch, .soft .rnd:not(.dark):not(.sm) { background: var(--panel); box-shadow: var(--soft-sh); }
+.soft .tabbar { box-shadow: 0 12px 26px -12px rgba(40,30,15,.45), inset 0 0 0 1px var(--line); }
+"""
+SOFT = {
+    "light": "--backdrop:#E7E3DC; --surface:#FFFFFF; --panel:#F6F4F0; --field:#F1EEE8; --sel:#EFEAE0; --line:#ECE7DE; --ink:#141414; --ink2:#4A4740; --muted:#8E8778; --acc:#141414; --on-acc:#FFFFFF; --gold:#CFB783; --gold-ring:#A68B55; --rail:#F6F4F0; --rail-ic:#4A4740; --rail-line:#E5DFD4; --nav-on:#141414; --nav-on-ic:#FFFFFF; --badge:#CFB783; --badge-ic:#141414; --logo:#141414; --soft-sh: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 24px -18px rgba(70,55,30,.4);",
+    "dark": "--backdrop:#0B0A09; --surface:#171614; --panel:#1F1D1A; --field:#29261F; --sel:#2B2823; --line:#2E2B26; --ink:#F2EEE6; --ink2:#C9C2B5; --muted:#8E8778; --acc:#E7DECA; --on-acc:#141414; --gold:#CFB783; --gold-ring:#CFB783; --rail:#1F1D1A; --rail-ic:#C9C2B5; --rail-line:#2E2B26; --nav-on:#E7DECA; --nav-on-ic:#141414; --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA; --soft-sh: inset 0 1px 0 rgba(255,255,255,.04), 0 12px 26px -16px rgba(0,0,0,.75);",
+}
+SF = soft_frame()
+page3 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Soft Style</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Luex, soft style</h1>
+  <p class="lead">Inspired by the reference: one floating card on a soft background, a labelled sidebar with a dark pill for the page you're on, soft warm-white panels with gentle depth, a big page title and a soft dial. Venus colours, light and dark. Same module layout as before.</p>
+  <div class="pair">
+    <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft" style="{SOFT["light"]} {STATUS_L}">{SF}</div></div>
+    <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft" style="{SOFT["dark"]} {STATUS_D}">{SF.replace('<span class="on"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/>', '<span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/>').replace('<span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14.5', '<span class="on"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14.5')}</div></div>
+  </div>
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-soft-style.html").write_text(page3)
+print("wrote app-soft-style.html", len(page3))
