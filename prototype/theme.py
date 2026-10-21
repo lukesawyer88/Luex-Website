@@ -809,3 +809,34 @@ page11 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-tile-icons.html").write_text(page11)
 print("wrote app-tile-icons.html", len(page11))
+
+# =============================================================== final: set A + heading icon
+HEAD_OLD = '<div class="mw-h"><b>Due soon</b>'
+HEAD_NEW = f'<div class="mw-h"><span class="tico hd" style="--c:var(--amber)">{M.ic("hourglass")}</span><b>Due soon</b>'
+FIN_CSS = """
+.tico.hd { width: 32px; height: 32px; } .tico.hd .i { width: 17px; height: 17px; }
+.mw-h { gap: 10px; }
+.mw-h b { font-size: 18px; }
+"""
+def final_frame(dark=False):
+    h = iconify(best_frame(dark), SETS["A"][2])
+    assert HEAD_OLD in h
+    return h.replace(HEAD_OLD, HEAD_NEW)
+page12 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Module Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}{REF_CSS}{REF_D_FIX}{BEST_CSS}{OPT_CSS}{TICO_CSS}{FIN_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Luex module page</h1>
+  <p class="lead">Ink sidebar, white frame, cool grey-blue records window, the record shown as a card, and status icons (set A). The records heading carries the same icon and colour as the chosen tile, so it's always clear what you're looking at.</p>
+  <div class="pair">
+    <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {bcls}" style="{REF_L} {GB} {STATUS_L}">{final_frame()}</div></div>
+    <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {bcls} dark" style="{REF_D} {GBD} {STATUS_D}">{final_frame(True)}</div></div>
+  </div>
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-final.html").write_text(page12)
+print("wrote app-final.html", len(page12))
