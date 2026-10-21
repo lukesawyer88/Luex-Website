@@ -202,8 +202,7 @@ faq = f"""
 # ---------------------------------------------------------------- 7 closing
 closing = f"""
 <section class="closing" id="demo">
-  <div class="cl-photo" id="clPhoto"><img src="img/closing-chair.webp" width="1536" height="1024" alt="Someone relaxing in an armchair on a desert dune at dusk, Luex open on a tablet beside them">
-    <div class="cl-scr" id="clScr"><iframe src="app-screen-light.html" title="" tabindex="-1" aria-hidden="true" scrolling="no"></iframe></div></div>
+  <div class="cl-photo" id="clPhoto"><img src="img/closing-chair.webp" width="2304" height="1536" alt="Someone relaxing in an armchair on a desert dune at dusk, Luex open on a tablet beside them"></div>
   <div class="cl-in">
     <p class="kicker"><img class="kick-mark" src="img/logo-mark-dark.png" width="26" height="23" alt=""><span>30 days free. No card needed.</span></p>
     <h2 class="d110 split" style="width:900px">Try Luex<br>free today.</h2>
@@ -313,6 +312,9 @@ extra_css = """
 
 @media (max-width: 1200px) { .phone { right: -10px; width: 180px; } }
 @media (max-width: 809px) {
+  .cl-photo img { object-position: 26% 50%; }
+  .closing .ctas { top: 320px !important; bottom: auto; flex-direction: row; gap: 8px; } .closing .ctas .btn { height: 46px; padding: 0 16px; font-size: 12.5px; }
+  .closing .kicker { top: 110px !important; } .closing h2 { top: 160px !important; }
   .badges { flex-wrap: wrap; } .slot.bg { padding: 20px; }
   .hero.dune { height: auto; min-height: 0; padding: 112px 16px 80px; }
   .hero.dune .hero-in { position: relative; transform: none !important; }
@@ -332,7 +334,7 @@ extra_css = """
 """
 
 css = (HERE / "blank.css").read_text() + extra_css + DASH_CSS
-js = (HERE / "blank.js").read_text() + DASH_JS + CLOSING_JS
+js = (HERE / "blank.js").read_text() + DASH_JS
 html = f"""<!doctype html>
 <html lang="en">
 <head>

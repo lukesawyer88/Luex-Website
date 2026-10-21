@@ -582,6 +582,9 @@ main > section, main > div { position: relative; }
 
 @media (max-width: 1200px) { .phone { right: -10px; width: 180px; } }
 @media (max-width: 809px) {
+  .cl-photo img { object-position: 26% 50%; }
+  .closing .ctas { top: 320px !important; bottom: auto; flex-direction: row; gap: 8px; } .closing .ctas .btn { height: 46px; padding: 0 16px; font-size: 12.5px; }
+  .closing .kicker { top: 110px !important; } .closing h2 { top: 160px !important; }
   .badges { flex-wrap: wrap; } .slot.bg { padding: 20px; }
   .hero.dune { height: auto; min-height: 0; padding: 112px 16px 80px; }
   .hero.dune .hero-in { position: relative; transform: none !important; }
@@ -840,8 +843,7 @@ main > section, main > div { position: relative; }
 </section>
 
 <section class="closing" id="demo">
-  <div class="cl-photo" id="clPhoto"><img src="img/closing-chair.webp" width="1536" height="1024" alt="Someone relaxing in an armchair on a desert dune at dusk, Luex open on a tablet beside them">
-    <div class="cl-scr" id="clScr"><iframe src="app-screen-light.html" title="" tabindex="-1" aria-hidden="true" scrolling="no"></iframe></div></div>
+  <div class="cl-photo" id="clPhoto"><img src="img/closing-chair.webp" width="2304" height="1536" alt="Someone relaxing in an armchair on a desert dune at dusk, Luex open on a tablet beside them"></div>
   <div class="cl-in">
     <p class="kicker"><img class="kick-mark" src="img/logo-mark-dark.png" width="26" height="23" alt=""><span>30 days free. No card needed.</span></p>
     <h2 class="d110 split" style="width:900px">Try Luex<br>free today.</h2>
@@ -963,17 +965,6 @@ document.querySelectorAll('.th').forEach(t => t.onclick = () => { document.query
   const set = () => d.style.setProperty('--s', fit.clientWidth / 1120);
   set(); addEventListener('resize', set);
   if ('ResizeObserver' in window) new ResizeObserver(set).observe(fit);
-})();
-
-(function () {
-  const box = document.getElementById('clPhoto'), scr = document.getElementById('clScr'); if (!box) return;
-  const IW = 1536, IH = 1024, PX = .40, PY = .5;
-  const Q = [[497, 612], [543.3, 613.3], [533.3, 645], [486.7, 643]];
-  function solve(A, b) { const n = b.length; for (let i = 0; i < n; i++) { let p = i; for (let r = i + 1; r < n; r++) if (Math.abs(A[r][i]) > Math.abs(A[p][i])) p = r; [A[i], A[p]] = [A[p], A[i]]; [b[i], b[p]] = [b[p], b[i]]; for (let r = i + 1; r < n; r++) { const f = A[r][i] / A[i][i]; for (let c = i; c < n; c++) A[r][c] -= f * A[i][c]; b[r] -= f * b[i]; } } const x = Array(n).fill(0); for (let i = n - 1; i >= 0; i--) { let t = b[i]; for (let c = i + 1; c < n; c++) t -= A[i][c] * x[c]; x[i] = t / A[i][i]; } return x; }
-  function quad(w, h, d) { const src = [[0, 0], [w, 0], [w, h], [0, h]], A = [], b = []; for (let i = 0; i < 4; i++) { const [x, y] = src[i], [u, v] = d[i]; A.push([x, y, 1, 0, 0, 0, -x * u, -y * u]); b.push(u); A.push([0, 0, 0, x, y, 1, -x * v, -y * v]); b.push(v); } const k = solve(A, b); return [k[0], k[3], 0, k[6], k[1], k[4], 0, k[7], 0, 0, 1, 0, k[2], k[5], 0, 1]; }
-  function place() { const cw = box.clientWidth, ch = box.clientHeight, s = Math.max(cw / IW, ch / IH), ox = (cw - IW * s) * PX, oy = (ch - IH * s) * PY;
-    scr.style.transform = 'matrix3d(' + quad(1280, 800, Q.map(([x, y]) => [ox + x * s, oy + y * s])).join(',') + ')'; scr.classList.add('on'); }
-  place(); addEventListener('resize', place);
 })();
 
 </script>
