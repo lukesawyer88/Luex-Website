@@ -47,7 +47,7 @@ hero = f"""
   <section class="hero dune">
     <img class="hero-img" src="img/dune-hero.webp" width="1536" height="1024" alt="Calm desert dunes at golden hour">
     <div class="hero-in" id="heroIn">
-      <p class="kicker"><i class="ic"></i><span>Every business. Every team. One place.</span></p>
+      <p class="kicker"><img class="kick-mark" src="img/logo-mark.png" width="26" height="23" alt=""><span>Every business. Every team. One place.</span></p>
       <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
       <p class="sub cap18">Over 60 tools working together. Enter it once, see it everywhere.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
@@ -245,6 +245,7 @@ extra_css = """
 .slot.logo { width: 100px; height: 44px; padding: 0; } .slot.logo::before { inset: 4px; } .slot.logo span { font-size: 9px; }
 .badges { display: flex; gap: 10px; }
 .logo { display: flex; align-items: center; gap: 8px; } .nav-mark { width: 24px; height: auto; } .logo .logo-ph { width: auto; }
+.kick-mark { width: 26px; height: auto; flex: none; }
 .btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }
 .badges .slot { width: 130px; height: 44px; padding: 0; } .badges .slot::before { inset: 4px; } .badges .slot span { font-size: 8.5px; }
