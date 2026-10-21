@@ -40,7 +40,7 @@ hero = f"""
     <img class="hero-img" src="img/dune-hero.webp" width="1536" height="1024" alt="Calm desert dunes at golden hour">
     <div class="hero-in" id="heroIn">
       <p class="kicker"><i class="ic"></i><span>Every business. Every team. One place.</span></p>
-      <h1 class="d110 split"><em>One</em> app to run<br>your whole business<span class="dot">.</span></h1>
+      <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
       <p class="sub cap18">Rotas, timesheets, compliance and jobs, all connected.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
       <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
@@ -251,7 +251,7 @@ extra_css = """
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .hero.dune::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(transparent, var(--g7)); pointer-events: none; }
 .hero.dune .kicker { top: 112px; color: var(--ink); }
-.hero.dune h1.d110 { font-size: 84px; line-height: 88px; letter-spacing: -4.6px; width: 1000px; }
+.hero.dune h1.d110 { font-size: 84px; line-height: 88px; letter-spacing: -4.6px; width: 1200px; }
 .hero.dune h1 { top: 150px; color: var(--ink); }
 .hero.dune h1 em, .hero.dune h1 .dot { color: var(--accent); }
 .hero.dune .sub { top: 346px; color: var(--ink2); width: 560px; }
@@ -286,7 +286,7 @@ extra_css = """
   .replaces .rl { width: 100%; text-align: center; margin: 0 0 2px; font-size: 12px; }
   .trust { white-space: normal; text-align: center; margin-top: 14px; font-size: 12.5px; }
   .hero.dune .kicker { justify-content: center; white-space: normal; }
-  .hero.dune h1, .hero.dune h1.d110 { width: auto; margin-top: 18px; font-size: 52px; line-height: 54px; letter-spacing: -3px; }
+  .hero.dune h1, .hero.dune h1.d110 { width: auto; margin-top: 18px; font-size: 41px; line-height: 44px; letter-spacing: -2.2px; }
   .hero.dune .sub { width: auto; margin-top: 18px; text-align: center; }
   .hero.dune .ctas { margin-top: 22px; flex-direction: row; gap: 8px; } .hero.dune .ctas .btn { height: 46px; padding: 0 16px; font-size: 12.5px; }
   .hero.dune { padding-top: 96px !important; } .hero.dune .sub { margin-top: 12px !important; } .showcase { margin-top: 30px !important; }
