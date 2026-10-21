@@ -1,0 +1,611 @@
+<title>Luex Crystals</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a real-time 3D world on one fixed canvas. Each part of Luex sits inside its own gemstone block;
+   scrolling flies the camera from stone to stone through frost. Small mono UI frames the screen, Igloo-style. */
+:root {
+  --night: #0B1230; --midnight: #141E43; --ultramarine: #263E92;
+  --gold: #AF955C; --gold-soft: #D4BC86; --chalk: #E9E8E3; --mineral: #9A9DA9;
+  --ui: rgba(233,232,227,.86); --ui-dim: rgba(233,232,227,.5); --ui-line: rgba(233,232,227,.22);
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--night); color: var(--chalk); font-family: var(--mono); font-size: 13px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--night); }
+a { color: inherit; }
+:focus-visible { outline: 1px solid var(--gold-soft); outline-offset: 4px; }
+
+#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100lvh; display: block; z-index: 0; background: radial-gradient(120% 90% at 60% 70%, #22356F, #0B1230 70%); }
+.fallback-note { display: none; }
+
+/* ---------- HUD (fixed UI frame) ---------- */
+.hud { position: fixed; inset: 0; z-index: 10; pointer-events: none; padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)); display: grid; grid-template-rows: auto 1fr auto; }
+@media (min-width: 760px) { .hud { padding-left: max(36px, env(safe-area-inset-left, 0px)); padding-right: max(36px, env(safe-area-inset-right, 0px)); padding-top: calc(26px + env(safe-area-inset-top, 0px)); padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); } }
+.hud a, .hud button { pointer-events: auto; }
+.hud-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--chalk); }
+.logo svg.mark { width: 30px; height: 26px; }
+.logo svg.word { width: 70px; height: 17px; }
+.hud-links { display: none; gap: 28px; list-style: none; margin: 0; padding: 0; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
+.hud-links a { text-decoration: none; color: var(--ui-dim); }
+.hud-links a:hover { color: var(--chalk); }
+@media (min-width: 960px) { .hud-links { display: flex; } }
+.pill { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; padding: 10px 16px; border: 1px solid var(--ui-line); border-radius: 99px; background: rgba(11,18,48,.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--chalk); transition: border-color .25s, background .25s; }
+.pill:hover { border-color: var(--gold-soft); background: rgba(175,149,92,.18); }
+.pill i { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-soft); box-shadow: 0 0 10px var(--gold-soft); display: block; }
+.hud-bottom { display: flex; align-items: end; justify-content: space-between; gap: 16px; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; color: var(--ui-dim); }
+.idx { display: grid; gap: 8px; }
+.idx b { color: var(--chalk); font-weight: 500; font-size: 12px; }
+.track { width: 140px; height: 1px; background: var(--ui-line); position: relative; }
+.track span { position: absolute; left: 0; top: 0; height: 1px; background: var(--gold-soft); width: 0; }
+.coords { text-align: right; display: grid; gap: 4px; }
+@media (max-width: 759px) { .coords { display: none; } }
+
+/* ---------- Scroll story ---------- */
+.journey { position: relative; z-index: 5; }
+.stop { height: 100vh; height: 100lvh; }
+.panels { position: fixed; inset: 0; z-index: 8; pointer-events: none; }
+.panel {
+  position: absolute; left: max(36px, 6vw); top: 50%; translate: 0 -50%; width: min(440px, 40vw);
+  display: grid; gap: 18px; opacity: 0; visibility: hidden;
+}
+.panel.on { visibility: visible; }
+.panel a { pointer-events: auto; }
+.tag { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-soft); display: flex; gap: 12px; align-items: center; }
+.tag::before { content: ""; width: 22px; height: 1px; background: var(--gold-soft); }
+.panel h1, .panel h2 { font-family: var(--serif); font-weight: 300; margin: 0; letter-spacing: -.02em; text-wrap: balance; line-height: .98; }
+.panel h1 { font-size: clamp(2.6rem, 1.4rem + 3.4vw, 4.6rem); }
+.panel h2 { font-size: clamp(2.2rem, 1.3rem + 2.6vw, 3.6rem); }
+.panel h1 em, .panel h2 em { font-style: italic; }
+.panel p { margin: 0; color: var(--ui); font-size: 13.5px; max-width: 40ch; }
+.readout { border: 1px solid var(--ui-line); background: rgba(11,18,48,.28); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 14px 16px; display: grid; gap: 6px; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ui); max-width: 380px; }
+.readout div { display: flex; justify-content: space-between; gap: 18px; }
+.readout span:last-child { color: var(--chalk); }
+.readout .warn { color: #F0B54A; } .readout .bad { color: #F07A6E; } .readout .ok { color: #7ED6A1; }
+.ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; padding: 13px 18px; border: 1px solid var(--gold-soft); background: var(--gold-soft); color: var(--night); transition: background .25s, color .25s; cursor: pointer; }
+.btn:hover { background: transparent; color: var(--gold-soft); }
+.btn.ghost { background: transparent; color: var(--chalk); border-color: var(--ui-line); }
+.btn.ghost:hover { border-color: var(--chalk); }
+/* light stone: dark text */
+body.light .panel h1, body.light .panel h2 { color: #141E43; }
+body.light .panel p, body.light .readout { color: #2A335A; }
+body.light .readout { background: rgba(255,255,255,.35); border-color: rgba(20,30,67,.18); }
+body.light .readout span:last-child { color: #141E43; }
+body.light .tag { color: #8A6E35; } body.light .tag::before { background: #8A6E35; }
+body.light .hud-bottom, body.light .hud-links a { color: rgba(20,30,67,.6); }
+body.light .idx b { color: #141E43; }
+body.light .logo { color: #141E43; }
+body.light .logo .lt { fill: #141E43; }
+body.light .pill { color: #141E43; border-color: rgba(20,30,67,.25); background: rgba(255,255,255,.3); }
+body.light .track { background: rgba(20,30,67,.2); }
+.hud-top, .hud-bottom, .panel h1, .panel h2, .panel p, .tag, .logo { transition: color .5s; }
+
+@media (max-width: 759px) {
+  .panel { left: 20px; right: 20px; width: auto; top: auto; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); translate: none; gap: 12px; }
+  .panel h1 { font-size: clamp(2.3rem, 10vw, 3rem); }
+  .panel h2 { font-size: clamp(2rem, 8.6vw, 2.6rem); }
+  .panel p { font-size: 13px; }
+  .readout { display: none; }
+}
+
+/* ---------- After the journey ---------- */
+.after { position: relative; z-index: 9; background: linear-gradient(180deg, rgba(11,18,48,0) 0%, rgba(11,18,48,.92) 22%, var(--night) 40%); }
+.after .wrap { max-width: 1180px; margin: 0 auto; padding: 22vh max(20px, env(safe-area-inset-right, 0px)) 80px max(20px, env(safe-area-inset-left, 0px)); display: grid; gap: 64px; }
+@media (min-width: 760px) { .after .wrap { padding-left: max(36px, env(safe-area-inset-left, 0px)); padding-right: max(36px, env(safe-area-inset-right, 0px)); } }
+.after h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(2.4rem, 1.4rem + 3vw, 4.4rem); line-height: 1; margin: 0; letter-spacing: -.02em; }
+.after h2 em { font-style: italic; }
+.grid2 { display: grid; gap: 40px; }
+@media (min-width: 900px) { .grid2 { grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; } }
+.price { border: 1px solid var(--ui-line); padding: 26px; display: grid; gap: 16px; }
+.price .n { font-family: var(--serif); font-weight: 300; font-size: clamp(3rem, 2rem + 3vw, 4.6rem); line-height: .9; }
+.price .row { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--ui-line); padding-top: 12px; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
+.price small { color: var(--ui-dim); text-transform: uppercase; letter-spacing: .1em; font-size: 11px; }
+form.wl { display: grid; gap: 14px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-soft); }
+.field input { font: inherit; font-size: 15px; color: var(--chalk); background: transparent; border: 0; border-bottom: 1px solid var(--ui-line); padding: 10px 0; border-radius: 0; width: 100%; }
+.field input:focus { outline: none; border-bottom-color: var(--gold-soft); }
+.consent { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--ui-dim); }
+.consent input { accent-color: var(--gold); margin-top: 2px; }
+.form-msg { font-size: 12px; padding: 12px 14px; border-left: 2px solid var(--gold-soft); background: rgba(233,232,227,.05); }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; border-top: 1px solid var(--ui-line); padding-top: 22px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ui-dim); }
+.preview-flag { position: fixed; z-index: 70; right: max(12px, env(safe-area-inset-right, 0px)); top: calc(70px + env(safe-area-inset-top, 0px)); background: var(--gold); color: var(--night); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; padding: 6px 9px; }
+@media (prefers-reduced-motion: reduce) { .btn, .pill { transition: none; } }
+</style>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="hud" id="hud">
+  <div class="hud-top">
+    <a class="logo" href="#top" aria-label="Luex home">
+      <svg class="mark" viewBox="0 0 68 60" aria-hidden="true"><rect class="lt" x="2" y="6" width="14" height="14" rx="1.5" fill="#E9E8E3"/><rect class="lt" x="16" y="18" width="26" height="26" rx="2" fill="#E9E8E3"/><rect x="38" y="2" width="22" height="22" rx="2" fill="#3A56C4" transform="rotate(16 49 13)"/><rect x="4" y="38" width="16" height="16" rx="1.5" fill="#AF955C"/></svg>
+      <svg class="word" viewBox="-1 -2 90 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" aria-hidden="true"><path d="M1 0 V20 H13"/><path d="M25 0 V12.5 a6.5 6.5 0 0 0 13 0 V0"/><path d="M50 1 H63 M50 10 H63 M50 19 H63"/><path d="M74 0 L87 20 M87 0 L74 20"/></svg>
+    </a>
+    <ul class="hud-links"><li><a href="#s1">Connected</a></li><li><a href="#s2">Time</a></li><li><a href="#s3">Compliance</a></li><li><a href="#pricing">Pricing</a></li></ul>
+    <a class="pill" href="#waitlist"><i></i>Join the waitlist</a>
+  </div>
+  <div></div>
+  <div class="hud-bottom">
+    <div class="idx"><span><b id="idxNum">01</b> / 04 &nbsp;·&nbsp; <span id="idxName">Lapis Lazuli</span></span><div class="track"><span id="track"></span></div></div>
+    <div class="coords"><span>Luex Group · Launching Jan 2027</span><span id="clock">Scroll to explore</span></div>
+  </div>
+</div>
+
+<div class="panels" id="panels">
+  <div class="panel" data-i="0">
+    <span class="tag scr">01 · Lapis Lazuli · The hub</span>
+    <h1>Organisation opens <em>freedom.</em></h1>
+    <p>Every tool your business runs on, held in one connected hub. Compliance, people, time, assets and customers.</p>
+    <div class="ctas"><a class="btn" href="#waitlist">Join the waitlist</a><a class="btn ghost" href="#s1">Explore</a></div>
+  </div>
+  <div class="panel" data-i="1">
+    <span class="tag scr">02 · Jade · Connected</span>
+    <h2>One change, and <em>everything follows.</em></h2>
+    <p>Every tool shares the same people, sites and records. Change something once and the rest of the business knows.</p>
+    <div class="readout">
+      <div><span>Compliance</span><span class="warn">CSCS card · S. Byrne · 12 days</span></div>
+      <div><span>Rota</span><span class="bad">Mon, Tue shifts blocked</span></div>
+      <div><span>Tasks</span><span>Supervisor: book renewal</span></div>
+    </div>
+  </div>
+  <div class="panel" data-i="2">
+    <span class="tag scr">03 · Amber · Time</span>
+    <h2>Every hour, <em>accounted for.</em></h2>
+    <p>Clock in on site, build the rota, approve timesheets and send payroll the totals. It works with no signal.</p>
+    <div class="readout">
+      <div><span>Aoife Kelly</span><span class="ok">Clocked in 07:52 · Docklands</span></div>
+      <div><span>This week</span><span>31h 45m</span></div>
+      <div><span>To approve</span><span>14 timesheets</span></div>
+    </div>
+  </div>
+  <div class="panel" data-i="3">
+    <span class="tag scr">04 · Quartz · Compliance</span>
+    <h2>Nothing expires <em>unnoticed.</em></h2>
+    <p>Certificates, tickets and inspections in one place, with reminders before anything runs out.</p>
+    <div class="readout">
+      <div><span>Records</span><span>248</span></div>
+      <div><span>Due in 30 days</span><span class="warn">21</span></div>
+      <div><span>Expired</span><span class="bad">8</span></div>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+  <div class="journey" id="journey">
+    <div class="stop" id="s0"></div><div class="stop" id="s1"></div><div class="stop" id="s2"></div><div class="stop" id="s3"></div>
+  </div>
+
+  <section class="after" id="pricing">
+    <div class="wrap">
+      <div class="grid2">
+        <div style="display:grid;gap:18px">
+          <span class="tag">Pricing</span>
+          <h2>One price. <em>Every tool</em> included.</h2>
+          <p style="color:var(--ui);max-width:42ch;margin:0">No tiers and no features held back. Frontline staff who only clock in and fill in forms cost less.</p>
+        </div>
+        <div class="price">
+          <div><span class="n">£60</span> <small>a month · 3 users included</small></div>
+          <div class="row"><span>Extra full user</span><span>£20</span></div>
+          <div class="row"><span>Extra light user</span><span>£8</span></div>
+          <div class="row"><span>All 80 tools</span><span>Included</span></div>
+          <small>Example prices, excluding VAT. Final prices confirmed before launch.</small>
+        </div>
+      </div>
+      <div class="grid2" id="waitlist">
+        <div style="display:grid;gap:18px">
+          <span class="tag">Waitlist</span>
+          <h2>Be first in <em>January.</em></h2>
+          <p style="color:var(--ui);max-width:42ch;margin:0">Early access, launch pricing locked in, and help with setup from the Luex team.</p>
+        </div>
+        <form class="wl" id="wl" novalidate>
+          <div class="field"><label for="wl-name">Your name</label><input id="wl-name" autocomplete="name"></div>
+          <div class="field"><label for="wl-email">Work email</label><input id="wl-email" type="email" autocomplete="email"></div>
+          <div class="field"><label for="wl-company">Company</label><input id="wl-company" autocomplete="organization"></div>
+          <label class="consent" for="wl-consent"><input id="wl-consent" type="checkbox"> Email me about the Luex launch. I can unsubscribe at any time.</label>
+          <button class="btn" type="submit" style="justify-self:start">Join the waitlist</button>
+          <div class="form-msg" id="wl-msg" hidden></div>
+        </form>
+      </div>
+      <footer><span>© 2026 Luex Group</span><span>luexgroup.com</span></footer>
+    </div>
+  </section>
+</main>
+<div class="preview-flag">Preview</div>
+
+<script>
+/* ===================== The world ===================== */
+const STONES = [
+  // type, environment (sky top, horizon, ground), light or dark UI
+  { name: 'Lapis Lazuli', env: ['#060B22', '#1E3172', '#0B1233'], light: false },
+  { name: 'Jade',         env: ['#07140F', '#2F5E4E', '#0E221B'], light: false },
+  { name: 'Amber',        env: ['#170C05', '#7E4D22', '#1F1208'], light: false },
+  { name: 'Quartz',       env: ['#BFC6D6', '#F1F0EC', '#D5D7DE'], light: true  }
+];
+const N = STONES.length;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const VERT = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
+
+const SCENE = `
+precision highp float;
+uniform vec2 uRes; uniform float uTime;
+uniform vec3 uCam, uTgt;
+uniform vec4 uA, uB;
+uniform vec3 uTop, uHor, uGround;
+
+float h3(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+float n3(vec3 x){ vec3 i = floor(x), f = fract(x); f = f*f*(3.0-2.0*f);
+  return mix(mix(mix(h3(i), h3(i+vec3(1,0,0)), f.x), mix(h3(i+vec3(0,1,0)), h3(i+vec3(1,1,0)), f.x), f.y),
+             mix(mix(h3(i+vec3(0,0,1)), h3(i+vec3(1,0,1)), f.x), mix(h3(i+vec3(0,1,1)), h3(i+vec3(1,1,1)), f.x), f.y), f.z); }
+mat2 rot(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
+float sdBox(vec3 p, vec3 b){ vec3 q = abs(p) - b; return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0); }
+float sdTorus(vec3 p, vec2 t){ vec2 q = vec2(length(p.xy) - t.x, p.z); return length(q) - t.y; }
+float sdDisc(vec3 p, float r, float h){ vec2 d = abs(vec2(length(p.xy), p.z)) - vec2(r, h); return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)); }
+
+const vec3 L = vec3(0.55, 0.42, 0.72);
+
+float crystal(vec3 p){
+  float d = sdBox(p, vec3(0.78, 1.02, 0.78));
+  d = max(d, dot(p, normalize(vec3( 1.0, 1.0, 0.3))) - 1.12);
+  d = max(d, dot(p, normalize(vec3(-1.0, 0.8, 0.5))) - 1.08);
+  d = max(d, dot(p, normalize(vec3( 0.4,-1.0, 1.0))) - 1.10);
+  d = max(d, dot(p, normalize(vec3(-0.6,-0.9,-1.0))) - 1.06);
+  d = max(d, dot(p, normalize(vec3( 1.0,-0.3,-1.0))) - 1.02);
+  d = max(d, dot(p, normalize(vec3(-1.0, 0.2, 1.0))) - 1.06);
+  d = max(d, dot(p, normalize(vec3( 0.2, 1.0,-0.9))) - 1.10);
+  return d;
+}
+vec3 toLocal(vec3 p, vec4 B, float k){
+  vec3 q = p - B.xyz;
+  q.y -= sin(uTime * 0.6 + k) * 0.05;
+  q.xz *= rot(uTime * 0.11 + k + 0.6);
+  q.xy *= rot(0.12);
+  return q;
+}
+// object held inside each stone; m: 0 chalk, 1 blue, 2 gold, 3 green, 4 ink
+float inner(vec3 q, float ty, out float m){
+  m = 0.0; float d = 1e5;
+  if (ty < 0.5) {            // Luex mark
+    float a = sdBox(q - vec3(-0.30, 0.21, 0.0), vec3(0.11)) - 0.01;
+    float b = sdBox(q - vec3(-0.04, -0.03, 0.0), vec3(0.19)) - 0.012;
+    vec3 c3 = q - vec3(0.27, 0.27, 0.0); c3.xy *= rot(0.28);
+    float c = sdBox(c3, vec3(0.15)) - 0.012;
+    float e = sdBox(q - vec3(-0.30, -0.33, 0.0), vec3(0.12)) - 0.01;
+    d = a; m = 0.0;
+    if (b < d) { d = b; m = 0.0; }
+    if (c < d) { d = c; m = 1.0; }
+    if (e < d) { d = e; m = 2.0; }
+  } else if (ty < 1.5) {     // three linked rings
+    float a = sdTorus(q - vec3(-0.30, 0.0, 0.0), vec2(0.21, 0.045));
+    float b = sdTorus(vec3(q.x, q.z, q.y), vec2(0.21, 0.045));
+    float c = sdTorus(q - vec3(0.30, 0.0, 0.0), vec2(0.21, 0.045));
+    d = min(a, min(b, c)); m = 2.0;
+  } else if (ty < 2.5) {     // clock
+    float face = sdDisc(q, 0.36, 0.035); d = face; m = 0.0;
+    float rim = sdTorus(q, vec2(0.38, 0.035)); if (rim < d) { d = rim; m = 2.0; }
+    float hr = sdBox(q - vec3(0.0, 0.11, 0.05), vec3(0.022, 0.13, 0.018)); if (hr < d) { d = hr; m = 4.0; }
+    vec3 mq = q; mq.xy *= rot(-uTime * 0.6);
+    float mn = sdBox(mq - vec3(0.12, 0.0, 0.05), vec3(0.15, 0.018, 0.016)); if (mn < d) { d = mn; m = 4.0; }
+  } else {                   // tick inside a ring
+    vec3 a1 = q - vec3(-0.12, -0.06, 0.0); a1.xy *= rot(0.75);
+    float a = sdBox(a1, vec3(0.055, 0.15, 0.055)) - 0.01;
+    vec3 b1 = q - vec3(0.09, 0.06, 0.0); b1.xy *= rot(-0.55);
+    float b = sdBox(b1, vec3(0.055, 0.29, 0.055)) - 0.01;
+    d = min(a, b); m = 3.0;
+    float r = sdTorus(q, vec2(0.44, 0.03)); if (r < d) { d = r; m = 2.0; }
+  }
+  return d;
+}
+vec3 objCol(float m){
+  if (m < 0.5) return vec3(0.92, 0.91, 0.88);
+  if (m < 1.5) return vec3(0.23, 0.34, 0.80);
+  if (m < 2.5) return vec3(0.86, 0.68, 0.36);
+  if (m < 3.5) return vec3(0.25, 0.70, 0.45);
+  return vec3(0.08, 0.11, 0.24);
+}
+vec3 tint(float ty){ if (ty < 0.5) return vec3(0.16, 0.26, 0.88); if (ty < 1.5) return vec3(0.22, 0.72, 0.50); if (ty < 2.5) return vec3(1.00, 0.58, 0.18); return vec3(0.93, 0.95, 1.00); }
+vec3 fleck(float ty){ if (ty < 0.5) return vec3(1.0, 0.78, 0.36); if (ty < 1.5) return vec3(0.85, 1.0, 0.9); if (ty < 2.5) return vec3(1.0, 0.86, 0.55); return vec3(1.0, 0.86, 0.92); }
+float dens(float ty){ if (ty < 0.5) return 1.7; if (ty < 1.5) return 1.5; if (ty < 2.5) return 1.0; return 0.22; }
+
+vec3 env(vec3 rd){
+  vec3 c = mix(uHor, uTop, smoothstep(-0.05, 0.65, rd.y));
+  c = mix(c, uGround, smoothstep(0.0, -0.4, rd.y));
+  float s = max(dot(rd, normalize(L)), 0.0);
+  c += vec3(1.0, 0.82, 0.58) * (pow(s, 48.0) * 0.7 + pow(s, 5.0) * 0.07);
+  return c;
+}
+float mapS(vec3 p, out float id){
+  float a = crystal(toLocal(p, uA, 0.0));
+  float b = crystal(toLocal(p, uB, 1.7));
+  float g = p.y + 1.55;
+  float d = a; id = 1.0;
+  if (b < d) { d = b; id = 2.0; }
+  if (g < d) { d = g; id = 3.0; }
+  return d;
+}
+vec3 crystalNormal(vec3 p, vec4 B, float k){
+  vec2 e = vec2(0.0015, 0.0);
+  return normalize(vec3(
+    crystal(toLocal(p + e.xyy, B, k)) - crystal(toLocal(p - e.xyy, B, k)),
+    crystal(toLocal(p + e.yxy, B, k)) - crystal(toLocal(p - e.yxy, B, k)),
+    crystal(toLocal(p + e.yyx, B, k)) - crystal(toLocal(p - e.yyx, B, k))));
+}
+vec3 shadeStone(vec3 hp, vec3 rd, vec4 B, float k){
+  float ty = B.w;
+  vec3 n = crystalNormal(hp, B, k);
+  float fres = 0.05 + 0.95 * pow(1.0 - max(dot(-rd, n), 0.0), 4.0);
+  vec3 rr = reflect(rd, n);
+  vec3 refl = env(rr);
+  vec3 rd2 = refract(rd, n, 1.0 / 1.52);
+  if (dot(rd2, rd2) < 0.5) rd2 = rr;
+  vec3 acc = vec3(0.0); float tr = 1.0;
+  vec3 p = hp + rd2 * 0.012;
+  vec3 tc = tint(ty), fc = fleck(ty); float de = dens(ty);
+  for (int i = 0; i < 30; i++) {
+    vec3 q = toLocal(p, B, k);
+    if (crystal(q) > 0.0) break;
+    float m; float di = inner(q, ty, m);
+    if (di < 0.004) {
+      vec3 eps = vec3(0.002, 0.0, 0.0); float mm;
+      vec3 on = normalize(vec3(inner(q + eps.xyy, ty, mm) - inner(q - eps.xyy, ty, mm), inner(q + eps.yxy, ty, mm) - inner(q - eps.yxy, ty, mm), inner(q + eps.yyx, ty, mm) - inner(q - eps.yyx, ty, mm)));
+      float dif = 0.45 + 0.55 * max(dot(on, normalize(L)), 0.0);
+      float sp = pow(max(dot(reflect(rd2, on), normalize(L)), 0.0), 24.0);
+      acc += max(tr, 0.45) * (objCol(m) * dif + sp * 0.6) * mix(vec3(1.0), tc, 0.25);
+      tr = 0.0; break;
+    }
+    float st = clamp(di, 0.018, 0.065);
+    float v = n3(q * 3.6 + ty * 5.0);
+    float vein = smoothstep(0.66, 0.74, v) * (1.0 - smoothstep(0.74, 0.8, v));
+    float fl = smoothstep(0.78, 0.86, n3(q * 22.0 + ty * 3.0)) * smoothstep(0.5, 0.68, n3(q * 5.0 + 9.0));
+    acc += tr * (fc * fl * 3.2 + vec3(0.92, 0.95, 1.0) * vein * 0.3 + tc * 0.16 * de) * st * 2.0;
+    tr *= exp(-de * st * (0.55 + 0.9 * n3(q * 2.2 + 3.0)));
+    p += rd2 * st;
+  }
+  vec3 body = acc + tc * env(rd2) * tr * 1.3 + tc * 0.06 * (1.0 - tr);
+  vec3 col = mix(body, refl * 1.25, fres);
+  // thin bright line on facet edges, so the cut of the stone reads
+  vec3 ne = crystalNormal(hp + rd * 0.02, B, k);
+  col += vec3(0.9, 0.93, 1.0) * smoothstep(0.02, 0.2, 1.0 - dot(n, ne)) * 0.35;
+  col += vec3(1.0, 0.92, 0.78) * pow(max(dot(rr, normalize(L)), 0.0), 70.0) * 1.4;
+  // bright facet edges
+  float edge = 1.0 - smoothstep(0.0, 0.02, abs(crystal(toLocal(hp, B, k) * 1.004)));
+  return col;
+}
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
+  vec3 fw = normalize(uTgt - uCam);
+  vec3 rt = normalize(cross(fw, vec3(0.0, 1.0, 0.0)));
+  vec3 up = cross(rt, fw);
+  vec3 rd = normalize(fw * 1.7 + uv.x * rt + uv.y * up);
+  float t = 0.0, id = 0.0;
+  for (int i = 0; i < 96; i++) {
+    vec3 p = uCam + rd * t;
+    float d = mapS(p, id);
+    if (d < 0.001 + 0.0008 * t) break;
+    t += d * 0.9;
+    if (t > 45.0) { id = 0.0; break; }
+  }
+  vec3 col;
+  vec3 hp = uCam + rd * t;
+  if (id < 0.5) col = env(rd);
+  else if (id < 1.5) col = shadeStone(hp, rd, uA, 0.0);
+  else if (id < 2.5) col = shadeStone(hp, rd, uB, 1.7);
+  else {
+    float fr = n3(vec3(hp.xz * 2.4, 0.0)) * 0.6 + n3(vec3(hp.xz * 9.0, 1.0)) * 0.4;
+    col = uGround * (0.75 + 0.5 * fr);
+    col += env(reflect(rd, vec3(0.0, 1.0, 0.0))) * 0.18;
+    float sa = smoothstep(0.2, 1.8, length(hp.xz - uA.xz));
+    float sb = smoothstep(0.2, 1.8, length(hp.xz - uB.xz));
+    col *= 0.45 + 0.55 * sa * sb;
+    // caustic glow under each stone, in its colour
+    col += tint(uA.w) * 0.08 * (1.0 - smoothstep(0.0, 1.5, length(hp.xz - uA.xz)));
+    col += tint(uB.w) * 0.08 * (1.0 - smoothstep(0.0, 1.5, length(hp.xz - uB.xz)));
+  }
+  if (id > 0.5) col = mix(col, uHor, 1.0 - exp(-max(t - 5.0, 0.0) * 0.07));
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+const POST = `
+precision highp float;
+uniform sampler2D uScene; uniform vec2 uRes; uniform float uTime, uFrost; uniform vec3 uFrostCol;
+float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float n(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f); return mix(mix(h(i), h(i+vec2(1,0)), f.x), mix(h(i+vec2(0,1)), h(i+vec2(1,1)), f.x), f.y); }
+float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 4; i++){ v += a * n(p); p *= 2.1; a *= 0.5; } return v; }
+void main(){
+  vec2 uv = gl_FragCoord.xy / uRes;
+  vec2 c = uv - 0.5;
+  float fr = uFrost;
+  vec2 w = (vec2(fbm(uv * 7.0 + uTime * 0.1), fbm(uv * 7.0 - uTime * 0.1 + 4.0)) - 0.5) * 0.03 * fr;
+  float k = 0.0018 + fr * 0.03;
+  vec3 col;
+  col.r = texture2D(uScene, uv + w + c * k).r;
+  col.g = texture2D(uScene, uv + w).g;
+  col.b = texture2D(uScene, uv + w - c * k).b;
+  if (fr > 0.02) {
+    vec3 bl = vec3(0.0); float r = 0.012 * fr;
+    bl += texture2D(uScene, uv + w + vec2( r,  r)).rgb; bl += texture2D(uScene, uv + w + vec2(-r,  r)).rgb;
+    bl += texture2D(uScene, uv + w + vec2( r, -r)).rgb; bl += texture2D(uScene, uv + w + vec2(-r, -r)).rgb;
+    col = mix(col, bl * 0.25, min(fr * 0.9, 0.7));
+  }
+  // frost creeping in from the edges, with crystalline grain
+  float edge = length(c * vec2(1.25, 1.0));
+  float grain = fbm(uv * 14.0) * 0.5 + fbm(uv * 40.0 + 3.0) * 0.5;
+  float fm = smoothstep(1.0 - fr * 0.55, 1.2 - fr * 0.55, edge + (grain - 0.5) * 0.45);
+  col = mix(col, uFrostCol + grain * 0.06, fm * min(fr * 1.6, 1.0));
+  col = mix(col, uFrostCol, fr * 0.1);
+  // floating dust
+  vec2 a = gl_FragCoord.xy / uRes.y;
+  for (int i = 0; i < 3; i++) {
+    float sc = 7.0 + float(i) * 6.0;
+    vec2 q = a * sc + vec2(uTime * 0.015 * (float(i) + 1.0), -uTime * 0.03);
+    vec2 id = floor(q); float rnd = h(id + float(i) * 13.0);
+    vec2 pp = vec2(h(id + 2.0), h(id + 5.0));
+    float d = length(fract(q) - pp);
+    float tw = 0.5 + 0.5 * sin(uTime * (1.0 + rnd * 2.0) + rnd * 30.0);
+    col += vec3(1.0, 0.9, 0.72) * smoothstep(0.045, 0.0, d) * step(0.82, rnd) * tw * 0.35;
+  }
+  col *= 1.0 - 0.32 * smoothstep(0.35, 0.95, length(c * vec2(1.1, 1.0)));
+  col += (h(gl_FragCoord.xy + uTime) - 0.5) * 0.025;
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+const canvas = document.getElementById('gl');
+let gl, scene, post, fbo, fboTex, fw = 0, fh = 0, ok = false;
+const U = {}, P = {};
+function compile(type, src) {
+  const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; }
+  return s;
+}
+function program(fs) {
+  const v = compile(gl.VERTEX_SHADER, VERT), f = compile(gl.FRAGMENT_SHADER, fs);
+  if (!v || !f) return null;
+  const pr = gl.createProgram(); gl.attachShader(pr, v); gl.attachShader(pr, f);
+  gl.bindAttribLocation(pr, 0, 'p'); gl.linkProgram(pr);
+  return gl.getProgramParameter(pr, gl.LINK_STATUS) ? pr : null;
+}
+function init() {
+  try { gl = canvas.getContext('webgl', { antialias: false, alpha: false }); } catch (e) {}
+  if (!gl) return;
+  scene = program(SCENE); post = program(POST);
+  if (!scene || !post) { gl = null; return; }
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  ['uRes', 'uTime', 'uCam', 'uTgt', 'uA', 'uB', 'uTop', 'uHor', 'uGround'].forEach(k => U[k] = gl.getUniformLocation(scene, k));
+  ['uScene', 'uRes', 'uTime', 'uFrost', 'uFrostCol'].forEach(k => P[k] = gl.getUniformLocation(post, k));
+  fboTex = gl.createTexture(); fbo = gl.createFramebuffer();
+  ok = true; resize();
+}
+let quality = 1;
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  canvas.width = Math.round(innerWidth * dpr); canvas.height = Math.round(innerHeight * dpr);
+  if (!ok) return;
+  const scale = (innerWidth < 760 ? 0.5 : 0.55) * quality;
+  fw = Math.max(2, Math.round(canvas.width * scale)); fh = Math.max(2, Math.round(canvas.height * scale));
+  gl.bindTexture(gl.TEXTURE_2D, fboTex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, fw, fh, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fboTex, 0);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+}
+
+/* ---- camera path through the stones ---- */
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
+const lerp = (a, b, t) => a + (b - a) * t;
+const mix3 = (a, b, t) => a.map((v, i) => lerp(v, b[i], t));
+const sstep = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+function stonePos(i) { const narrow = innerWidth < 760; return [narrow ? 0 : 1.2, 0.05, -i * 8]; }
+function camPose(i) {
+  const s = stonePos(i), narrow = innerWidth < 760;
+  return { cam: [narrow ? 0 : s[0] * 0.1, narrow ? 1.1 : 0.3, s[2] + (narrow ? 9.2 : 5.3)], tgt: [narrow ? 0 : s[0] * 0.3, narrow ? -1.1 : 0.0, s[2]] };
+}
+let progress = 0, smooth = 0;
+function readScroll() {
+  const vh = innerHeight;
+  progress = Math.max(0, Math.min(N - 1, scrollY / vh));
+}
+
+/* ---- UI ---- */
+const panels = [...document.querySelectorAll('.panel')];
+const idxNum = document.getElementById('idxNum'), idxName = document.getElementById('idxName'), track = document.getElementById('track');
+let active = -1;
+const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·/—';
+function scramble(el, text) {
+  const final = text || el.dataset.text || (el.dataset.text = el.textContent);
+  if (reduceMotion) { el.textContent = final; return; }
+  let f = 0; const total = 22;
+  const tick = () => {
+    f++;
+    el.textContent = final.split('').map((ch, i) => (ch === ' ' || i < (f / total) * final.length) ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0]).join('');
+    if (f < total) requestAnimationFrame(tick); else el.textContent = final;
+  };
+  tick();
+}
+function updateUI(p) {
+  const i = Math.round(p);
+  panels.forEach((el, k) => {
+    const d = Math.abs(p - k);
+    const o = 1 - sstep(0.12, 0.32, d);
+    el.style.opacity = o.toFixed(3);
+    el.style.transform = `translateY(${((p - k) * -40).toFixed(1)}px)`;
+    el.classList.toggle('on', o > 0.01);
+  });
+  if (i !== active) {
+    active = i;
+    idxNum.textContent = String(i + 1).padStart(2, '0');
+    scramble(idxName, STONES[i].name);
+    const tag = panels[i].querySelector('.scr'); if (tag) scramble(tag);
+    document.body.classList.toggle('light', STONES[i].light);
+  }
+  track.style.width = (p / (N - 1) * 100).toFixed(1) + '%';
+}
+
+/* ---- render loop ---- */
+let t0 = performance.now(), last = t0, slow = 0;
+function frame(now) {
+  readScroll();
+  smooth += (progress - smooth) * (reduceMotion ? 1 : 0.09);
+  const p = smooth;
+  const i = Math.min(N - 2, Math.floor(p)), f = p - i;
+  const e = sstep(0.12, 0.88, f);
+  const A = camPose(i), B = camPose(i + 1);
+  const arc = Math.sin(Math.PI * e);
+  const cam = mix3(A.cam, B.cam, e); cam[0] -= arc * (innerWidth < 760 ? 0 : 0.7); cam[1] += arc * 0.9; cam[2] += arc * 2.6;
+  const tgt = mix3(A.tgt, B.tgt, e);
+  const envT = sstep(0.3, 0.7, f);
+  const ea = STONES[i].env.map(hex), eb = STONES[i + 1].env.map(hex);
+  const top = mix3(ea[0], eb[0], envT), hor = mix3(ea[1], eb[1], envT), gnd = mix3(ea[2], eb[2], envT);
+  const frost = reduceMotion ? 0 : Math.pow(arc, 3);
+  const frostCol = STONES[i + 1].light || STONES[i].light ? [0.9, 0.92, 0.96] : [0.78, 0.84, 0.95];
+  updateUI(p);
+  if (ok) {
+    const time = reduceMotion ? 4 : (now - t0) / 1000;
+    const sa = stonePos(i), sb = stonePos(i + 1);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, fw, fh);
+    gl.useProgram(scene);
+    gl.uniform2f(U.uRes, fw, fh); gl.uniform1f(U.uTime, time);
+    gl.uniform3fv(U.uCam, cam); gl.uniform3fv(U.uTgt, tgt);
+    gl.uniform4f(U.uA, sa[0], sa[1], sa[2], i); gl.uniform4f(U.uB, sb[0], sb[1], sb[2], i + 1);
+    gl.uniform3fv(U.uTop, top); gl.uniform3fv(U.uHor, hor); gl.uniform3fv(U.uGround, gnd);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.useProgram(post);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fboTex);
+    gl.uniform1i(P.uScene, 0); gl.uniform2f(P.uRes, canvas.width, canvas.height);
+    gl.uniform1f(P.uTime, time); gl.uniform1f(P.uFrost, frost); gl.uniform3fv(P.uFrostCol, frostCol);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    // drop resolution if the device is struggling
+    const dt = now - last;
+    if (dt > 40) slow++; else slow = Math.max(0, slow - 1);
+    if (slow > 30 && quality > 0.6) { quality -= 0.15; slow = 0; resize(); }
+  }
+  last = now;
+  requestAnimationFrame(frame);
+}
+
+/* ---- waitlist (preview only) ---- */
+document.getElementById('wl').addEventListener('submit', e => {
+  e.preventDefault();
+  const msg = document.getElementById('wl-msg');
+  const name = document.getElementById('wl-name').value.trim(), email = document.getElementById('wl-email').value.trim();
+  msg.hidden = false;
+  if (!name || !/^\S+@\S+\.\S+$/.test(email)) { msg.textContent = 'Add your name and a work email so we can reach you.'; return; }
+  if (!document.getElementById('wl-consent').checked) { msg.textContent = 'Tick the box so we can email you about the launch.'; return; }
+  msg.textContent = `Thanks, ${name.split(' ')[0]}. This is a preview, so nothing was saved yet.`;
+});
+
+init();
+addEventListener('resize', resize);
+requestAnimationFrame(frame);
+</script>
