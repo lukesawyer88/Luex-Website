@@ -451,17 +451,19 @@ WHITE_CSS = """
 .v-white .tile:not(.sel), .v-white .mw, .v-white .dw { background: var(--panel); }
 .v-white .lr, .v-white .facts div { background: var(--surface); }
 .v-white .m-page { background: var(--surface); }
+.v-nobg.frame { background: var(--surface); padding: 0; }
+.v-nobg .m-page { box-shadow: none; border-radius: 0; }
 """
-cls = "v-ink v-rich v-desert v-white"
+cls = "v-ink v-rich v-desert v-white v-nobg"
 page6 = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Luex Ink Desert White</title>
+<title>Luex Ink White</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
 <style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}</style></head><body>
 <div class="wrap">
-  <h1>Ink + desert, in white</h1>
-  <p class="lead">The Ink sidebar and desert backdrop you picked, with clean white and neutral grey surfaces instead of sand, so the Venus gold, bronze and black stand out as accents.</p>
+  <h1>Ink, in white</h1>
+  <p class="lead">The Ink sidebar with clean white and neutral grey surfaces and no background, so the Venus gold, bronze and black stand out as accents.</p>
   <div class="pair">
     <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {cls}" style="{WHITE_L} {STATUS_L}">{SFR}</div></div>
     <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {cls}" style="{WHITE_D} {STATUS_D}">{to_dark(SFR)}</div></div>
