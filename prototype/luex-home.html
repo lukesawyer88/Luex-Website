@@ -1,0 +1,777 @@
+<title>Luex Home</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400;0,500;1,500&family=Abel&display=swap">
+<style>
+/* Layout: Nubo's structure, section for section. Full-bleed photo hero, centred two-tone headlines,
+   rounded image cards, story cards, numbers, spec table, bento, pricing, FAQ, closing photo CTA. */
+:root {
+  --bg: #F7F6F3;
+  --white: #FFFFFF;
+  --card: #FFFFFF;
+  --ink: #262626;
+  --ink-2: #545454;
+  --ink-3: #6D6D6D;
+  --ink-4: #858585;
+  --line: #E8E6E1;
+  --dark: #262626;
+  --accent: #C9D6FF;          /* pale lapis, used where Nubo uses its pale yellow */
+  --lapis: #263E92;
+  --head: "Google Sans", "Product Sans", "Helvetica Neue", Arial, sans-serif;
+  --body: "Abel", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+h1, h2, h3, h4 { margin: 0; font-weight: 500; }
+:focus-visible { outline: 2px solid var(--lapis); outline-offset: 3px; }
+
+/* ---------- shared type ---------- */
+.display { font-family: var(--head); font-weight: 500; font-size: clamp(3rem, 1.2rem + 6.4vw, 6.875rem); line-height: 1.04; letter-spacing: -0.06em; text-wrap: balance; }
+.display .soft { color: var(--ink-3); }
+.h60 { font-family: var(--head); font-weight: 500; font-size: clamp(2.3rem, 1.4rem + 3vw, 3.75rem); line-height: 1.1; letter-spacing: -0.06em; }
+.h60 .soft { color: var(--ink-3); }
+.h48 { font-family: var(--head); font-weight: 500; font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem); line-height: 1.24; letter-spacing: -0.05em; }
+.h32 { font-family: var(--head); font-weight: 500; font-size: clamp(1.6rem, 1.3rem + .8vw, 2rem); line-height: 1.04; letter-spacing: -0.05em; }
+.cap { font-family: var(--body); text-transform: uppercase; color: var(--ink-2); font-size: 14px; line-height: 1.3; letter-spacing: -0.01em; }
+.cap-16 { font-size: 16px; }
+.cap-18 { font-size: 18px; }
+.cap-20 { font-size: clamp(16px, 1.4vw, 20px); }
+.tag { display: inline-flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 18px; text-transform: uppercase; color: var(--ink-2); }
+.tag i { width: 22px; height: 22px; border-radius: 5px; background: var(--dark); display: grid; place-items: center; }
+.tag i::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: #fff; box-shadow: 5px -3px 0 -1px var(--accent); }
+
+.wrap { width: 100%; max-width: 1440px; margin: 0 auto; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 600px) { .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); } }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 20px; border-radius: 999px; font-family: var(--head); font-weight: 500; font-size: 14px; letter-spacing: -0.03em; text-transform: uppercase; cursor: pointer; border: 0; transition: transform .2s, background .2s; }
+.btn:hover { transform: translateY(-1px); }
+.btn svg { width: 12px; height: 12px; }
+.btn-dark { background: var(--dark); color: #EEEEEE; }
+.btn-light { background: #fff; color: var(--ink); }
+.btn-ghost { background: var(--bg); color: var(--ink); }
+
+/* ---------- floating pill nav ---------- */
+.pill-nav { position: fixed; z-index: 50; top: calc(20px + env(safe-area-inset-top, 0px)); left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 22px; height: 52px; padding: 0 16px 0 22px; border-radius: 999px; background: #111; color: #fff; box-shadow: 0 10px 30px -12px rgba(0,0,0,.45); }
+.pill-nav .mark { display: inline-flex; align-items: center; gap: 9px; }
+.pill-nav .mark svg.m { width: 22px; height: 20px; }
+.pill-nav .mark span { font-family: var(--head); font-size: 20px; letter-spacing: -0.04em; }
+.pill-nav button { background: none; border: 0; color: #fff; width: 34px; height: 34px; display: grid; place-items: center; cursor: pointer; border-radius: 50%; }
+.pill-nav button span, .pill-nav button span::before, .pill-nav button span::after { display: block; width: 18px; height: 1.6px; background: #fff; position: relative; transition: transform .25s, background .25s; }
+.pill-nav button span::before, .pill-nav button span::after { content: ""; position: absolute; left: 0; }
+.pill-nav button span::before { top: -6px; width: 18px; }
+.pill-nav button span::after { top: 6px; width: 11px; }
+.nav-open .pill-nav button span { background: transparent; }
+.nav-open .pill-nav button span::before { transform: translateY(6px) rotate(45deg); }
+.nav-open .pill-nav button span::after { width: 18px; transform: translateY(-6px) rotate(-45deg); }
+.menu { position: fixed; z-index: 49; top: calc(84px + env(safe-area-inset-top, 0px)); left: 50%; translate: -50% -8px; width: min(360px, calc(100vw - 32px)); background: #111; color: #fff; border-radius: 24px; padding: 14px; display: grid; gap: 2px; opacity: 0; pointer-events: none; transition: opacity .2s, translate .2s; }
+.nav-open .menu { opacity: 1; translate: -50% 0; pointer-events: auto; }
+.menu a { padding: 12px 14px; border-radius: 12px; font-family: var(--head); font-size: 20px; letter-spacing: -0.04em; display: flex; justify-content: space-between; }
+.menu a:hover { background: #222; }
+.menu a small { font-family: var(--body); font-size: 13px; color: #8a8a8a; text-transform: uppercase; align-self: center; }
+.menu .btn { justify-content: center; margin-top: 8px; background: #fff; color: #111; }
+
+/* ---------- 1. hero ---------- */
+.hero { position: relative; min-height: max(640px, 100svh); color: #fff; overflow: hidden; display: grid; place-items: center; text-align: center; }
+.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,30,.35) 0%, rgba(8,12,30,.18) 40%, rgba(8,12,30,.45) 100%); }
+.hero-in { position: relative; z-index: 1; display: grid; justify-items: center; gap: 28px; padding: 140px 24px 120px; }
+.hero .kicker { display: inline-flex; align-items: center; gap: 10px; font-family: var(--head); font-weight: 500; font-size: 20px; letter-spacing: -0.04em; }
+.hero .kicker i { width: 22px; height: 22px; border-radius: 5px; background: rgba(255,255,255,.92); display: grid; place-items: center; }
+.hero .kicker i::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: #111; box-shadow: 5px -3px 0 -1px var(--lapis); }
+.hero h1 { max-width: 13ch; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero h1 b { font-weight: 500; color: var(--accent); }
+.hero .sub { color: rgba(255,255,255,.82); max-width: 40ch; font-size: clamp(14px, 1.2vw, 17px); text-transform: uppercase; line-height: 1.35; }
+.hero .ctas { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.hero .launch { display: flex; gap: 22px; align-items: center; margin-top: 18px; font-family: var(--body); text-transform: uppercase; font-size: 14px; color: rgba(255,255,255,.7); }
+.hero .launch b { font-family: var(--head); font-weight: 500; font-size: 15px; letter-spacing: -0.03em; color: #fff; text-transform: none; }
+.hero .launch span + span { padding-left: 22px; border-left: 1px solid rgba(255,255,255,.3); }
+@media (max-width: 600px) { .hero .launch { flex-direction: column; gap: 6px; } .hero .launch span + span { padding-left: 0; border-left: 0; } }
+
+/* ---------- 2. hello ---------- */
+.hello { position: relative; background: #DCE2F2; overflow: hidden; }
+.hello-in { position: relative; min-height: 760px; display: grid; place-items: center; padding: 120px 24px; }
+.hello h2 { position: relative; z-index: 1; color: #F7F6F3; text-align: center; mix-blend-mode: normal; }
+.hello .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(2px) saturate(.9); transform: scale(1.06); }
+.hello .bg-shade { position: absolute; inset: 0; background: rgba(14,20,48,.35); }
+.hello .card { position: absolute; z-index: 2; left: 50%; bottom: -40px; translate: -50% 0; width: min(860px, 86vw); aspect-ratio: 16 / 9.4; border-radius: 16px; overflow: hidden; box-shadow: 0 40px 80px -30px rgba(10,15,40,.55); background: #0C1330; }
+.hello .card img { width: 100%; height: 100%; object-fit: cover; }
+.hello .note { position: absolute; z-index: 2; left: 50%; translate: -50% 0; top: 72px; font-size: 14px; text-transform: uppercase; color: rgba(247,246,243,.8); text-align: center; max-width: 52ch; }
+
+/* screens projected onto the devices in the photo */
+.scr { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; visibility: hidden; background: #F7F7F4; color: #1A2140; font-family: var(--head); }
+.scr.placed { visibility: visible; }
+.scr::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(118deg, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 36%); }
+
+/* ---------- 3. capabilities ---------- */
+.sec { padding: 160px 0 120px; }
+.sec-bg { background: var(--bg); }
+.center-head { display: grid; justify-items: center; gap: 26px; text-align: center; }
+.center-head .cap-20 { max-width: 46ch; }
+.slider { margin-top: 90px; }
+.track { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 max(24px, calc((100vw - 1180px) / 2)); scrollbar-width: none; }
+.track::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 min(1180px, 88vw); scroll-snap-align: center; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; position: relative; background: #DFE4F3; }
+.slide .ui-wrap { position: absolute; inset: 7% 7% 0 7%; border-radius: 12px 12px 0 0; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(20,30,67,.4); background: #F7F7F4; container-type: inline-size; }
+.slide .label { position: absolute; left: 24px; bottom: 22px; z-index: 2; }
+.slide-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slide-t { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 26px; display: flex; justify-content: space-between; align-items: end; background: linear-gradient(0deg, rgba(247,246,243,.96) 40%, rgba(247,246,243,0)); }
+.slide-t .h32 { font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem); }
+.ctrls { display: flex; gap: 12px; justify-content: center; margin-top: 22px; }
+.ctrls button.pause { width: 38px; height: 38px; border-radius: 50%; border: 0; background: #ECEBE7; display: grid; place-items: center; cursor: pointer; }
+.ctrls button.pause span { width: 8px; height: 10px; border-left: 2.5px solid #333; border-right: 2.5px solid #333; }
+.ctrls button.pause.paused span { width: 0; height: 0; border-left: 9px solid #333; border-right: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+.dots { display: flex; gap: 9px; align-items: center; padding: 0 16px; height: 38px; border-radius: 999px; background: #ECEBE7; }
+.dots button { width: 6px; height: 6px; border-radius: 99px; border: 0; padding: 0; background: #B9B8B4; cursor: pointer; transition: width .3s, background .3s; }
+.dots button.on { width: 26px; background: #fff; box-shadow: inset 0 0 0 1px #d6d5d1; }
+
+/* app UI used in slides (sized in container units) */
+.ui { display: grid; grid-template-columns: 6cqw 1fr; height: 100%; font-family: var(--head); color: #1A2140; }
+.ui-rail { background: #141E43; display: grid; align-content: start; justify-items: center; gap: 2.2cqw; padding-top: 2.2cqw; }
+.ui-rail i { width: 2.2cqw; height: 2.2cqw; border-radius: .6cqw; background: rgba(229,228,223,.22); display: block; }
+.ui-rail i.on { background: #AF955C; }
+.ui-main { padding: 2.6cqw 2.8cqw; display: grid; gap: 2cqw; align-content: start; min-width: 0; }
+.ui-top { display: flex; align-items: end; gap: 2cqw; }
+.ui-top h5 { flex: 1; margin: 0; font-weight: 500; font-size: 3.2cqw; letter-spacing: -0.04em; line-height: 1; }
+.ui-top h5 small { display: block; font-family: var(--body); font-size: 1.15cqw; text-transform: uppercase; color: #7A8099; margin-bottom: .8cqw; letter-spacing: 0; }
+.ui-search { width: 26cqw; height: 3.4cqw; border-radius: 99px; background: #ECECE7; display: flex; align-items: center; padding-inline: 1.4cqw; font-size: 1.15cqw; color: #8B90A3; }
+.ui-av { width: 3.4cqw; height: 3.4cqw; border-radius: 50%; background: #AF955C; }
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.3cqw; }
+.tile { background: #fff; border-radius: 1.1cqw; padding: 1.4cqw 1.6cqw; border-top: .35cqw solid var(--c); }
+.tile b { display: block; font-weight: 500; font-size: 3.4cqw; letter-spacing: -0.04em; line-height: 1.05; }
+.tile span { font-size: 1.15cqw; color: #6B7189; }
+.ui-body { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.4cqw; }
+.box { background: #fff; border-radius: 1.1cqw; padding: .8cqw 1.6cqw; }
+.row { display: grid; grid-template-columns: 2.6cqw 1fr auto; gap: 1.2cqw; align-items: center; padding: 1.05cqw 0; border-bottom: 1px solid #EEEEE9; font-size: 1.3cqw; }
+.row:last-child { border-bottom: 0; }
+.row .ic { width: 2.6cqw; height: 2.6cqw; border-radius: .7cqw; background: #EEF1FB; }
+.row b { font-weight: 500; display: block; }
+.row em { font-style: normal; color: #7A8099; font-size: 1.1cqw; }
+.chip { font-size: 1.05cqw; font-weight: 500; padding: .4cqw 1cqw; border-radius: 99px; color: #fff; background: var(--c); white-space: nowrap; }
+.detail { background: #fff; border-radius: 1.1cqw; padding: 1.8cqw; display: grid; gap: 1.2cqw; justify-items: center; text-align: center; align-content: start; }
+.detail svg { width: 11cqw; height: 11cqw; }
+.detail h6 { margin: 0; font-weight: 500; font-size: 1.7cqw; letter-spacing: -0.03em; }
+.detail p { font-size: 1.15cqw; color: #6B7189; }
+.acts { display: flex; gap: .8cqw; }
+.acts span { font-size: 1.1cqw; padding: .7cqw 1.3cqw; border-radius: 99px; background: #ECECE7; }
+.acts span.p { background: #141E43; color: #fff; }
+.week { display: grid; grid-template-columns: 9cqw repeat(5, 1fr); gap: 1cqw; font-size: 1.2cqw; }
+.week .dn { text-align: center; color: #7A8099; }
+.week .who { display: flex; align-items: center; gap: .8cqw; }
+.week .who i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: var(--c); display: block; flex: none; }
+.week .s { height: 4cqw; border-radius: .8cqw; background: #E9ECF7; display: grid; place-items: center; font-size: 1cqw; color: #fff; }
+.week .s.on { background: #263E92; }
+.week .s.am { background: #DCC79A; color: #5a4520; }
+.week .s.x { background: repeating-linear-gradient(135deg, #F6DCDA 0 .7cqw, #FBEDEC .7cqw 1.4cqw); box-shadow: inset 0 0 0 .2cqw #C2413A; color: #C2413A; }
+.alert { background: #FBEDEC; border-left: .5cqw solid #C2413A; border-radius: .8cqw; padding: 1.4cqw 1.8cqw; font-size: 1.3cqw; }
+.alert b { display: block; font-weight: 500; }
+.ts { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1cqw; }
+.ts .d { background: #fff; border-radius: 1cqw; padding: 1.2cqw; display: grid; gap: .6cqw; font-size: 1.1cqw; color: #7A8099; }
+.ts .d b { font-weight: 500; font-size: 2.2cqw; color: #1A2140; letter-spacing: -0.03em; }
+.ts .d.today { box-shadow: inset 0 0 0 .2cqw #263E92; }
+.bar { height: .9cqw; border-radius: 99px; background: #ECECE7; overflow: hidden; }
+.bar i { display: block; height: 100%; width: var(--w); background: var(--c, #263E92); }
+
+/* ---------- 4. story cards ---------- */
+.stories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 90px; }
+@media (max-width: 900px) { .stories { grid-template-columns: 1fr; } }
+.story { background: var(--bg); border-radius: 8px; overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; }
+.story .pic { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #DCE2F2; }
+.story .pic img { width: 100%; height: 100%; object-fit: cover; }
+.story .pic .lbl { position: absolute; left: 14px; top: 14px; background: rgba(38,38,38,.75); color: #F7F6F3; font-size: 14px; text-transform: uppercase; padding: 6px 9px; border-radius: 6px; }
+.story .pic .float { position: absolute; left: 50%; bottom: 18px; translate: -50% 0; width: 78%; background: #fff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 16px 34px -18px rgba(20,30,67,.5); display: grid; gap: 6px; font-family: var(--head); }
+.story .pic .float small { font-family: var(--body); text-transform: uppercase; font-size: 12px; color: #7A8099; }
+.story .pic .float b { font-weight: 500; font-size: 17px; letter-spacing: -0.03em; }
+.story .pic .float span { font-size: 13px; color: #6B7189; }
+.story .pic .float .chip-s { justify-self: start; font-size: 11px; padding: 3px 9px; border-radius: 99px; color: #fff; background: var(--c); }
+.story .txt { padding: 26px 24px 28px; display: grid; gap: 22px; align-content: start; }
+.story .txt .cap { max-width: 34ch; }
+.story .foot { display: flex; justify-content: space-between; padding: 16px 24px; border-top: 1px solid var(--line); font-size: 14px; text-transform: uppercase; color: var(--ink); }
+.story .foot a { color: var(--ink); }
+.center-btn { display: grid; justify-items: center; gap: 22px; margin-top: 70px; text-align: center; }
+
+/* ---------- 5. numbers ---------- */
+.split-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+.split-head .cap { max-width: 40ch; text-align: right; }
+@media (max-width: 760px) { .split-head .cap { text-align: left; } }
+.bigcard { margin-top: 56px; border-radius: 16px; background: var(--dark); color: #F7F6F3; display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; padding: 40px; min-height: 360px; overflow: hidden; position: relative; }
+@media (max-width: 760px) { .bigcard { grid-template-columns: 1fr; padding: 28px; } }
+.bigcard .n { font-family: var(--body); font-size: clamp(90px, 12vw, 160px); line-height: .9; letter-spacing: -0.04em; }
+.bigcard .n sup { font-size: .3em; vertical-align: .9em; margin-left: 6px; color: #A9A9A9; }
+.bigcard .copy { align-self: end; font-family: var(--head); font-size: 18px; letter-spacing: -0.05em; line-height: 1.2; color: #F7F6F3; max-width: 36ch; }
+.bigcard .copy span { display: block; color: #A9A9A9; }
+.bigcard .side { align-self: stretch; display: grid; align-content: space-between; justify-items: end; gap: 22px; }
+.bigcard .side img { width: min(320px, 100%); aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; }
+.bigcard .side p { font-family: var(--head); font-size: 18px; letter-spacing: -0.05em; color: #EEE; text-align: right; max-width: 30ch; }
+.statline { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0 14px; border-bottom: 1px solid var(--line); margin-top: 18px; flex-wrap: wrap; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 22px; }
+@media (max-width: 900px) { .stats { grid-template-columns: 1fr; } }
+.stat { background: var(--bg); border-radius: 8px; padding: 24px; display: grid; gap: 22px; }
+.stat .top { display: flex; justify-content: space-between; }
+.stat .num { font-family: var(--body); font-size: clamp(80px, 8vw, 100px); line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+.stat .num small { font-size: 40px; color: var(--ink-3); margin-left: 4px; }
+.stat .bottom { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px; font-family: var(--head); font-weight: 500; font-size: 14px; letter-spacing: -0.05em; }
+.stat .bottom span:last-child { color: var(--ink-4); }
+
+.acc { margin-top: 70px; display: grid; gap: 10px; }
+.acc-h { display: grid; gap: 10px; margin-bottom: 22px; }
+details { background: var(--bg); border-radius: 8px; }
+details summary { list-style: none; cursor: pointer; padding: 22px 28px; display: flex; justify-content: space-between; align-items: center; gap: 20px; font-family: var(--head); font-weight: 500; font-size: 22px; letter-spacing: -0.03em; }
+details summary::-webkit-details-marker { display: none; }
+details summary i { width: 4px; height: 16px; background: radial-gradient(circle, var(--ink) 1.6px, transparent 2px) 0 0 / 4px 6px repeat-y; flex: none; transition: transform .25s; }
+details[open] summary i { transform: rotate(90deg); }
+details .ans { padding: 0 28px 26px; font-size: 20px; line-height: 1.6; color: var(--ink-2); max-width: 70ch; }
+
+/* ---------- 6. built for ---------- */
+.made { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+@media (max-width: 900px) { .made { grid-template-columns: 1fr; } }
+.made .left { display: grid; gap: 30px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span { font-size: 14px; text-transform: uppercase; padding: 9px 12px; border-radius: 99px; background: var(--bg); color: var(--ink); }
+.spec { display: grid; border-top: 1px solid var(--line); }
+.spec div { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--line); font-size: 18px; text-transform: uppercase; }
+.spec div span:first-child { color: var(--ink-3); }
+.made .pic { border-radius: 16px; overflow: hidden; background: #0C1330; position: relative; aspect-ratio: 6 / 5; }
+.made .pic img { width: 100%; height: 100%; object-fit: cover; }
+.made .pic .lens { position: absolute; right: 9%; top: 12%; width: 34%; aspect-ratio: 1; border-radius: 50%; border: 2px solid rgba(255,255,255,.8); overflow: hidden; box-shadow: 0 20px 40px -10px rgba(0,0,0,.5); }
+.made .pic .lens img { width: 260%; height: 260%; max-width: none; object-fit: cover; translate: -42% -30%; }
+.made .pic .lens-line { position: absolute; right: 26%; top: 46%; width: 18%; height: 1px; background: rgba(255,255,255,.7); transform: rotate(32deg); transform-origin: right; }
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
+.thumbs div { aspect-ratio: 1.3; border-radius: 8px; overflow: hidden; background: var(--bg); display: grid; place-items: center; font-family: var(--head); font-size: 13px; color: var(--ink-2); text-align: center; padding: 8px; }
+.thumbs div b { display: block; font-weight: 500; font-size: 22px; color: var(--ink); letter-spacing: -0.04em; }
+
+/* ---------- 7. bento ---------- */
+.bento-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+.bento-head .cap { max-width: 34ch; text-align: right; }
+.bento { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 210px; gap: 10px; margin-top: 56px;
+  grid-template-areas: "a1 a2 a3" "a1 a4 a3" "a5 a6 a7" "a8 a8 a8"; grid-template-rows: 210px 210px 210px auto; }
+.a1{grid-area:a1}.a2{grid-area:a2}.a3{grid-area:a3}.a4{grid-area:a4}.a5{grid-area:a5}.a6{grid-area:a6}.a7{grid-area:a7}.a8{grid-area:a8}
+.b.a8 { grid-auto-flow: column; justify-content: space-between; align-items: center; text-align: left; padding: 28px 32px; }
+@media (max-width: 900px) { .bento { grid-template-columns: 1fr 1fr; grid-auto-rows: 200px; grid-template-areas: "a1 a2" "a1 a3" "a4 a3" "a5 a6" "a7 a7" "a8 a8"; } }
+@media (max-width: 560px) { .bento { grid-template-columns: 1fr; grid-auto-rows: auto; grid-template-areas: "a1" "a2" "a3" "a4" "a5" "a6" "a7" "a8"; } .b { min-height: 190px; } .b.a1 { min-height: 260px; } .b.a8 { grid-auto-flow: row; justify-items: start; } }
+.b { border-radius: 8px; overflow: hidden; position: relative; background: var(--bg); padding: 24px; display: grid; align-content: space-between; }
+
+.b.dark { background: #0C1330; color: #F7F6F3; }
+.b.dark .cap { color: rgba(247,246,243,.75); }
+.b.photo { padding: 0; }
+.b.photo img { width: 100%; height: 100%; object-fit: cover; }
+.b .icon-c { justify-self: center; align-self: center; }
+.b .h48 { font-size: clamp(1.8rem, 1.2rem + 1.3vw, 2.6rem); line-height: 1.15; }
+.b.center { text-align: center; justify-items: center; }
+.mini-ui { background: #fff; border-radius: 12px; padding: 14px; box-shadow: 0 12px 30px -18px rgba(20,30,67,.45); font-family: var(--head); display: grid; gap: 8px; font-size: 13px; }
+.mini-ui .r { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.mini-ui .r b { font-weight: 500; }
+.mini-ui .pill { font-size: 11px; padding: 3px 9px; border-radius: 99px; color: #fff; background: var(--c); }
+.lock { width: 76px; height: 76px; border-radius: 18px; background: #fff; box-shadow: 0 12px 30px -14px rgba(0,0,0,.35); display: grid; place-items: center; }
+.lock::before { content: ""; width: 26px; height: 20px; border-radius: 5px; background: #262626; box-shadow: 0 -12px 0 -4px #fff, 0 -12px 0 -1px #262626; }
+.quote { font-family: var(--head); font-weight: 500; font-size: 20px; line-height: 1.6; letter-spacing: -0.05em; color: var(--ink-2); }
+.offline { display: grid; gap: 6px; font-family: var(--head); }
+.offline .bars { display: flex; gap: 4px; align-items: end; height: 26px; }
+.offline .bars i { width: 7px; border-radius: 2px; background: #D3D2CE; display: block; }
+.offline .bars i:nth-child(1) { height: 30%; background: #262626; } .offline .bars i:nth-child(2) { height: 55%; } .offline .bars i:nth-child(3) { height: 80%; } .offline .bars i:nth-child(4) { height: 100%; }
+
+/* ---------- 8. pricing ---------- */
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; }
+@media (max-width: 900px) { .plans { grid-template-columns: 1fr; } }
+.plan { background: var(--bg); border-radius: 16px; overflow: hidden; display: grid; grid-template-rows: auto auto 1fr auto; }
+.plan .ph { padding: 28px 28px 22px; display: grid; gap: 10px; }
+.plan .pi { margin: 0 12px; border-radius: 12px; background: #fff; padding: 26px 24px 22px; display: grid; gap: 8px; position: relative; }
+.plan .pi .badge { position: absolute; right: 18px; top: 18px; font-size: 14px; text-transform: uppercase; color: var(--ink-2); }
+.plan .price { font-family: var(--head); font-weight: 500; font-size: 52px; letter-spacing: -0.06em; line-height: 1.04; }
+.plan .price small { font-size: 24px; color: #C6C6C6; letter-spacing: -0.05em; }
+.plan .pl { padding: 22px 28px; font-size: 16px; text-transform: uppercase; color: var(--ink-2); line-height: 1.7; }
+.plan .pl li { list-style: none; }
+.plan .pl ul { margin: 0; padding: 0; }
+.plan .pa { padding: 0 12px 12px; }
+.plan .pa .btn { width: 100%; justify-content: center; }
+.plan.featured .pi { background: #fff; box-shadow: inset 0 0 0 1.5px var(--lapis); }
+.fine { margin-top: 18px; font-size: 14px; text-transform: uppercase; color: var(--ink-4); text-align: center; }
+
+/* ---------- 9. works with ---------- */
+.works { display: grid; justify-items: center; gap: 30px; text-align: center; }
+.logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; }
+.logos span { font-family: var(--head); font-weight: 500; font-size: 18px; letter-spacing: -0.03em; padding: 14px 22px; background: var(--bg); border-radius: 12px; color: var(--ink); }
+.logos span small { display: block; font-family: var(--body); font-weight: 400; text-transform: uppercase; font-size: 11px; color: var(--ink-4); letter-spacing: 0; }
+
+/* ---------- 10. who for (marquee) ---------- */
+.marquee { overflow: hidden; margin-top: 56px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.mq-track { display: flex; gap: 22px; width: max-content; animation: mq 60s linear infinite; }
+.marquee:hover .mq-track { animation-play-state: paused; }
+@keyframes mq { to { transform: translateX(calc(-50% - 11px)); } }
+.who { width: 390px; flex: none; background: var(--bg); border-radius: 12px; padding: 26px; display: grid; gap: 18px; align-content: start; }
+.who .h { display: flex; justify-content: space-between; align-items: center; }
+.who .h span { font-size: 24px; color: var(--ink-2); font-family: var(--body); }
+.who q { font-family: var(--head); font-size: 18px; letter-spacing: -0.05em; color: var(--ink-3); quotes: none; }
+.who p { font-family: var(--head); font-size: 16px; letter-spacing: -0.05em; color: var(--ink); line-height: 1.25; }
+.who .f { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px; font-size: 14px; text-transform: uppercase; color: var(--ink-3); }
+.who .f b { font-weight: 400; color: var(--ink); font-size: 16px; }
+
+/* ---------- 11. FAQ ---------- */
+.faq { max-width: 1000px; margin: 70px auto 0; display: grid; gap: 10px; }
+.faq details summary { font-size: 22px; padding: 24px 32px; }
+.faq details .ans { font-size: 22px; line-height: 1.6; padding: 0 32px 28px; }
+
+/* ---------- 12. closing CTA ---------- */
+.closing { position: relative; min-height: 760px; overflow: hidden; color: #fff; display: grid; place-items: center; text-align: center; }
+.closing > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+.closing::after { content: ""; position: absolute; inset: 0; background: rgba(8,12,30,.38); }
+.closing-in { position: relative; z-index: 1; display: grid; justify-items: center; gap: 30px; padding: 120px 24px; }
+.closing h2 { max-width: 12ch; }
+.closing h2 em { font-style: italic; color: var(--accent); }
+form.wl { display: flex; gap: 8px; padding: 6px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25); border-radius: 999px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); width: min(520px, 100%); }
+form.wl input { flex: 1; min-width: 0; background: transparent; border: 0; color: #fff; font: 16px var(--head); letter-spacing: -0.02em; padding: 0 16px; }
+form.wl input::placeholder { color: rgba(255,255,255,.7); }
+form.wl input:focus { outline: none; }
+.wl-msg { font-size: 14px; text-transform: uppercase; color: rgba(255,255,255,.85); min-height: 1.3em; }
+
+/* ---------- footer ---------- */
+footer { background: var(--white); padding: 70px 0 30px; }
+.foot-grid { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 40px; }
+@media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .foot-grid { grid-template-columns: 1fr; } }
+.foot-grid > * { min-width: 0; }
+.news form .btn { flex: none; }
+.foot-grid h6 { margin: 0 0 16px; font-weight: 400; font-size: 14px; text-transform: uppercase; color: var(--ink-4); font-family: var(--body); }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-family: var(--head); font-size: 18px; letter-spacing: -0.03em; }
+.news { background: var(--bg); border-radius: 16px; padding: 28px; display: grid; gap: 14px; }
+.news .h32 { font-size: 32px; }
+.news form { display: flex; gap: 8px; }
+.news input { flex: 1; min-width: 0; height: 44px; border-radius: 99px; border: 1px solid var(--line); background: #fff; padding: 0 16px; font: 15px var(--head); }
+.wordmark { margin-top: 70px; font-family: var(--head); font-weight: 500; font-size: clamp(6rem, 36vw, 34rem); letter-spacing: -0.08em; line-height: .74; color: #EFEDE8; user-select: none; text-align: center; overflow: hidden; }
+.legal { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 20px; font-size: 14px; text-transform: uppercase; color: var(--ink-4); }
+
+.preview-flag { position: fixed; z-index: 70; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); background: #111; color: #fff; font-family: var(--head); font-size: 12px; padding: 8px 12px; border-radius: 10px; }
+.preview-flag small { display: block; font-family: var(--body); font-size: 10px; color: #aaa; text-transform: uppercase; }
+
+@media (prefers-reduced-motion: reduce) { .mq-track { animation: none; } .btn { transition: none; } }
+</style>
+
+<header>
+  <nav class="pill-nav" aria-label="Main">
+    <a class="mark" href="#top" aria-label="Luex home">
+      <svg class="m" viewBox="0 0 68 60" aria-hidden="true"><rect x="2" y="6" width="14" height="14" rx="1.5" fill="#fff"/><rect x="16" y="18" width="26" height="26" rx="2" fill="#fff"/><rect x="38" y="2" width="22" height="22" rx="2" fill="#5A72D6" transform="rotate(16 49 13)"/><rect x="4" y="38" width="16" height="16" rx="1.5" fill="#AF955C"/></svg>
+      <span>luex</span>
+    </a>
+    <button type="button" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </nav>
+  <div class="menu" id="menu">
+    <a href="#what">What it does <small>01</small></a>
+    <a href="#teams">Every team <small>02</small></a>
+    <a href="#numbers">The numbers <small>03</small></a>
+    <a href="#pricing">Pricing <small>04</small></a>
+    <a href="#faq">Questions <small>05</small></a>
+    <a class="btn" href="#waitlist">Join the waitlist</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- 1. Hero -->
+  <section class="hero">
+    <img src="img/plinth.webp" width="1672" height="941" alt="A lapis lazuli stone resting on a plinth in a misty landscape" fetchpriority="high">
+    <div class="hero-in">
+      <span class="kicker"><i></i>Run the whole business. From one place.</span>
+      <h1 class="display">Organisation opens <em>freedom</em><b>.</b></h1>
+      <p class="sub">Luex brings compliance, people, time, assets and customers into one connected hub, so nothing slips through.</p>
+      <div class="ctas">
+        <a class="btn btn-dark" href="#waitlist">Join the waitlist <svg viewBox="0 0 12 12"><path d="M1 6h9M6.5 2.5 10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></a>
+        <a class="btn btn-light" href="#what">See how it works <svg viewBox="0 0 12 12"><path d="M6 1v9M2.5 6.5 6 10l3.5-3.5" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></a>
+      </div>
+      <div class="launch"><span>Launching <b>January 2027</b></span><span>Built for <b>the UK and Ireland</b></span></div>
+    </div>
+  </section>
+
+  <!-- 2. Hello -->
+  <section class="hello">
+    <img class="bg" src="img/plinth.webp" alt="" aria-hidden="true">
+    <div class="bg-shade"></div>
+    <p class="note">Desktop for the office. Tablet for the site. Phone for the team.</p>
+    <div class="hello-in"><h2 class="display">Hello, I'm Luex.</h2></div>
+    <div class="card" id="devCard">
+      <img id="devImg" src="img/scene1/scene.webp" width="1672" height="941" alt="Luex on a laptop, tablet and phone resting on a lapis lazuli rock above a lake at sunrise">
+      <div class="scr" id="sLap" data-w="1280" data-h="800" data-q="86.5,291.6 477.9,288.3 507.6,531.1 109.2,559.2"></div>
+      <div class="scr" id="sTab" data-w="768" data-h="1024" data-q="548.7,298.0 729.5,298.0 770.4,543.3 586.4,551.4"></div>
+      <div class="scr" id="sPho" data-w="390" data-h="844" data-q="800.5,412.5 875.0,411.5 903.5,584.5 825.0,582.0"></div>
+    </div>
+  </section>
+
+  <!-- 3. Capabilities -->
+  <section class="sec sec-bg" id="what">
+    <div class="wrap center-head">
+      <span class="tag"><i></i>Capabilities</span>
+      <h2 class="display">What Luex does <span class="soft">quietly.</span></h2>
+      <p class="cap cap-20">Every certificate, shift, timesheet, asset and customer sits in one place, so the work moves on without anyone chasing it.</p>
+    </div>
+    <div class="slider">
+      <div class="track" id="track">
+        <!-- Compliance -->
+        <div class="slide" data-name="Compliance">
+          <div class="ui-wrap"><div class="ui">
+            <div class="ui-rail"><i></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+            <div class="ui-main">
+              <div class="ui-top"><h5><small>Compliance</small>Certificates and tickets</h5><div class="ui-search">Search people, sites, records</div><div class="ui-av"></div></div>
+              <div class="tiles">
+                <div class="tile" style="--c:#263E92"><b>248</b><span>Total records</span></div>
+                <div class="tile" style="--c:#2F8F5B"><b>219</b><span>Compliant</span></div>
+                <div class="tile" style="--c:#C98A1B"><b>21</b><span>Due in 30 days</span></div>
+                <div class="tile" style="--c:#C2413A"><b>8</b><span>Expired</span></div>
+              </div>
+              <div class="ui-body">
+                <div class="box">
+                  <div class="row"><span class="ic"></span><span><b>Seán Byrne</b><em>CSCS card · Docklands Block C</em></span><span class="chip" style="--c:#C98A1B">12 days</span></div>
+                  <div class="row"><span class="ic"></span><span><b>Aoife Kelly</b><em>First aid at work</em></span><span class="chip" style="--c:#2F8F5B">Valid</span></div>
+                  <div class="row"><span class="ic"></span><span><b>Telehandler TH-04</b><em>LOLER thorough examination</em></span><span class="chip" style="--c:#C2413A">Expired</span></div>
+                  <div class="row"><span class="ic"></span><span><b>Mark Doyle</b><em>IPAF 3a / 3b</em></span><span class="chip" style="--c:#C98A1B">19 days</span></div>
+                </div>
+                <div class="detail">
+                  <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#EEEEE9" stroke-width="6"/><circle cx="50" cy="50" r="42" fill="none" stroke="#C98A1B" stroke-width="6" stroke-dasharray="264" stroke-dashoffset="228" stroke-linecap="round" transform="rotate(-90 50 50)"/><text x="50" y="52" text-anchor="middle" font-family="Google Sans, Arial" font-size="22" fill="#1A2140">12</text><text x="50" y="66" text-anchor="middle" font-family="Abel, Arial" font-size="8" fill="#7A8099">DAYS LEFT</text></svg>
+                  <h6>CSCS card, Seán Byrne</h6>
+                  <p>Expires 2 Feb. Booked on 6 shifts after that date.</p>
+                  <div class="acts"><span class="p">Renew</span><span>Remind</span></div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+          <div class="slide-t"><span class="h32">Nothing expires unnoticed.</span><span class="cap">01 / Compliance</span></div>
+        </div>
+        <!-- Rota -->
+        <div class="slide" data-name="Rota" style="background:#E6E0D2">
+          <div class="ui-wrap"><div class="ui">
+            <div class="ui-rail"><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div>
+            <div class="ui-main">
+              <div class="ui-top"><h5><small>Scheduling and shifts</small>Rota, week of 2 Feb</h5><div class="ui-search">Find a person or site</div><div class="ui-av"></div></div>
+              <div class="week">
+                <span></span><span class="dn">Mon</span><span class="dn">Tue</span><span class="dn">Wed</span><span class="dn">Thu</span><span class="dn">Fri</span>
+                <span class="who"><i style="--c:#263E92"></i>Seán</span><span class="s x">Blocked</span><span class="s x">Blocked</span><span class="s on">07–16</span><span class="s on">07–16</span><span class="s"></span>
+                <span class="who"><i style="--c:#AF955C"></i>Aoife</span><span class="s on">07–16</span><span class="s am">06–14</span><span class="s on">07–16</span><span class="s"></span><span class="s on">07–16</span>
+                <span class="who"><i style="--c:#9A9DA9"></i>Mark</span><span class="s am">06–14</span><span class="s on">07–16</span><span class="s"></span><span class="s on">07–16</span><span class="s on">07–16</span>
+                <span class="who"><i style="--c:#2F8F5B"></i>Ciara</span><span class="s on">08–17</span><span class="s on">08–17</span><span class="s am">06–14</span><span class="s on">08–17</span><span class="s"></span>
+              </div>
+              <div class="alert"><b>Can't book Seán on Mon or Tue</b>His CSCS card runs out on 2 Feb. Renew it in Compliance to unlock these shifts.</div>
+            </div>
+          </div></div>
+          <div class="slide-t" style="background:linear-gradient(0deg, rgba(230,224,210,.97) 40%, rgba(230,224,210,0))"><span class="h32">The rota checks itself.</span><span class="cap">02 / Rota</span></div>
+        </div>
+        <!-- Timesheets -->
+        <div class="slide" data-name="Timesheets" style="background:#DDE6DF">
+          <div class="ui-wrap"><div class="ui">
+            <div class="ui-rail"><i></i><i></i><i></i><i class="on"></i><i></i><i></i></div>
+            <div class="ui-main">
+              <div class="ui-top"><h5><small>Timesheets and attendance</small>Aoife Kelly, this week</h5><div class="ui-search">14 to approve</div><div class="ui-av"></div></div>
+              <div class="ts">
+                <div class="d">Mon<b>8h 15m</b><span>Docklands</span></div>
+                <div class="d">Tue<b>8h 00m</b><span>Docklands</span></div>
+                <div class="d">Wed<b>7h 45m</b><span>Kingsway</span></div>
+                <div class="d today">Thu<b>7h 45m</b><span>In since 07:52</span></div>
+                <div class="d">Fri<b>–</b><span>Rostered</span></div>
+                <div class="d">Sat<b>–</b><span>Off</span></div>
+                <div class="d">Sun<b>–</b><span>Off</span></div>
+              </div>
+              <div class="tiles">
+                <div class="tile" style="--c:#263E92"><b>31h 45m</b><span>This week</span></div>
+                <div class="tile" style="--c:#2F8F5B"><b>0h 45m</b><span>Overtime</span></div>
+                <div class="tile" style="--c:#AF955C"><b>2</b><span>Sites</span></div>
+                <div class="tile" style="--c:#9A9DA9"><b>Fri</b><span>Payroll export</span></div>
+              </div>
+            </div>
+          </div></div>
+          <div class="slide-t" style="background:linear-gradient(0deg, rgba(221,230,223,.97) 40%, rgba(221,230,223,0))"><span class="h32">Every hour, accounted for.</span><span class="cap">03 / Timesheets</span></div>
+        </div>
+        <!-- Dashboard -->
+        <div class="slide" data-name="Dashboard" style="background:#E3E1EA">
+          <div class="ui-wrap"><div class="ui">
+            <div class="ui-rail"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="ui-main">
+              <div class="ui-top"><h5><small>Thursday 29 January</small>Good morning, Ciara</h5><div class="ui-search">Search everything</div><div class="ui-av"></div></div>
+              <div class="tiles">
+                <div class="tile" style="--c:#263E92"><b>50</b><span>Rostered today</span></div>
+                <div class="tile" style="--c:#2F8F5B"><b>37</b><span>On site now</span></div>
+                <div class="tile" style="--c:#C98A1B"><b>14</b><span>Timesheets to approve</span></div>
+                <div class="tile" style="--c:#C2413A"><b>8</b><span>Certificates expired</span></div>
+              </div>
+              <div class="ui-body">
+                <div class="box">
+                  <div class="row"><span class="ic"></span><span><b>Book CSCS renewal for Seán</b><em>Compliance</em></span><span class="chip" style="--c:#C98A1B">Today</span></div>
+                  <div class="row"><span class="ic"></span><span><b>Approve 14 timesheets</b><em>Time</em></span><span class="chip" style="--c:#263E92">Due Fri</span></div>
+                  <div class="row"><span class="ic"></span><span><b>Sign off TH-04 repair</b><em>Assets</em></span><span class="chip" style="--c:#2F8F5B">Ready</span></div>
+                  <div class="row"><span class="ic"></span><span><b>Send quote for Kingsway refit</b><em>CRM</em></span><span class="chip" style="--c:#9A9DA9">Draft</span></div>
+                </div>
+                <div class="detail" style="justify-items:start;text-align:left">
+                  <h6>Compliance score</h6>
+                  <b style="font-weight:500;font-size:4.4cqw;letter-spacing:-0.05em">96%</b>
+                  <div class="bar" style="--w:96%;--c:#2F8F5B;width:100%"><i></i></div>
+                  <p>Up from 91% last month</p>
+                </div>
+              </div>
+            </div>
+          </div></div>
+          <div class="slide-t" style="background:linear-gradient(0deg, rgba(227,225,234,.97) 40%, rgba(227,225,234,0))"><span class="h32">Your morning, on one screen.</span><span class="cap">04 / Dashboard</span></div>
+        </div>
+      </div>
+      <div class="ctrls"><button type="button" class="pause" id="pause" aria-label="Pause slideshow"><span></span></button><div class="dots" id="dots"></div></div>
+    </div>
+  </section>
+
+  <!-- 4. Every team -->
+  <section class="sec" id="teams">
+    <div class="wrap">
+      <div class="center-head">
+        <span class="tag"><i></i>At work</span>
+        <h2 class="display">One hub. <span class="soft">Every team.</span></h2>
+        <p class="cap cap-20">From the office to the site, the van to the payroll run.</p>
+      </div>
+      <div class="stories">
+        <article class="story">
+          <div class="pic"><img src="img/plinth.webp" alt="" loading="lazy" style="object-position:20% 40%"><span class="lbl">The office</span>
+            <div class="float"><small>Morning summary</small><b>3 things need you today</b><span>Renewal, timesheets, one repair sign-off.</span></div></div>
+          <div class="txt"><p class="h32">The admin, already sorted.</p><p class="cap">Luex reads every module overnight and puts what needs a decision at the top of your morning. Nothing hidden three menus deep.</p></div>
+          <div class="foot"><span>One screen at 8am</span><a href="#what">See the dashboard ▸</a></div>
+        </article>
+        <article class="story">
+          <div class="pic"><img src="img/scene1/scene.webp" alt="" loading="lazy" style="object-position:100% 40%;transform:scale(1.9);transform-origin:100% 40%"><span class="lbl">The site</span>
+            <div class="float"><small>Rota</small><b>Shift blocked for Seán</b><span class="chip-s" style="--c:#C2413A">CSCS card runs out 2 Feb</span></div></div>
+          <div class="txt"><p class="h32">Only the right people on site.</p><p class="cap">Expired tickets block shifts automatically and tell the supervisor what to renew. The rota stays safe without anyone checking a spreadsheet.</p></div>
+          <div class="foot"><span>Safe by default</span><a href="#what">See the rota ▸</a></div>
+        </article>
+        <article class="story">
+          <div class="pic"><img src="img/plinth.webp" alt="" loading="lazy" style="object-position:85% 60%"><span class="lbl">The team</span>
+            <div class="float"><small>Clock in</small><b>Aoife clocked in 07:52</b><span>Docklands Block C · no signal, sent later</span></div></div>
+          <div class="txt"><p class="h32">Simple on the phone.</p><p class="cap">Clock in, fill in a check, read a document. It saves when there's no signal and sends when there is.</p></div>
+          <div class="foot"><span>Works offline</span><a href="#what">See timesheets ▸</a></div>
+        </article>
+      </div>
+      <div class="center-btn"><p class="cap cap-20">80 tools across people, time, compliance, assets, finance and customers.</p><a class="btn btn-dark" href="#what">All tools ▸</a></div>
+    </div>
+  </section>
+
+  <!-- 5. Numbers -->
+  <section class="sec sec-bg" id="numbers" style="padding-top:120px">
+    <div class="wrap">
+      <div class="split-head">
+        <h2 class="h60">The numbers <span class="soft">that matter.</span></h2>
+        <p class="cap cap-16">What you get, what it costs, and where your data lives. No small print.</p>
+      </div>
+      <div class="bigcard">
+        <div style="display:grid;align-content:space-between;gap:30px">
+          <div class="n">80<sup>tools</sup></div>
+          <p class="copy">Every tool included from day one.<span>Switch on what you need. Add more whenever you like.</span></p>
+        </div>
+        <div class="side">
+          <img src="img/stone-cut.webp" alt="" loading="lazy" style="object-fit:contain;background:#1A2350">
+          <p>One connected hub instead of the six to ten apps most firms pay for.</p>
+        </div>
+      </div>
+      <div class="statline"><span class="cap">At launch</span><span class="cap">Example prices, final before launch</span></div>
+      <div class="stats" id="statCards">
+        <div class="stat"><div class="top"><span class="cap cap-18">Starting price</span><span class="cap cap-16">a month</span></div><div class="num"><span id="pBase">£60</span></div><p class="cap cap-16">Covers your first three users, with every tool included. Extra users from there.</p><div class="bottom"><span>Hub</span><span>Monthly</span></div></div>
+        <div class="stat"><div class="top"><span class="cap cap-18">Logins</span><span class="cap cap-16">per person</span></div><div class="num">1</div><p class="cap cap-16">One login for every tool. Staff see only what their job needs.</p><div class="bottom"><span>Access</span><span>By role</span></div></div>
+        <div class="stat"><div class="top"><span class="cap cap-18">Devices</span><span class="cap cap-16">same data</span></div><div class="num">3</div><p class="cap cap-16">Desktop, tablet and phone, all live, with offline saving on site.</p><div class="bottom"><span>Apps</span><span>iOS · Android · Web</span></div></div>
+      </div>
+      <div class="acc">
+        <div class="acc-h"><h3 class="h32">How the price works</h3><p class="cap cap-18">Who counts as a user, and what changes as you grow.</p></div>
+        <details open><summary>What counts as a full user?<i></i></summary><p class="ans">Anyone who manages, approves or sees the whole picture: owners, managers and admins.</p></details>
+        <details><summary>And a light user?<i></i></summary><p class="ans">Frontline staff who clock in, fill in forms and read documents. They cost less, and they still use the same app.</p></details>
+        <details><summary>Are any tools held back?<i></i></summary><p class="ans">No. Every plan includes every tool. There are no feature tiers to upgrade through.</p></details>
+        <details><summary>What can cost extra?<i></i></summary><p class="ans">Extra storage beyond your allowance, and text messages if you choose to send them. Both are optional.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Built for -->
+  <section class="sec" style="padding-top:120px">
+    <div class="wrap made">
+      <div class="left">
+        <span class="tag"><i></i>Built for here</span>
+        <h2 class="h60">Built for the UK and Ireland. <span class="soft">Made for how you work.</span></h2>
+        <div class="chips"><span>GDPR ready</span><span>Data in Ireland</span><span>Works offline</span><span>UK and Irish payroll rules</span></div>
+        <div class="spec">
+          <div><span>Data</span><span>Stored in Ireland (EU)</span></div>
+          <div><span>Access</span><span>By role, logged</span></div>
+          <div><span>Devices</span><span>Desktop · Tablet · Phone</span></div>
+          <div><span>Offline</span><span>Forms, photos, timesheets</span></div>
+          <div><span>Holidays</span><span>England, Scotland, NI, Ireland</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="pic" style="background:radial-gradient(80% 80% at 50% 45%, #22357A, #0C1330)"><img src="img/stone-cut.webp" alt="Raw lapis lazuli, the stone behind the Luex brand" loading="lazy" style="object-fit:contain;padding:8%"><span class="lens-line"></span><div class="lens"><img src="img/stone-cut.webp" alt="" aria-hidden="true"></div></div>
+        <div class="thumbs"><div><span><b>99.9%</b>uptime target</span></div><div><span><b>Daily</b>backups</span></div><div><span><b>1 click</b>data export</span></div><div><span><b>EU</b>data region</span></div></div>
+        <p class="cap cap-16" style="margin-top:18px">Your records stay yours. Export everything at any time, in one click.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Bento -->
+  <section class="sec sec-bg" style="padding-top:120px">
+    <div class="wrap">
+      <div class="bento-head">
+        <div style="display:grid;gap:22px"><span class="tag"><i></i>For everyone</span><h2 class="h60">Simple to use. <span class="soft">Not simple inside.</span></h2></div>
+        <p class="cap cap-16">The parts you notice once Luex is running your week.</p>
+      </div>
+      <div class="bento">
+        <div class="b photo tall a1"><img src="img/plinth.webp" alt="" loading="lazy" style="object-position:50% 55%"></div>
+        <div class="b a2"><span class="cap cap-18">Connected</span><div style="display:grid;gap:14px"><p class="h48">One change, and everything follows.</p></div></div>
+        <div class="b dark tall a3"><span class="h48" style="font-size:clamp(1.8rem,1.2rem+1.3vw,2.6rem)">Clear on every screen.</span>
+          <div class="mini-ui" style="color:#1A2140"><div class="r"><b>Seán Byrne</b><span class="pill" style="--c:#C98A1B">12 days</span></div><div class="r"><span>CSCS card</span><span>Docklands</span></div><div class="bar" style="--w:30%;--c:#C98A1B"><i></i></div></div>
+          <p class="cap cap-16">Everyone sees the same live records, from the office to the van.</p></div>
+        <div class="b center a4"><div class="lock icon-c"></div><p class="cap cap-16">No one gets in without access. Every change is logged.</p></div>
+        <div class="b center a5"><div class="offline icon-c"><div class="bars"><i></i><i></i><i></i><i></i></div><b style="font-weight:500;font-size:18px">No signal? Still saved.</b></div><p class="cap cap-16">Forms, photos and timesheets send when you're back online.</p></div>
+        <div class="b a6"><span class="cap cap-18">Reminders</span><div style="display:grid;gap:8px"><p class="h48" style="font-size:clamp(2.6rem,1.6rem+2vw,3.4rem)">30 days</p><p class="cap">Warning before any certificate, ticket or inspection runs out.</p></div></div>
+        <div class="b a7"><span class="cap cap-18">Every morning</span><div style="display:grid;gap:8px"><p class="h48" style="font-size:clamp(2.6rem,1.6rem+2vw,3.4rem)">08:00</p><p class="cap">One summary of what needs you today, from every tool.</p></div></div>
+        <div class="b center a8" style="background:#fff"><p class="h48">Be first in.</p><p class="cap cap-16">Waitlist open now. Launch pricing for early sign-ups.</p><a class="btn btn-dark" href="#waitlist">Join the waitlist</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Pricing -->
+  <section class="sec" id="pricing" style="padding-top:120px">
+    <div class="wrap">
+      <div class="split-head">
+        <div style="display:grid;gap:22px"><span class="tag"><i></i>Pricing</span><h2 class="h60">Choose how you <span class="soft">bring Luex in.</span></h2></div>
+        <p class="cap cap-16">One clear price. Every tool included. Example prices until launch.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <div class="ph"><p class="h32">Single app</p><p class="cap">One tool on its own, like Timesheets or Compliance. Move to the hub any time.</p></div>
+          <div class="pi"><span class="badge">Start small</span><span class="price"><span id="pApp">£15</span><small>/month</small></span><span class="cap" style="color:var(--ink-4)">For 1 to 3 users</span></div>
+          <div class="pl"><ul><li>One tool, fully featured</li><li>Desktop, tablet and phone</li><li>Upgrade without losing data</li></ul></div>
+          <div class="pa"><a class="btn btn-ghost" href="#waitlist" style="width:100%;justify-content:center;background:#fff">Join the waitlist</a></div>
+        </div>
+        <div class="plan featured">
+          <div class="ph"><p class="h32">Luex Hub</p><p class="cap">Every tool, connected. The way Luex is meant to be used.</p></div>
+          <div class="pi"><span class="badge">Most popular</span><span class="price"><span id="pHub">£60</span><small>/month</small></span><span class="cap" style="color:var(--ink-4)">3 users included</span></div>
+          <div class="pl"><ul><li>All 80 tools</li><li>Extra full users <span id="pFull">£20</span></li><li>Extra light users <span id="pLight">£8</span></li><li>Help with setup</li></ul></div>
+          <div class="pa"><a class="btn btn-dark" href="#waitlist" style="width:100%;justify-content:center">Join the waitlist</a></div>
+        </div>
+        <div class="plan">
+          <div class="ph"><p class="h32">Add-ons</p><p class="cap">Only if you need them. Added to any plan.</p></div>
+          <div class="pi"><span class="badge">Optional</span><span class="price">Pay as<small> you go</small></span><span class="cap" style="color:var(--ink-4)">Priced at launch</span></div>
+          <div class="pl"><ul><li>Extra storage</li><li>Text message reminders</li><li>E-signatures over your allowance</li></ul></div>
+          <div class="pa"><a class="btn btn-ghost" href="#faq" style="width:100%;justify-content:center;background:#fff">Read the FAQ</a></div>
+        </div>
+      </div>
+      <p class="fine">Example prices, excluding VAT. Final prices confirmed before launch.</p>
+    </div>
+  </section>
+
+  <!-- 9. Works with -->
+  <section class="sec sec-bg" style="padding:110px 0">
+    <div class="wrap works">
+      <p class="cap cap-20">Works with what you already use</p>
+      <div class="logos"><span>Xero<small>Accounting</small></span><span>QuickBooks<small>Accounting</small></span><span>Outlook<small>Calendar</small></span><span>Google<small>Calendar</small></span><span>Excel and CSV<small>Import</small></span></div>
+      <p class="cap" style="color:var(--ink-4)">Connections planned for launch</p>
+    </div>
+  </section>
+
+  <!-- 10. Who it's for -->
+  <section class="sec" style="padding-top:120px">
+    <div class="wrap"><div class="split-head"><h2 class="h60">Built for the firms <span class="soft">that keep things running.</span></h2><p class="cap cap-16">Any business with people, sites and paperwork.</p></div></div>
+    <div class="marquee"><div class="mq-track" id="mq">
+      <div class="who"><div class="h"><span class="cap">Construction</span><span>01</span></div><q>"Who's ticketed for Monday?"</q><p>CSCS, IPAF and LOLER tracked, rotas blocked when they lapse, timesheets by site and job.</p><div class="f"><b>Contractors</b><span>Sites</span></div></div>
+      <div class="who"><div class="h"><span class="cap">Facilities</span><span>02</span></div><q>"Which buildings are due a check?"</q><p>Assets, inspections, service contracts and cleaning schedules in one place.</p><div class="f"><b>FM teams</b><span>Buildings</span></div></div>
+      <div class="who"><div class="h"><span class="cap">Care</span><span>03</span></div><q>"Is everyone's training in date?"</q><p>Training records, rotas, time off and policies with read-and-sign.</p><div class="f"><b>Care providers</b><span>Homes</span></div></div>
+      <div class="who"><div class="h"><span class="cap">Trades</span><span>04</span></div><q>"Did that quote ever go out?"</q><p>Leads, quotes, jobs, vans and invoices joined up from first call to payment.</p><div class="f"><b>Small firms</b><span>Vans</span></div></div>
+      <div class="who"><div class="h"><span class="cap">Hospitality</span><span>05</span></div><q>"Who can cover Saturday?"</q><p>Shift swaps, open shifts and clocking in, with labour cost on the rota.</p><div class="f"><b>Venues</b><span>Shifts</span></div></div>
+      <div class="who"><div class="h"><span class="cap">Services</span><span>06</span></div><q>"Where's the signed contract?"</q><p>Documents, e-signatures, contracts and renewals that remind you before they lapse.</p><div class="f"><b>Agencies</b><span>Clients</span></div></div>
+    </div></div>
+  </section>
+
+  <!-- 11. FAQ -->
+  <section class="sec sec-bg" id="faq" style="padding-top:140px">
+    <div class="wrap center-head">
+      <span class="tag"><i></i>Before you join</span>
+      <h2 class="display">The practical <span class="soft">answers.</span></h2>
+      <p class="cap cap-20">Launch, pricing, setup and your data, answered plainly.</p>
+    </div>
+    <div class="wrap faq">
+      <details open><summary>When does Luex launch?<i></i></summary><p class="ans">January 2027. Waitlist members get early access before the public launch.</p></details>
+      <details><summary>Do I have to use every tool?<i></i></summary><p class="ans">No. You switch on the tools you need at setup and add more later. Nothing you don't need gets in the way.</p></details>
+      <details><summary>Can my staff use it on their phones?<i></i></summary><p class="ans">Yes. There are apps for phone, tablet and desktop. Staff only see the screens their job needs.</p></details>
+      <details><summary>What happens to my data?<i></i></summary><p class="ans">It's stored in Ireland, inside the EU, and only people you give access to can see it. You can export everything at any time.</p></details>
+      <details><summary>How hard is it to move over?<i></i></summary><p class="ans">You can import people, assets and records from Excel or CSV. A setup wizard walks you through the rest, and we help early customers directly.</p></details>
+      <details><summary>Is there a contract?<i></i></summary><p class="ans">Monthly by default. A 12-month option comes with a lower price.</p></details>
+    </div>
+  </section>
+
+  <!-- 12. Closing -->
+  <section class="closing" id="waitlist">
+    <img src="img/plinth.webp" alt="A misty lapis landscape at dusk" loading="lazy" style="object-position:50% 30%">
+    <div class="closing-in">
+      <h2 class="display">Make room for <em>Luex</em>.</h2>
+      <p class="cap cap-20" style="color:rgba(255,255,255,.85)">Join the waitlist for early access and launch pricing.</p>
+      <form class="wl" id="wl" novalidate>
+        <label for="wl-email" class="cap" style="position:absolute;left:-9999px">Work email</label>
+        <input id="wl-email" type="email" autocomplete="email" placeholder="Your work email">
+        <button class="btn btn-light" type="submit">Join</button>
+      </form>
+      <p class="wl-msg" id="wl-msg" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h6>Navigation</h6><ul><li><a href="#what">What it does</a></li><li><a href="#teams">Every team</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">Questions</a></li></ul></div>
+      <div><h6>Legal</h6><ul><li><a href="#top">Privacy</a></li><li><a href="#top">Terms</a></li><li><a href="#top">Cookies</a></li></ul></div>
+      <div class="news"><p class="h32">Luex updates</p><p class="cap">Launch news and new tools. No spam.</p>
+        <form id="news" novalidate><label for="n-email" style="position:absolute;left:-9999px">Email</label><input id="n-email" type="email" placeholder="Email address"><button class="btn btn-dark" type="submit">Subscribe</button></form></div>
+    </div>
+    <div class="wordmark" aria-hidden="true">luex</div>
+    <div class="legal"><span>© 2026 Luex Group · a trading name of Luex Limited</span><span>luexapp.com</span></div>
+  </div>
+</footer>
+
+<div class="preview-flag">Preview<small>Nubo layout · Luex content</small></div>
+
+<script>
+/* Prices: mirror src/data/pricing.json (placeholders) */
+const PRICING = { base: 60, full: 20, light: 8, app: 15 };
+['pBase','pHub'].forEach(id => document.getElementById(id).textContent = '£' + PRICING.base);
+document.getElementById('pFull').textContent = '£' + PRICING.full;
+document.getElementById('pLight').textContent = '£' + PRICING.light;
+document.getElementById('pApp').textContent = '£' + PRICING.app;
+
+/* Menu */
+const menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () => { const o = document.body.classList.toggle('nav-open'); menuBtn.setAttribute('aria-expanded', o); });
+document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => { document.body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', false); }));
+
+/* Slider: dots, autoplay, pause */
+const track = document.getElementById('track'), slides = [...track.children], dots = document.getElementById('dots');
+slides.forEach((s, i) => { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Show ' + s.dataset.name); b.onclick = () => go(i); dots.appendChild(b); });
+let cur = 0, playing = !matchMedia('(prefers-reduced-motion: reduce)').matches, timer;
+function go(i) { cur = (i + slides.length) % slides.length; const s = slides[cur]; track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.clientWidth) / 2, behavior: 'smooth' }); mark(); }
+function mark() { [...dots.children].forEach((d, k) => d.classList.toggle('on', k === cur)); }
+track.addEventListener('scroll', () => { const mid = track.scrollLeft + track.clientWidth / 2; let best = 0, bd = 1e9; slides.forEach((s, k) => { const d = Math.abs(s.offsetLeft + s.clientWidth / 2 - mid); if (d < bd) { bd = d; best = k; } }); cur = best; mark(); }, { passive: true });
+function loop() { clearInterval(timer); if (playing) timer = setInterval(() => go(cur + 1), 5000); }
+const pause = document.getElementById('pause');
+pause.onclick = () => { playing = !playing; pause.classList.toggle('paused', !playing); pause.setAttribute('aria-label', playing ? 'Pause slideshow' : 'Play slideshow'); loop(); };
+if (!playing) pause.classList.add('paused');
+mark(); loop();
+
+/* Marquee: duplicate cards for a seamless loop */
+const mq = document.getElementById('mq'); mq.innerHTML += mq.innerHTML;
+
+/* Waitlist (preview only) */
+document.getElementById('wl').addEventListener('submit', e => { e.preventDefault(); const v = document.getElementById('wl-email').value.trim(); const m = document.getElementById('wl-msg'); m.textContent = /^\S+@\S+\.\S+$/.test(v) ? "Thanks. This is a preview, so nothing was saved yet." : 'Add a work email so we can reach you.'; });
+document.getElementById('news').addEventListener('submit', e => e.preventDefault());
+
+/* Real Luex screens on the devices in the photo */
+const IW = 1672, IH = 941;
+const LAP = `<div class="ui" style="height:100%;container-type:inline-size"><div class="ui-rail"><i class="on"></i><i></i><i></i><i></i><i></i></div><div class="ui-main" style="padding:30px 34px;gap:22px"><div class="ui-top"><h5 style="font-size:40px"><small style="font-size:12px;margin-bottom:10px">Thursday 29 January</small>Good morning, Ciara</h5><div class="ui-search" style="width:300px;height:42px;font-size:14px;padding:0 18px">Search everything</div><div class="ui-av" style="width:42px;height:42px"></div></div><div class="tiles" style="gap:16px"><div class="tile" style="--c:#263E92;padding:16px 18px;border-radius:14px;border-top-width:4px"><b style="font-size:40px">50</b><span style="font-size:13px">Rostered today</span></div><div class="tile" style="--c:#2F8F5B;padding:16px 18px;border-radius:14px;border-top-width:4px"><b style="font-size:40px">37</b><span style="font-size:13px">On site now</span></div><div class="tile" style="--c:#C98A1B;padding:16px 18px;border-radius:14px;border-top-width:4px"><b style="font-size:40px">14</b><span style="font-size:13px">To approve</span></div><div class="tile" style="--c:#C2413A;padding:16px 18px;border-radius:14px;border-top-width:4px"><b style="font-size:40px">8</b><span style="font-size:13px">Expired</span></div></div><div class="box" style="border-radius:14px;padding:6px 20px">${[['Book CSCS renewal for Seán','Compliance','#C98A1B','Today'],['Approve 14 timesheets','Time','#263E92','Due Fri'],['Sign off TH-04 repair','Assets','#2F8F5B','Ready'],['Send quote for Kingsway refit','CRM','#9A9DA9','Draft']].map(r=>`<div class="row" style="grid-template-columns:34px 1fr auto;gap:14px;padding:13px 0;font-size:16px"><span class="ic" style="width:34px;height:34px;border-radius:9px"></span><span><b>${r[0]}</b><em style="font-size:13px">${r[1]}</em></span><span class="chip" style="--c:${r[2]};font-size:12px;padding:5px 11px">${r[3]}</span></div>`).join('')}</div></div></div>`;
+const TAB = `<div style="padding:46px 40px;display:grid;gap:30px;font-family:var(--head);height:100%"><div style="display:flex;justify-content:space-between;align-items:end"><b style="font-weight:500;font-size:62px;letter-spacing:-0.05em;line-height:1">Rota</b><span style="font-size:22px;color:#7A8099">Week of 2 Feb</span></div><div class="week" style="grid-template-columns:70px repeat(5,1fr);gap:12px;font-size:20px"><span></span><span class="dn">Mon</span><span class="dn">Tue</span><span class="dn">Wed</span><span class="dn">Thu</span><span class="dn">Fri</span>${[['#263E92','x','x','on','on',''],['#AF955C','on','am','on','','on'],['#9A9DA9','am','on','','on','on'],['#141E43','on','on','am','on',''],['#2F8F5B','','on','on','am','on']].map(r=>`<span class="who"><i style="--c:${r[0]};width:52px;height:52px"></i></span>`+r.slice(1).map(c=>`<span class="s ${c}" style="height:66px;border-radius:12px"></span>`).join('')).join('')}</div><div class="alert" style="font-size:22px;padding:24px 28px;border-left-width:9px;border-radius:12px"><b style="font-size:25px">Can't book Seán on Mon or Tue</b>His CSCS card runs out on 2 Feb. Renew it in Compliance to unlock these shifts.</div></div>`;
+const PHO = `<div style="height:100%;display:grid;grid-template-rows:auto auto 1fr auto;padding:74px 28px 40px;gap:26px;background:linear-gradient(180deg,#F7F7F4 0 60%,#EEF1FB 100%);font-family:var(--head);position:relative"><span style="position:absolute;top:14px;left:50%;translate:-50% 0;width:116px;height:34px;border-radius:99px;background:#0B0E18"></span><div><small style="font-family:var(--body);font-size:18px;color:#7A8099;text-transform:uppercase">Thursday</small><b style="display:block;font-weight:500;font-size:40px;letter-spacing:-0.05em;line-height:1.05">Morning, Aoife</b></div><div style="background:#fff;border-radius:22px;padding:22px;font-size:20px;line-height:1.35"><b style="display:block;font-weight:500">Docklands Block C</b><span style="color:#2F8F5B">You're on site</span></div><div style="align-self:center;justify-self:center;width:230px;aspect-ratio:1;border-radius:50%;background:#141E43;color:#fff;display:grid;place-items:center;font-size:28px;box-shadow:0 0 0 16px rgba(38,62,146,.12),0 0 0 34px rgba(38,62,146,.06)">Clock in</div><div style="display:flex;justify-content:space-between;align-items:baseline;font-size:19px"><span>This week</span><b style="font-weight:500;font-size:28px">31h 45m</b></div></div>`;
+document.getElementById('sLap').innerHTML = LAP; document.getElementById('sTab').innerHTML = TAB; document.getElementById('sPho').innerHTML = PHO;
+function solve(A, b) { const n = b.length; for (let i = 0; i < n; i++) { let p = i; for (let r = i + 1; r < n; r++) if (Math.abs(A[r][i]) > Math.abs(A[p][i])) p = r; [A[i], A[p]] = [A[p], A[i]]; [b[i], b[p]] = [b[p], b[i]]; for (let r = i + 1; r < n; r++) { const f = A[r][i] / A[i][i]; for (let c = i; c < n; c++) A[r][c] -= f * A[i][c]; b[r] -= f * b[i]; } } const x = Array(n).fill(0); for (let i = n - 1; i >= 0; i--) { let s = b[i]; for (let c = i + 1; c < n; c++) s -= A[i][c] * x[c]; x[i] = s / A[i][i]; } return x; }
+function quad(w, h, d) { const s = [[0, 0], [w, 0], [w, h], [0, h]], A = [], b = []; for (let i = 0; i < 4; i++) { const [x, y] = s[i], [u, v] = d[i]; A.push([x, y, 1, 0, 0, 0, -x * u, -y * u]); b.push(u); A.push([0, 0, 0, x, y, 1, -x * v, -y * v]); b.push(v); } const k = solve(A, b); return [k[0], k[3], 0, k[6], k[1], k[4], 0, k[7], 0, 0, 1, 0, k[2], k[5], 0, 1]; }
+const card = document.getElementById('devCard');
+function place() { const cw = card.clientWidth, ch = card.clientHeight, s = Math.max(cw / IW, ch / IH), ox = (cw - IW * s) / 2, oy = (ch - IH * s) / 2;
+  card.querySelectorAll('.scr').forEach(el => { const w = +el.dataset.w, h = +el.dataset.h; el.style.width = w + 'px'; el.style.height = h + 'px'; const q = el.dataset.q.split(' ').map(p => p.split(',').map(Number)).map(([x, y]) => [ox + x * s, oy + y * s]); el.style.transform = `matrix3d(${quad(w, h, q).join(',')})`; el.classList.add('placed'); }); }
+place(); addEventListener('resize', place);
+</script>
