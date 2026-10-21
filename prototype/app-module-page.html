@@ -205,6 +205,10 @@ tr:last-child td { border-bottom: 0; } td:first-child { font-weight: 500; }
 .ai-hd { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid #EDEDEF; }
 .ai-hd b { display: block; font-size: 14px; font-weight: 500; } .ai-hd small { font-size: 10.5px; color: #8A8A90; }
 .ai-hd > :last-child { margin-left: auto; }
+.ai-btns { display: flex; gap: 6px; }
+.ask.on { background: #1C1C1E; color: #fff; }
+.ask.wait { position: relative; }
+.ask.wait::after { content: ""; position: absolute; top: 4px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: #CFB783; box-shadow: 0 0 0 2px #fff; }
 .pin { font-size: 10.5px; padding: 4px 9px; border-radius: 99px; background: #F1F1F2; color: #5E5E63; }
 .ai-logo { width: 34px; height: 34px; border-radius: 11px; background: #1C1C1E; color: #CFB783; display: grid; place-items: center; flex: none; }
 .ai-logo.sm { width: 28px; height: 28px; border-radius: 9px; } .ai-logo .i { width: 16px; height: 16px; }
@@ -219,6 +223,9 @@ tr:last-child td { border-bottom: 0; } td:first-child { font-weight: 500; }
 .a li.now::before { background: #1C1C1E; color: #fff; box-shadow: none; }
 .go { margin-top: 9px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; background: #fff; font-size: 11px; font-weight: 500; box-shadow: inset 0 0 0 1px #E2E2E5; }
 .go .i { width: 13px; height: 13px; }
+.a-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; } .a-acts .go { margin-top: 0; }
+.steps { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 99px; background: #1C1C1E; color: #fff; font-size: 11px; font-weight: 500; }
+.steps .i { width: 13px; height: 13px; color: #CFB783; }
 .src { display: block; margin-top: 7px; font-size: 10px; color: #8A8A90; }
 .sugg { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 0; }
 .sugg span { font-size: 10.5px; padding: 6px 10px; border-radius: 99px; background: #F1F1F2; color: #3A3A3E; }
@@ -253,7 +260,7 @@ body { padding: 24px 16px; display: grid; place-items: center; min-height: 100vh
         <div class="tl"><h4>Compliance</h4><span class="pill"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>All sites <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></span></div></div>
       <div class="m-act">
         <span class="pill srch"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Search everything<kbd>Ctrl K</kbd></span>
-        <span class="ask"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l1.8 4.9 4.9 1.8-4.9 1.8L12 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>Ask Luex</span>
+        <span class="ask "><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l1.8 4.9 4.9 1.8-4.9 1.8L12 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>Ask Luex</span>
         <span class="rnd dark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
         <span class="rnd"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13l2.5-7h11L20 13v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg><em class="cnt">5</em></span>
         <span class="rnd"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><i class="dotr"></i></span>

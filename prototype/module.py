@@ -454,8 +454,8 @@ P["min"] = '<path d="M6 12h12"/>'
 P["send"] = '<path d="M5 12l14-7-5 14-2.5-5.5z"/>'
 P["arrow"] = '<path d="M5 12h13M13 7l5 5-5 5"/>'
 
-def header_ai(ask_pill):
-    pill = f'<span class="ask">{ic("spark")}Ask Luex</span>' if ask_pill else ""
+def header_ai(ask_pill, state=""):
+    pill = f'<span class="ask {state}">{ic("spark")}Ask Luex</span>' if ask_pill else ""
     return f'''<header class="m-hd">
       <div class="m-title"><small>Safety and quality <i>·</i> Compliance</small>
         <div class="tl"><h4>Compliance</h4><span class="pill">{ic("cal")}All sites {ic("down")}</span></div></div>
@@ -472,7 +472,7 @@ def detail_glow():
     return detail(False).replace('<span class="btn-d">', '<span class="btn-d glow">', 1)
 
 def ai_panel(closable):
-    btns = f'<span class="rnd sm">{ic("min")}</span>' if closable else '<span class="pin">Always on</span>'
+    btns = f'<span class="ai-btns"><span class="rnd sm" title="Minimise: keeps the chat">{ic("min")}</span><span class="rnd sm" title="Close: ends the chat">{ic("x")}</span></span>' if closable else '<span class="pin">Always on</span>'
     return f'''<aside class="ai">
       <div class="ai-hd"><span class="ai-logo">{ic("spark")}</span><span><b>Ask Luex</b><small>Help and how-to</small></span>{btns}</div>
       <div class="ai-msgs">
@@ -481,7 +481,7 @@ def ai_panel(closable):
           <ol><li class="done"><span>Open <b>Compliance</b> and find Seán's CSCS card.</span></li>
               <li class="now"><span>Press <b>Renew</b> at the top of the details. I've highlighted it.</span></li>
               <li><span>Add the new expiry date and a photo of the card, then <b>Save</b>.</span></li></ol>
-          <span class="go">{ic("arrow")}Compliance › CSCS card, Seán Byrne</span>
+          <div class="a-acts"><span class="steps">{ic("spark")}Show me the steps</span><span class="go">{ic("arrow")}Open Seán's card</span></div>
           <small class="src">From the help article "Renewing a certificate"</small></div>
         <div class="q">Will it stop him being booked on shifts?</div>
         <div class="a"><p>Yes. Once it expires, Seán can't be put on a shift until it's renewed. You'll see a red "blocked" mark in <b>Scheduling</b>.</p>
@@ -501,6 +501,11 @@ def guide_bar():
     </div>'''
 
 def ai_frame(kind):
+    if kind == "open":
+        return f'''<div class="fit"><div class="m-page">{rail()}<div class="m-main ai-on">{header_ai(True, "on")}{tiles(2, False)}
+          <div class="m-body narrow">{main_window("listplain", False)}{detail_glow()}</div>{ai_panel(True)}</div></div></div>'''
+    if kind == "waiting":
+        return f'''<div class="fit"><div class="m-page">{rail()}<div class="m-main">{header_ai(True, "wait")}{tiles(2, False)}<div class="m-body">{main_window("listplain", False)}{detail(False)}</div></div></div></div>'''
     if kind == "always":
         main = f'''<div class="m-main ai-on">{header_ai(False)}{tiles(2, False)}
           <div class="m-body narrow">{main_window("listplain", False)}{detail_glow()}</div>{ai_panel(False)}</div>'''
@@ -532,6 +537,10 @@ AI_CSS = """
 .ai-hd { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid #EDEDEF; }
 .ai-hd b { display: block; font-size: 14px; font-weight: 500; } .ai-hd small { font-size: 10.5px; color: #8A8A90; }
 .ai-hd > :last-child { margin-left: auto; }
+.ai-btns { display: flex; gap: 6px; }
+.ask.on { background: #1C1C1E; color: #fff; }
+.ask.wait { position: relative; }
+.ask.wait::after { content: ""; position: absolute; top: 4px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: #CFB783; box-shadow: 0 0 0 2px #fff; }
 .pin { font-size: 10.5px; padding: 4px 9px; border-radius: 99px; background: #F1F1F2; color: #5E5E63; }
 .ai-logo { width: 34px; height: 34px; border-radius: 11px; background: #1C1C1E; color: #CFB783; display: grid; place-items: center; flex: none; }
 .ai-logo.sm { width: 28px; height: 28px; border-radius: 9px; } .ai-logo .i { width: 16px; height: 16px; }
@@ -546,6 +555,9 @@ AI_CSS = """
 .a li.now::before { background: #1C1C1E; color: #fff; box-shadow: none; }
 .go { margin-top: 9px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; background: #fff; font-size: 11px; font-weight: 500; box-shadow: inset 0 0 0 1px #E2E2E5; }
 .go .i { width: 13px; height: 13px; }
+.a-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; } .a-acts .go { margin-top: 0; }
+.steps { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 99px; background: #1C1C1E; color: #fff; font-size: 11px; font-weight: 500; }
+.steps .i { width: 13px; height: 13px; color: #CFB783; }
 .src { display: block; margin-top: 7px; font-size: 10px; color: #8A8A90; }
 .sugg { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 0; }
 .sugg span { font-size: 10.5px; padding: 6px 10px; border-radius: 99px; background: #F1F1F2; color: #3A3A3E; }
@@ -585,6 +597,10 @@ page = f"""<!doctype html>
   <h2>Option B: there when you want it</h2>
   <p class="lead">Closed, the page uses the full width and an "Ask Luex" button sits in the header. Open, it looks exactly like Option A. When you follow its steps, it folds into this guide bar:</p>
   <div class="frame">{ai_frame("closed")}</div>
+  <p class="lead" style="margin-top:22px">Open: the page makes room. Minimise (–) hides it and keeps the chat; the cross (X) ends the chat so it opens empty next time. The highlighted "Ask Luex" button minimises it too.</p>
+  <div class="frame">{ai_frame("open")}</div>
+  <p class="lead" style="margin-top:22px">Minimised: a small gold dot on "Ask Luex" shows a conversation is waiting.</p>
+  <div class="frame">{ai_frame("waiting")}</div>
   <p class="lead" style="margin-top:22px">Following steps: a one-line guide under the header, with Back, Next and "Open chat" to unfold the conversation again.</p>
   <div class="frame">{ai_frame("guide")}</div>
 
