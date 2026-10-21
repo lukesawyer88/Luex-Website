@@ -435,3 +435,39 @@ page5 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-ink-variations.html").write_text(page5)
 print("wrote app-ink-variations.html", len(page5))
+
+# =============================================================== Ink + desert, white surfaces
+WHITE_L = ("--backdrop:#E9E7E3; --surface:#FFFFFF; --panel:#F6F6F5; --field:#F2F2F1; --sel:#EFEFED; --line:#EAEAE8; --ink:#141414; --ink2:#47474A; --muted:#8A8A8E;"
+           " --acc:#141414; --on-acc:#FFFFFF; --gold:#CFB783; --gold-ring:#A68B55; --rail:#141414; --rail-ic:#AAA091; --rail-line:#2C2A27; --nav-on:#CFB783; --nav-on-ic:#141414;"
+           " --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA; --ink-rail:#141414; --sel-bg:#141414; --bronze:#77664B;"
+           " --soft-sh: inset 0 1px 0 rgba(255,255,255,.95), 0 10px 24px -18px rgba(20,20,20,.28);"
+           " --desert: linear-gradient(rgba(255,255,255,.12), rgba(255,255,255,.12)), url(img/dune-hero.webp);")
+WHITE_D = ("--backdrop:#0B0B0B; --surface:#141414; --panel:#1B1B1B; --field:#232323; --sel:#262626; --line:#2B2B2B; --ink:#F5F3EF; --ink2:#C8C6C1; --muted:#8E8C88;"
+           " --acc:#E7DECA; --on-acc:#141414; --gold:#CFB783; --gold-ring:#CFB783; --rail:#0B0B0B; --rail-ic:#AAA091; --rail-line:#222; --nav-on:#CFB783; --nav-on-ic:#141414;"
+           " --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA; --ink-rail:#0A0A0A; --sel-bg:linear-gradient(135deg,#1F1B14,#3A3022); --bronze:#CFB783;"
+           " --soft-sh: inset 0 1px 0 rgba(255,255,255,.04), 0 12px 26px -16px rgba(0,0,0,.8);"
+           " --desert: linear-gradient(rgba(6,5,3,.74), rgba(6,5,3,.84)), url(img/dune-hero.webp);")
+WHITE_CSS = """
+.v-white .tile:not(.sel), .v-white .mw, .v-white .dw { background: var(--panel); }
+.v-white .lr, .v-white .facts div { background: var(--surface); }
+.v-white .m-page { background: var(--surface); }
+"""
+cls = "v-ink v-rich v-desert v-white"
+page6 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Ink Desert White</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Ink + desert, in white</h1>
+  <p class="lead">The Ink sidebar and desert backdrop you picked, with clean white and neutral grey surfaces instead of sand, so the Venus gold, bronze and black stand out as accents.</p>
+  <div class="pair">
+    <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {cls}" style="{WHITE_L} {STATUS_L}">{SFR}</div></div>
+    <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {cls}" style="{WHITE_D} {STATUS_D}">{to_dark(SFR)}</div></div>
+  </div>
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-ink-desert-white.html").write_text(page6)
+print("wrote app-ink-desert-white.html", len(page6))
