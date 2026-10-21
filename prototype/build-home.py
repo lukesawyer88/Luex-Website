@@ -132,7 +132,7 @@ why = f"""
 <div class="qs-wrap">
 <section class="qs cream" id="why">
   <div class="qs-grid">
-    <div class="qs-img"><img class="why-img" src="img/why-phone.webp" width="1536" height="2304" alt="Someone at their desk checking the Luex app on their phone"></div>
+    <div class="qs-img"><img class="why-img" src="img/why-phone.webp" width="1024" height="1536" alt="Someone at their desk checking the Luex app on their phone"></div>
     <div class="qs-main">
       <div class="lab"><span class="sq32">{ICON}</span><span class="cap18t">Why Luex</span></div>
       <h2 class="h52">Built to replace<br><span class="soft">the pile of apps,</span><br>not add to it.</h2>
