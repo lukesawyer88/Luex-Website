@@ -45,16 +45,17 @@ document.querySelectorAll('.split, .odo').forEach(el => io.observe(el));
 /* parallax: hero content drifts up, Hello heading drifts down */
 const heroBg = document.getElementById('heroBg'), heroIn = document.getElementById('heroIn'), helloH = document.getElementById('helloH'), hello = document.getElementById('hello');
 function onScroll() {
-  if (reduce) return;
+  if (reduce || !heroIn) return;
   heroIn.style.transform = `translateY(${-0.36 * Math.min(scrollY, 1200)}px)`;
-  heroBg.style.opacity = Math.max(0, 1 - scrollY / 450);
+  if (heroBg) heroBg.style.opacity = Math.max(0, 1 - scrollY / 450);
+  if (!hello) return;
   const r = hello.getBoundingClientRect();
   helloH.style.transform = `translateY(${0.3 * Math.max(0, Math.min(innerHeight, -r.top))}px)`;
 }
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
 /* capabilities carousel: centred slide, auto-advance every 5s */
-const rail = document.getElementById('rail'), dots = document.getElementById('dots'), caps = document.getElementById('caps');
+const rail = document.getElementById('rail'), dots = document.getElementById('dots'), caps = document.querySelector('.caps');
 const N = rail.children.length;
 for (let i = 0; i < N; i++) { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Slide ' + (i + 1)); b.onclick = () => { go(i); restart(); }; dots.appendChild(b); }
 let cur = 0, timer, playing = !reduce;
