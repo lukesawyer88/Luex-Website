@@ -1,0 +1,207 @@
+"""The hero dashboard: built in code at 1120 x 662 and scaled to fit.
+Look: soft rounded panels, light greys, white pills, dark toggles. Boxes: sidebar, header,
+4 stat tiles, a large dial panel, a wide chart, a list, a grid, two small tiles and a spend list."""
+
+def ic(name):
+    P = {
+        "grid": '<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
+        "people": '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c2.3.2 4 1.8 4.6 4.3"/>',
+        "cal": '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+        "clock": '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+        "shield": '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+        "brief": '<rect x="4" y="7" width="16" height="12" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M4 12h16"/>',
+        "pound": '<path d="M16 6.5A3.5 3.5 0 0 0 9.5 8v9.5M7 12.5h6.5M7 18h10"/>',
+        "gear": '<circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>',
+        "bell": '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+        "search": '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>',
+        "pin": '<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>',
+        "check": '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+        "chev": '<path d="M9 6l6 6-6 6"/>',
+        "down": '<path d="M7 10l5 5 5-5"/>',
+        "plus": '<path d="M12 5v14M5 12h14"/>',
+        "sun": '<circle cx="12" cy="12" r="3.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>',
+        "moon": '<path d="M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5z"/>',
+        "doc": '<path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z"/><path d="M14 3.5V8h4M9 13h6M9 16.5h6"/>',
+        "van": '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+        "beach": '<path d="M4 20h16M12 20V9M6 9a6 6 0 0 1 12 0z"/>',
+    }
+    return f'<svg class="i" viewBox="0 0 24 24" aria-hidden="true">{P[name]}</svg>'
+
+def tog(on=True):
+    return f'<span class="tg{" on" if on else ""}"><i></i></span>'
+
+nav = "".join(f'<span class="nv{" on" if i == 0 else ""}">{ic(n)}</span>' + ('<span class="nv-sep"></span>' if i in (0, 3, 6) else "")
+              for i, n in enumerate(["grid", "people", "cal", "clock", "shield", "brief", "pound", "gear"]))
+
+stats = [("people", "37", "On site now", "LIVE", True), ("cal", "50", "Rostered today", "WEEK", False),
+         ("clock", "14", "To approve", "FRI", False), ("shield", "8", "Expired", "FIX", False)]
+stat_html = "".join(f'''<div class="dz-st{" hi" if hi else ""}">
+  <div class="st-top"><span class="ci">{ic(i)}</span><b>{n}</b></div>
+  <p>{l}</p><div class="st-ft"><span class="dz-mini">{tag}</span>{tog(hi or k == 2)}</div></div>''' for k, (i, n, l, tag, hi) in enumerate(stats))
+
+bars = [62, 40, 70, 55, 78, 36, 66, 92, 58, 64, 84, 52]
+months = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
+chart = "".join(f'<div class="dz-bar{" on" if k == 7 else ""}" style="--h:{h}%"><i></i><span>{m}</span>{"<em>1,284 h</em>" if k == 7 else ""}</div>' for k, (h, m) in enumerate(zip(bars, months)))
+
+todo = [("shield", "Renew CSCS card, Seán", "Compliance", "Today"),
+        ("clock", "Approve 14 timesheets", "Time", "Fri"),
+        ("brief", "Sign off TH-04 repair", "Assets", "Ready")]
+todo_html = "".join(f'<div class="dz-row"><span class="ci sm">{ic(i)}</span><span class="rt"><b>{t}</b><small>{s}</small></span><span class="rp">{w}</span></div>' for i, t, s, w in todo)
+
+sites = [("Docklands", "18 on site"), ("Ringsend", "11 on site"), ("Kingsway", "6 on site"), ("Head office", "2 in")]
+sites_html = "".join(f'<div class="dz-site{" on" if k == 0 else ""}"><span class="ci sm">{ic("pin")}</span><b>{n}</b><small>{s}</small></div>' for k, (n, s) in enumerate(sites))
+
+spend = [("van", "Fuel, 3 vans", "Expenses", "£214"), ("doc", "Supplier invoice", "Purchasing", "£1,180")]
+spend_html = "".join(f'<div class="dz-row"><span class="ci sm">{ic(i)}</span><span class="rt"><b>{t}</b><small>{s}</small></span><span class="amt">{a}</span></div>' for i, t, s, a in spend)
+
+DASH = f'''<div class="dash-fit"><div class="dash" aria-label="Luex dashboard preview">
+  <aside class="dz-rail">
+    <span class="dz-lg"><i></i><i></i><i></i></span>
+    <nav>{nav}</nav>
+    <span class="dz-mode"><span class="on">{ic("sun")}</span><span>{ic("moon")}</span></span>
+    <span class="dz-me">CM</span>
+  </aside>
+  <section class="mainp">
+    <header class="hd">
+      <div><small>Thursday 29 January</small><h4>Good morning, Ciara.</h4></div>
+      <div class="hd-r"><span class="dz-pill srch">{ic("search")}Search everything</span><span class="dz-round">{ic("bell")}<i class="dotr"></i></span><span class="dz-user"><span class="dz-av">CM</span><span><b>Ciara Murphy</b><small>Owner</small></span>{ic("down")}</span></div>
+    </header>
+    <div class="body">
+      <div class="lc">
+        <div class="dz-stats">{stat_html}</div>
+        <div class="dz-card dz-chart">
+          <div class="c-hd"><b>Hours logged</b><span class="dz-pill">All sites {ic("down")}</span></div>
+          <div class="axis"><span>1.5k</span><span>1k</span><span>500</span><span>0</span></div>
+          <div class="dz-bars">{chart}</div>
+        </div>
+        <div class="low">
+          <div class="dz-card dz-list"><div class="c-hd"><b>Needs you today</b><span class="see">See all</span></div>{todo_html}<span class="btn-d">{ic("plus")}Add task</span></div>
+          <div class="dz-card dz-sites"><div class="c-hd"><b>Sites</b><span class="see">See all</span></div><div class="sg">{sites_html}</div></div>
+        </div>
+      </div>
+      <div class="rc">
+        <div class="dz-card dial">
+          <div class="c-hd"><span><b>Compliance</b><small>248 records</small></span><span class="dz-round sm">{ic("shield")}</span></div>
+          <div class="ring"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" class="tr"/><circle cx="100" cy="100" r="80" class="pr"/></svg><div class="ring-in"><b>92<span>%</span></b><small>Compliant</small></div></div>
+          <div class="dz-legend"><span class="dz-pill"><i style="background:#2F8F5B"></i>219 valid</span><span class="dz-pill"><i style="background:#C98A1B"></i>21 due</span><span class="dz-pill"><i style="background:#C2413A"></i>8 expired</span></div>
+        </div>
+        <div class="twins">
+          <div class="dz-card dz-tw"><span class="ci sm">{ic("beach")}</span><small>Off today</small><b>3</b></div>
+          <div class="dz-card dz-tw"><span class="ci sm">{ic("brief")}</span><small>Open jobs</small><b>12</b></div>
+        </div>
+        <div class="dz-card dz-list spend"><div class="c-hd"><b>Spend this week</b><span class="dz-pill sm">Today {ic("down")}</span></div>{spend_html}</div>
+      </div>
+    </div>
+  </section>
+</div></div>'''
+
+DASH_CSS = """
+/* ---------- hero dashboard (drawn at 1120 x 662, scaled to fit) ---------- */
+.dash-fit { position: relative; width: 100%; aspect-ratio: 1120 / 662; overflow: hidden; background: #fff; }
+.dash { position: absolute; left: 0; top: 0; width: 1120px; height: 662px; transform-origin: 0 0; transform: scale(var(--s, 1)); display: grid; grid-template-columns: 68px 1fr; gap: 10px; padding: 10px; background: #fff; font-family: var(--head); color: #1C1C1E; letter-spacing: -.2px; }
+.dash .i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.dz-rail { background: #F1F1F2; border-radius: 18px; display: flex; flex-direction: column; align-items: center; padding: 18px 0 14px; gap: 20px; }
+.dz-lg { position: relative; width: 26px; height: 24px; }
+.dz-lg i { position: absolute; width: 11px; height: 11px; border-radius: 2.5px; background: #1C1C1E; }
+.dz-lg i:nth-child(1) { left: 0; top: 2px; } .dz-lg i:nth-child(2) { left: 7px; top: 11px; width: 12px; height: 12px; } .dz-lg i:nth-child(3) { left: 14px; top: 0; background: #CFB783; transform: rotate(14deg); }
+.dz-rail nav { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 14px; }
+.nv { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; color: #6B6B70; }
+.nv.on { background: #E2E2E5; color: #1C1C1E; }
+.nv-sep { width: 14px; height: 1px; background: #D9D9DC; margin: 4px 0; }
+.dz-mode { margin-top: auto; display: grid; gap: 4px; padding: 4px; border-radius: 99px; background: #E6E6E8; }
+.dz-mode span { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: #7A7A80; }
+.dz-mode .on { background: #fff; color: #1C1C1E; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.dz-me, .dz-av { width: 36px; height: 36px; border-radius: 50%; background: #1C1C1E; color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 500; letter-spacing: 0; }
+.mainp { display: grid; grid-template-rows: 46px 1fr; gap: 10px; min-width: 0; }
+.hd { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 0 6px; }
+.hd small { display: block; font-size: 11px; color: #8A8A90; margin-bottom: 2px; }
+.hd h4 { margin: 0; font-size: 21px; font-weight: 500; letter-spacing: -.6px; }
+.hd-r { display: flex; align-items: center; gap: 8px; }
+.dz-pill { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 99px; background: #fff; box-shadow: inset 0 0 0 1px #E6E6E8; font-size: 11.5px; color: #3A3A3E; white-space: nowrap; }
+.dz-pill .i { width: 13px; height: 13px; }
+.dz-pill.sm { height: 24px; padding: 0 9px; font-size: 10.5px; }
+.dz-pill i:not(.i) { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.srch { width: 200px; color: #8A8A90; background: #F4F4F5; box-shadow: none; }
+.dz-round { position: relative; width: 36px; height: 36px; border-radius: 50%; background: #F4F4F5; display: grid; place-items: center; }
+.dz-round.sm { width: 30px; height: 30px; background: #fff; }
+.dotr { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: #E5484D; box-shadow: 0 0 0 2px #F4F4F5; }
+.dz-user { display: flex; align-items: center; gap: 9px; padding: 3px 12px 3px 3px; border-radius: 99px; background: #F4F4F5; }
+.dz-user .dz-av { width: 30px; height: 30px; font-size: 10.5px; }
+.dz-user b { display: block; font-size: 12px; font-weight: 500; } .dz-user small { font-size: 10px; color: #8A8A90; }
+.body { display: grid; grid-template-columns: 1fr 316px; gap: 10px; min-height: 0; }
+.lc { display: grid; grid-template-rows: 116px 1fr 230px; gap: 10px; min-width: 0; }
+.rc { display: grid; grid-template-rows: 1fr 92px 132px; gap: 10px; min-width: 0; }
+.dz-card { background: #F1F1F2; border-radius: 18px; padding: 14px 16px; min-width: 0; position: relative; }
+.c-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.c-hd b { font-size: 13px; font-weight: 500; }
+.c-hd small { display: block; font-size: 10.5px; color: #8A8A90; margin-top: 1px; }
+.see { font-size: 10.5px; color: #8A8A90; }
+.dz-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.dz-st { background: #F1F1F2; border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; }
+.dz-st.hi { background: #1C1C1E; color: #fff; }
+.st-top { display: flex; justify-content: space-between; align-items: center; }
+.st-top b { font-size: 26px; font-weight: 500; letter-spacing: -1px; }
+.ci { width: 34px; height: 34px; border-radius: 50%; background: #fff; display: grid; place-items: center; color: #1C1C1E; flex: none; }
+.ci.sm { width: 30px; height: 30px; } .ci.sm .i { width: 14px; height: 14px; }
+.dz-st.hi .ci { background: rgba(255,255,255,.14); color: #fff; }
+.dz-st p { margin: 6px 0 0; font-size: 12px; color: inherit; opacity: .75; font-weight: 400; }
+.st-ft { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+.dz-mini { font-size: 9.5px; letter-spacing: .4px; padding: 3px 8px; border-radius: 99px; background: #fff; color: #3A3A3E; }
+.dz-st.hi .dz-mini { background: rgba(255,255,255,.14); color: #fff; }
+.dz-st.hi .dz-mini::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #E5484D; margin-right: 5px; vertical-align: 1px; }
+.tg { width: 34px; height: 20px; border-radius: 99px; background: #DADADD; position: relative; flex: none; }
+.tg i { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+.tg.on { background: #fff; box-shadow: inset 0 0 0 1px #E2E2E5; } .tg.on i { left: 17px; background: #1C1C1E; }
+.dz-st.hi .tg.on { background: rgba(255,255,255,.18); box-shadow: none; } .dz-st.hi .tg.on i { background: #fff; }
+.dz-chart { display: grid; grid-template-columns: 34px 1fr; grid-template-rows: auto 1fr; column-gap: 6px; }
+.dz-chart .c-hd { grid-column: 1 / -1; }
+.axis { display: flex; flex-direction: column; justify-content: space-between; font-size: 9.5px; color: #9A9AA0; padding-bottom: 18px; }
+.dz-bars { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; align-items: end; border-bottom: 1px solid #E2E2E5; padding-bottom: 0; position: relative; margin-bottom: 18px; }
+.dz-bar { position: relative; height: 100%; display: flex; align-items: end; justify-content: center; }
+.dz-bar i { display: block; width: 100%; max-width: 26px; height: var(--h); border-radius: 8px 8px 4px 4px; background: #DADADD; }
+.dz-bar.on i { background: #1C1C1E; }
+.dz-bar span { position: absolute; bottom: -17px; font-size: 9.5px; color: #9A9AA0; }
+.dz-bar em { position: absolute; bottom: calc(var(--h) + 8px); font-style: normal; font-size: 10px; padding: 4px 8px; border-radius: 99px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.08); white-space: nowrap; }
+.low { display: grid; grid-template-columns: 1.25fr 1fr; gap: 10px; min-height: 0; }
+.dz-list { display: flex; flex-direction: column; }
+.dz-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; }
+.dz-row + .dz-row { border-top: 1px solid #E4E4E7; }
+.rt { flex: 1; min-width: 0; }
+.rt b { display: block; font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rt small { font-size: 10px; color: #8A8A90; }
+.rp { font-size: 10.5px; padding: 3px 9px; border-radius: 99px; background: #fff; color: #3A3A3E; }
+.amt { font-size: 12.5px; font-weight: 500; }
+.btn-d { margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 6px; height: 32px; border-radius: 99px; background: #1C1C1E; color: #fff; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; }
+.btn-d .i { width: 13px; height: 13px; }
+.sg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dz-site { background: #fff; border-radius: 14px; padding: 10px; display: grid; gap: 4px; }
+.dz-site.on { box-shadow: 0 6px 16px -8px rgba(0,0,0,.25); }
+.dz-site b { font-size: 12px; font-weight: 500; margin-top: 4px; } .dz-site small { font-size: 10px; color: #8A8A90; }
+.dz-site .ci { background: #F1F1F2; }
+.dial { display: flex; flex-direction: column; background: linear-gradient(180deg, #ECECEE, #F4F4F5); }
+.ring { position: relative; width: 190px; height: 190px; margin: 4px auto 0; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .tr { fill: none; stroke: #E0E0E3; stroke-width: 14; }
+.ring .pr { fill: none; stroke: #1C1C1E; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 503; stroke-dashoffset: 40; }
+.ring-in { position: absolute; inset: 26px; border-radius: 50%; background: #fff; box-shadow: 0 8px 20px -8px rgba(0,0,0,.18); display: grid; place-content: center; text-align: center; }
+.ring-in b { font-size: 40px; font-weight: 500; letter-spacing: -1.5px; line-height: 1; } .ring-in b span { font-size: 18px; }
+.ring-in small { font-size: 10.5px; color: #8A8A90; margin-top: 4px; }
+.dz-legend { margin-top: auto; display: flex; justify-content: center; gap: 6px; }
+.dz-legend .dz-pill { height: 26px; padding: 0 9px; font-size: 10.5px; }
+.twins { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dz-tw { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; align-content: center; column-gap: 10px; padding: 12px 14px; }
+.dz-tw .ci { grid-row: span 2; align-self: center; }
+.dz-tw small { font-size: 10.5px; color: #8A8A90; } .dz-tw b { font-size: 22px; font-weight: 500; letter-spacing: -.8px; line-height: 1.1; }
+.spend .dz-row { padding: 6px 0; }
+"""
+
+DASH_JS = """
+/* scale the hero dashboard to its window */
+(function () {
+  const fit = document.querySelector('.dash-fit'); if (!fit) return;
+  const d = fit.firstElementChild;
+  const set = () => d.style.setProperty('--s', fit.clientWidth / 1120);
+  set(); addEventListener('resize', set);
+  if ('ResizeObserver' in window) new ResizeObserver(set).observe(fit);
+})();
+"""

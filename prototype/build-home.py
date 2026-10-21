@@ -2,7 +2,9 @@
 """Builds prototype/home-v3.html: the Luex homepage on Nubo's layout.
 Eight sections, real wording, and empty labelled boxes wherever a picture or app screen will go.
 Prices come from src/data/pricing.json. Run: python3 prototype/build-home.py"""
-import json, pathlib
+import json, pathlib, sys
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+from dash import DASH, DASH_CSS, DASH_JS
 
 HERE = pathlib.Path(__file__).parent
 PRICING = json.loads((HERE.parent / "src/data/pricing.json").read_text())
@@ -43,7 +45,7 @@ hero = f"""
       <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
     </div>
     <div class="showcase">
-      <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div>{slot("APP SCREEN: Dashboard. Real screenshot goes here", "1120 × 700")}</div>
+      <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div>{DASH}</div>
       <div class="phone"><div class="notch"></div>{slot("APP SCREEN: Staff app on phone", "390 × 844")}</div>
     </div>
   </section>
@@ -257,7 +259,7 @@ extra_css = """
 .win-bar i { width: 10px; height: 10px; border-radius: 50%; background: #D8D0C0; }
 .win-bar span { margin-left: auto; margin-right: auto; font-family: var(--mono); font-size: 11px; color: #8E8778; padding-right: 44px; }
 .win .slot { aspect-ratio: 1120 / 662; height: auto; background: #F4F0E8; }
-.phone { position: absolute; right: -40px; bottom: -60px; width: 220px; aspect-ratio: 390 / 844; border-radius: 38px; background: #141414; padding: 9px; box-shadow: 0 30px 60px -20px rgba(40,30,10,.55); }
+.phone { position: absolute; right: -86px; bottom: -96px; width: 196px; aspect-ratio: 390 / 844; border-radius: 38px; background: #141414; padding: 9px; box-shadow: 0 30px 60px -20px rgba(40,30,10,.55); }
 .phone .slot { border-radius: 30px; background: #F4F0E8; padding: 14px; }
 .phone .slot span { font-size: 10px; }
 .notch { position: absolute; top: 18px; left: 50%; translate: -50% 0; width: 70px; height: 20px; border-radius: 99px; background: #141414; z-index: 2; }
@@ -280,8 +282,8 @@ extra_css = """
 }
 """
 
-css = (HERE / "blank.css").read_text() + extra_css
-js = (HERE / "blank.js").read_text()
+css = (HERE / "blank.css").read_text() + extra_css + DASH_CSS
+js = (HERE / "blank.js").read_text() + DASH_JS
 html = f"""<!doctype html>
 <html lang="en">
 <head>
