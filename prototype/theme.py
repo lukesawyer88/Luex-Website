@@ -703,3 +703,37 @@ page9 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-best.html").write_text(page9)
 print("wrote app-best.html", len(page9))
+
+# =============================================================== main window colour options
+OPT_CSS = """
+.o-white .mw { box-shadow: inset 0 0 0 1px var(--line) !important; }
+.o-white .lr { background: var(--panel) !important; }
+.o-white.dark .lr { background: rgba(255,255,255,.05) !important; }
+"""
+OPTS = [
+    ("Soft grey", "A light neutral grey. Calm and lets the white rows and gold accents stand out.", "--t-cream:#F1F1F0;", "--t-cream:#1C1C1C;", ""),
+    ("Pure white", "White with a fine outline; the rows become pale grey. The cleanest and brightest.", "--t-cream:#FFFFFF;", "--t-cream:#141414;", "o-white"),
+    ("Cool grey-blue", "The soft grey-blue from the top of the detail window, so the two big boxes feel like a pair.", "--t-cream:#E6E9EE;", "--t-cream:#1B1D22;", ""),
+]
+ob = ""
+for name, blurb, L, D, extra in OPTS:
+    ob += f'''<h2>{name}</h2><p class="lead">{blurb}</p>
+    <div class="pair">
+      <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {bcls} {extra}" style="{REF_L} {L} {STATUS_L}">{best_frame()}</div></div>
+      <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {bcls} {extra} dark" style="{REF_D} {D} {STATUS_D}">{best_frame(True)}</div></div>
+    </div>'''
+page10 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Main Window Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}{REF_CSS}{REF_D_FIX}{BEST_CSS}{OPT_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Main window: three colours instead of beige</h1>
+  <p class="lead">Everything else is the same as the best version. Only the big records window changes.</p>
+  {ob}
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-main-options.html").write_text(page10)
+print("wrote app-main-options.html", len(page10))
