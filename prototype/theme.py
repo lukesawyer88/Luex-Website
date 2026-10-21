@@ -868,3 +868,8 @@ page13 = page12.replace(f"{FIN_CSS}</style>", f"{FIN_CSS}{CHIP_CSS}</style>")
 page13 = page13.replace(final_frame(), final_frame2()).replace(final_frame(True), final_frame2(True))
 pathlib.Path(__file__).with_name("app-final.html").write_text(page13)
 print("wrote app-final.html v2", len(page13))
+
+# rename the green tile: Valid -> Compliant
+_f = pathlib.Path(__file__).with_name("app-final.html")
+_f.write_text(_f.read_text().replace('<span class="tl-l">Valid</span>', '<span class="tl-l">Compliant</span>'))
+print("renamed Valid -> Compliant")
