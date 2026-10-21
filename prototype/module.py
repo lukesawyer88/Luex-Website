@@ -446,3 +446,154 @@ html = f"""<!doctype html>
 out = pathlib.Path(__file__).with_name("app-module.html")
 out.write_text(html)
 print("wrote", out, len(html))
+
+# =============================================================== AI panel options (second page)
+P["spark"] = '<path d="M12 3.5l1.8 4.9 4.9 1.8-4.9 1.8L12 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'
+P["min"] = '<path d="M6 12h12"/>'
+P["send"] = '<path d="M5 12l14-7-5 14-2.5-5.5z"/>'
+P["arrow"] = '<path d="M5 12h13M13 7l5 5-5 5"/>'
+
+def header_ai(ask_pill):
+    pill = f'<span class="ask">{ic("spark")}Ask Luex</span>' if ask_pill else ""
+    return f'''<header class="m-hd">
+      <div class="m-title"><small>Safety and quality <i>·</i> Compliance</small>
+        <div class="tl"><h4>Compliance</h4><span class="pill">{ic("cal")}All sites {ic("down")}</span></div></div>
+      <div class="m-act">
+        <span class="pill srch">{ic("search")}Search everything<kbd>Ctrl K</kbd></span>
+        {pill}
+        <span class="rnd dark">{ic("plus")}</span>
+        <span class="rnd">{ic("inbox")}<em class="cnt">5</em></span>
+        <span class="rnd">{ic("bell")}<i class="dotr"></i></span>
+        <span class="user"><span class="av">CM</span><span><b>Ciara Murphy</b><small>Operations manager</small></span>{ic("down")}</span>
+      </div></header>'''
+
+def detail_glow():
+    return detail(False).replace('<span class="btn-d">', '<span class="btn-d glow">', 1)
+
+def ai_panel(closable):
+    btns = f'<span class="rnd sm">{ic("min")}</span>' if closable else '<span class="pin">Always on</span>'
+    return f'''<aside class="ai">
+      <div class="ai-hd"><span class="ai-logo">{ic("spark")}</span><span><b>Ask Luex</b><small>Help and how-to</small></span>{btns}</div>
+      <div class="ai-msgs">
+        <div class="q">How do I renew Seán's CSCS card?</div>
+        <div class="a"><p>You're already in the right place. Renewing takes three steps:</p>
+          <ol><li class="done"><span>Open <b>Compliance</b> and find Seán's CSCS card.</span></li>
+              <li class="now"><span>Press <b>Renew</b> at the top of the details. I've highlighted it.</span></li>
+              <li><span>Add the new expiry date and a photo of the card, then <b>Save</b>.</span></li></ol>
+          <span class="go">{ic("arrow")}Compliance › CSCS card, Seán Byrne</span>
+          <small class="src">From the help article "Renewing a certificate"</small></div>
+        <div class="q">Will it stop him being booked on shifts?</div>
+        <div class="a"><p>Yes. Once it expires, Seán can't be put on a shift until it's renewed. You'll see a red "blocked" mark in <b>Scheduling</b>.</p>
+          <span class="go">{ic("arrow")}Scheduling › Week of 2 Feb</span></div>
+      </div>
+      <div class="sugg"><span>Where do I add a new site?</span><span>Who can see medical certificates?</span></div>
+      <div class="ai-in"><span>Ask anything about Luex</span><span class="snd">{ic("send")}</span></div>
+    </aside>'''
+
+def guide_bar():
+    return f'''<div class="guide">
+      <span class="ai-logo sm">{ic("spark")}</span>
+      <span class="g-step">Step 2 of 3</span>
+      <span class="g-dots"><i class="d"></i><i class="n"></i><i></i></span>
+      <p>Press <b>Renew</b> at the top of the details. It's glowing.</p>
+      <span class="btn-l">{ic("back")}Back</span><span class="btn-d">Next {ic("chev")}</span><span class="btn-l">{ic("spark")}Open chat</span><span class="rnd sm">{ic("x")}</span>
+    </div>'''
+
+def ai_frame(kind):
+    if kind == "always":
+        main = f'''<div class="m-main ai-on">{header_ai(False)}{tiles(2, False)}
+          <div class="m-body narrow">{main_window("cards", False).replace('class="cards"', 'class="cards two"')}{detail_glow()}</div>{ai_panel(False)}</div>'''
+    elif kind == "closed":
+        main = f'''<div class="m-main">{header_ai(True)}{tiles(2, False)}<div class="m-body">{main_window("cards", False)}{detail(False)}</div></div>'''
+    else:
+        main = f'''<div class="m-main guide-on">{header_ai(True)}{guide_bar()}{tiles(2, False)}<div class="m-body">{main_window("cards", False)}{detail_glow()}</div></div>'''
+    return f'<div class="fit"><div class="m-page">{rail()}{main}</div></div>'
+
+AI_CSS = """
+.m-main.ai-on { grid-template-columns: 1fr 318px; grid-template-rows: 54px 86px 1fr; column-gap: 10px; }
+.m-main.ai-on > .m-hd { grid-column: 1 / -1; }
+.m-main.ai-on > .tiles { grid-column: 1; grid-row: 2; }
+.m-main.ai-on > .m-body { grid-column: 1; grid-row: 3; }
+.m-main.ai-on > .ai { grid-column: 2; grid-row: 2 / 4; }
+.m-main.ai-on .tile small { display: none; }
+.m-main.ai-on .tile b { font-size: 26px; }
+.m-body.narrow { grid-template-columns: 1fr 330px; }
+.cards.two { grid-template-columns: repeat(2, 1fr); }
+.m-body.narrow .mw-tools .pill:nth-of-type(n+3) { display: none; }
+.m-body.narrow .srch2 { width: 150px; }
+.m-main.guide-on { grid-template-rows: 54px 46px 86px 1fr; }
+.ask { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px 0 12px; border-radius: 99px; background: #fff; box-shadow: inset 0 0 0 1.5px #1C1C1E; font-size: 12.5px; font-weight: 500; }
+.ask .i { width: 15px; height: 15px; }
+.ai { background: #fff; border-radius: 20px; box-shadow: inset 0 0 0 1px #E6E6E8; padding: 14px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.ai-hd { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid #EDEDEF; }
+.ai-hd b { display: block; font-size: 14px; font-weight: 500; } .ai-hd small { font-size: 10.5px; color: #8A8A90; }
+.ai-hd > :last-child { margin-left: auto; }
+.pin { font-size: 10.5px; padding: 4px 9px; border-radius: 99px; background: #F1F1F2; color: #5E5E63; }
+.ai-logo { width: 34px; height: 34px; border-radius: 11px; background: #1C1C1E; color: #CFB783; display: grid; place-items: center; flex: none; }
+.ai-logo.sm { width: 28px; height: 28px; border-radius: 9px; } .ai-logo .i { width: 16px; height: 16px; }
+.ai-msgs { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 10px; padding-top: 12px; }
+.q { align-self: flex-end; max-width: 86%; background: #1C1C1E; color: #fff; padding: 9px 12px; border-radius: 14px 14px 4px 14px; font-size: 12px; line-height: 1.4; }
+.a { align-self: flex-start; max-width: 96%; background: #F1F1F2; padding: 10px 12px; border-radius: 14px 14px 14px 4px; font-size: 12px; line-height: 1.45; color: #2A2A2E; }
+.a p { margin: 0; font-weight: 400; } .a b { font-weight: 500; }
+.a ol { margin: 8px 0 0; padding-left: 0; list-style: none; counter-reset: s; display: grid; gap: 6px; }
+.a li { counter-increment: s; display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: start; }
+.a li::before { content: counter(s); width: 20px; height: 20px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 10.5px; box-shadow: inset 0 0 0 1px #D9D9DC; }
+.a li.done::before { content: "✓"; background: #2F8F5B; color: #fff; box-shadow: none; }
+.a li.now::before { background: #1C1C1E; color: #fff; box-shadow: none; }
+.go { margin-top: 9px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; background: #fff; font-size: 11px; font-weight: 500; box-shadow: inset 0 0 0 1px #E2E2E5; }
+.go .i { width: 13px; height: 13px; }
+.src { display: block; margin-top: 7px; font-size: 10px; color: #8A8A90; }
+.sugg { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 0; }
+.sugg span { font-size: 10.5px; padding: 6px 10px; border-radius: 99px; background: #F1F1F2; color: #3A3A3E; }
+.ai-in { display: flex; align-items: center; justify-content: space-between; height: 42px; padding: 0 5px 0 14px; border-radius: 99px; background: #F1F1F2; font-size: 12px; color: #8A8A90; }
+.snd { width: 32px; height: 32px; border-radius: 50%; background: #1C1C1E; color: #fff; display: grid; place-items: center; }
+.snd .i { width: 14px; height: 14px; }
+.glow { position: relative; box-shadow: 0 0 0 3px #fff, 0 0 0 6px #CFB783, 0 0 22px 6px rgba(207,183,131,.75); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 3px #fff, 0 0 0 6px #CFB783, 0 0 34px 12px rgba(207,183,131,.45); } }
+.guide { display: flex; align-items: center; gap: 10px; padding: 0 6px 0 7px; border-radius: 99px; background: #1C1C1E; color: #fff; }
+.guide .g-step { font-size: 11px; color: #CFB783; letter-spacing: .3px; text-transform: uppercase; }
+.g-dots { display: flex; gap: 4px; } .g-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); }
+.g-dots .d { background: #2F8F5B; } .g-dots .n { background: #fff; width: 18px; border-radius: 99px; }
+.guide p { margin: 0 auto 0 6px; font-size: 13px; font-weight: 400; } .guide p b { font-weight: 500; }
+.guide .btn-l { background: rgba(255,255,255,.12); color: #fff; height: 32px; }
+.guide .btn-d { background: #fff; color: #1C1C1E; height: 32px; }
+.guide .rnd.sm { background: transparent; box-shadow: none; color: #fff; }
+.cmp { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; border-radius: 16px; overflow: hidden; }
+.cmp th, .cmp td { padding: 12px 16px; border-bottom: 1px solid #EDEDEF; text-align: left; vertical-align: top; }
+.cmp th { background: #F7F7F8; font-weight: 500; font-size: 12.5px; color: #5E5E63; }
+.cmp tr:last-child td { border-bottom: 0; } .cmp td:first-child { font-weight: 500; width: 22%; }
+"""
+
+page = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ask Luex Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{CSS}{AI_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Where the AI help lives: two options</h1>
+  <p class="lead">In both, the AI is part of the frame like the nav and header. It never reloads, keeps the conversation as you move between modules, and never covers the records or the detail window. The thing it's pointing at glows.</p>
+
+  <h2>Option A: a dedicated spot, always on</h2>
+  <p class="lead">A fixed column on the right, always showing. The records window gives up the space: two cards across instead of three, and fewer filters showing.</p>
+  <div class="frame">{ai_frame("always")}</div>
+
+  <h2>Option B: there when you want it</h2>
+  <p class="lead">Closed, the page uses the full width and an "Ask Luex" button sits in the header. Open, it looks exactly like Option A. When you follow its steps, it folds into this guide bar:</p>
+  <div class="frame">{ai_frame("closed")}</div>
+  <p class="lead" style="margin-top:22px">Following steps: a one-line guide under the header, with Back, Next and "Open chat" to unfold the conversation again.</p>
+  <div class="frame">{ai_frame("guide")}</div>
+
+  <h2>Side by side</h2>
+  <table class="cmp"><thead><tr><th></th><th>A: always on</th><th>B: open when needed</th></tr></thead><tbody>
+    <tr><td>Always visible</td><td>Yes, all the time</td><td>Chat or guide bar while in use; a button when closed</td></tr>
+    <tr><td>Space for records</td><td>Always about a quarter narrower</td><td>Full width most of the day</td></tr>
+    <tr><td>Following instructions</td><td>Chat and glowing button side by side</td><td>Guide bar plus glowing button, with the full page visible</td></tr>
+    <tr><td>Smaller laptops</td><td>Tight: records drop to list view</td><td>Fine when closed</td></tr>
+    <tr><td>Phone</td><td>Can't be always on; becomes a sheet</td><td>Sheet, then the guide bar</td></tr>
+  </tbody></table>
+</div>
+<script>{JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-ai-options.html").write_text(page)
+print("wrote app-ai-options.html", len(page))
