@@ -840,3 +840,31 @@ page12 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-final.html").write_text(page12)
 print("wrote app-final.html", len(page12))
+
+# =============================================================== refined icons (Lucide, ISC licence) + centred, premium chip
+M.P.update({
+ "layers": '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>',
+ "shieldok": '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+ "hourglass": '<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>',
+ "alert": '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+})
+HEAD_NEW2 = f'<div class="mw-h"><span class="tico hd" style="--c:var(--amber)">{M.ic("hourglass")}</span><b>Due soon</b>'
+CHIP_CSS = """
+.tico { width: 30px; height: 30px; border-radius: 10px; position: relative;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 10%, #fff) 0%, color-mix(in srgb, var(--c) 22%, #fff) 100%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 22%, transparent), inset 0 1px 0 rgba(255,255,255,.8);
+  color: color-mix(in srgb, var(--c) 80%, #000); }
+.tico .i, .t-top .tico .i { margin: 0 !important; width: 15px; height: 15px; stroke-width: 1.75; color: inherit; }
+.tile:first-child .tico { background: linear-gradient(160deg, #FAFAFA, #EDEDED); box-shadow: inset 0 0 0 1px #E2E2E2, inset 0 1px 0 #fff; color: #141414; }
+.dark .tico { background: linear-gradient(160deg, color-mix(in srgb, var(--c) 14%, transparent), color-mix(in srgb, var(--c) 28%, transparent)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 30%, transparent); color: color-mix(in srgb, var(--c) 70%, #fff); }
+.dark .tile:first-child .tico { background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); color: #F5F3EF; }
+.tile.sel .tico, .dark .tile.sel .tico { background: linear-gradient(160deg, #F6E8C4 0%, #CFB783 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 4px 10px -4px rgba(207,183,131,.6); color: #141414; }
+.tico.hd { width: 34px; height: 34px; border-radius: 11px; } .tico.hd .i { width: 17px; height: 17px; }
+"""
+def final_frame2(dark=False):
+    h = iconify(best_frame(dark), SETS["A"][2])
+    return h.replace(HEAD_OLD, HEAD_NEW2)
+page13 = page12.replace(f"{FIN_CSS}</style>", f"{FIN_CSS}{CHIP_CSS}</style>")
+page13 = page13.replace(final_frame(), final_frame2()).replace(final_frame(True), final_frame2(True))
+pathlib.Path(__file__).with_name("app-final.html").write_text(page13)
+print("wrote app-final.html v2", len(page13))
