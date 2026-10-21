@@ -41,7 +41,7 @@ hero = f"""
     <div class="hero-in" id="heroIn">
       <p class="kicker"><i class="ic"></i><span>Every business. Every team. One place.</span></p>
       <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
-      <p class="sub cap18">Rotas, timesheets, compliance and jobs, all connected.</p>
+      <p class="sub cap18">Over 60 tools working together. Enter it once, see it everywhere.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
       <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
       <p class="trust">14-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
@@ -254,7 +254,7 @@ extra_css = """
 .hero.dune h1.d110 { font-size: 84px; line-height: 88px; letter-spacing: -4.6px; width: 1200px; }
 .hero.dune h1 { top: 150px; color: var(--ink); }
 .hero.dune h1 em, .hero.dune h1 .dot { color: var(--accent); }
-.hero.dune .sub { top: 346px; color: var(--ink2); width: 560px; }
+.hero.dune .sub { top: 346px; color: var(--ink2); width: 760px; }
 .replaces { position: absolute; top: 390px; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .replaces .rl { font-family: var(--body); font-size: 14px; letter-spacing: .4px; text-transform: uppercase; color: var(--ink3); margin-right: 4px; }
 .replaces s { font-family: var(--head); font-size: 14px; color: #6B6455; text-decoration: none; position: relative; padding: 6px 13px; border-radius: 99px; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(20,20,20,.08); }
