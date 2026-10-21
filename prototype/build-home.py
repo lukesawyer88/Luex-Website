@@ -45,7 +45,7 @@ hero = f"""
       <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
     </div>
     <div class="showcase">
-      <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div>{DASH}</div>
+      <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div>{slot("APP SCREEN: Dashboard. Real screenshot goes here", "1120 × 662")}</div>
       <div class="phone"><div class="notch"></div>{slot("APP SCREEN: Staff app on phone", "390 × 844")}</div>
     </div>
   </section>
