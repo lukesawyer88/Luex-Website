@@ -34,14 +34,17 @@ TRIAL, DEMO = "Start free trial", "Book a demo"
 # ---------------------------------------------------------------- 1 hero
 hero = f"""
 <div class="hero-wrap" id="top">
-  <section class="hero">
-    {slot("PICTURE OR VIDEO: Luex open on a laptop in a real workplace", "full screen · 1440 × 900", True, "bg")}
+  <section class="hero dune">
+    <img class="hero-img" src="img/dune-hero.webp" width="1536" height="1024" alt="Calm desert dunes at golden hour">
     <div class="hero-in" id="heroIn">
-      <p class="kicker"><i class="ic w"></i><span>Everything your business runs on.</span></p>
+      <p class="kicker"><i class="ic"></i><span>Everything your business runs on.</span></p>
       <h1 class="d110 split">Your business,<br>in <em>one</em> place<span class="dot">.</span></h1>
       <p class="sub cap18">Staff, rotas, timesheets, compliance, jobs and money. One app, on every device.</p>
       <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
-      <div class="marks">{"".join(f'<span class="mk"><i></i>{w}</span>' for w in ["Construction", "Facilities", "Care", "Trades"])}</div>
+    </div>
+    <div class="showcase">
+      <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div>{slot("APP SCREEN: Dashboard. Real screenshot goes here", "1120 × 700")}</div>
+      <div class="phone"><div class="notch"></div>{slot("APP SCREEN: Staff app on phone", "390 × 844")}</div>
     </div>
   </section>
 </div>"""
@@ -230,11 +233,51 @@ extra_css = """
 .slot.logo { width: 100px; height: 44px; padding: 0; } .slot.logo::before { inset: 4px; } .slot.logo span { font-size: 9px; }
 .badges { display: flex; gap: 10px; }
 .badges .slot { width: 130px; height: 44px; padding: 0; } .badges .slot::before { inset: 4px; } .badges .slot span { font-size: 8.5px; }
-.hero .slot.bg { padding-bottom: 32px; }
 .closing .slot.bg { padding-bottom: 40px; }
 .qs-img > .slot { position: absolute; inset: 0; }
 .cl-in .ctas, .hero .ctas { z-index: 1; }
-@media (max-width: 809px) { .badges { flex-wrap: wrap; } .slot.bg { padding: 20px; } }
+/* ---------- Venus / Dune palette ---------- */
+:root { --ink: #141414; --ink2: #4A4740; --ink3: #77664B; --ink4: #8E8778; --accent: #A68B55; --cream: #F3EEE4; --dot: #CFC6B4; --line: #E9E3D7; }
+.h60 .soft, .h52 .soft, .d110 .soft { color: #A69A84; }
+.btn.white { background: rgba(255,255,255,.88); }
+
+/* ---------- hero: desert, dark text, dashboard rising from the sand ---------- */
+.hero-wrap { height: auto; margin-bottom: 0; }
+.hero.dune { position: relative; height: 1440px; color: var(--ink); clip-path: none; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.hero.dune::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(transparent, var(--g7)); pointer-events: none; }
+.hero.dune .kicker { top: 136px; color: var(--ink); }
+.hero.dune h1 { top: 180px; color: var(--ink); }
+.hero.dune h1 em, .hero.dune h1 .dot { color: var(--accent); }
+.hero.dune .sub { top: 436px; color: var(--ink2); width: 440px; }
+.hero.dune .ctas { top: 524px; }
+.showcase { position: absolute; left: 50%; top: 640px; translate: -50% 0; width: 1120px; max-width: calc(100% - 48px); z-index: 2; }
+.win { border-radius: 14px; overflow: hidden; background: rgba(255,255,255,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 40px 80px -30px rgba(70,50,20,.45), 0 0 0 1px rgba(255,255,255,.6); }
+.win-bar { height: 38px; display: flex; align-items: center; gap: 7px; padding: 0 16px; background: rgba(255,255,255,.65); border-bottom: 1px solid rgba(20,20,20,.06); }
+.win-bar i { width: 10px; height: 10px; border-radius: 50%; background: #D8D0C0; }
+.win-bar span { margin-left: auto; margin-right: auto; font-family: var(--mono); font-size: 11px; color: #8E8778; padding-right: 44px; }
+.win .slot { aspect-ratio: 1120 / 662; height: auto; background: #F4F0E8; }
+.phone { position: absolute; right: -40px; bottom: -60px; width: 220px; aspect-ratio: 390 / 844; border-radius: 38px; background: #141414; padding: 9px; box-shadow: 0 30px 60px -20px rgba(40,30,10,.55); }
+.phone .slot { border-radius: 30px; background: #F4F0E8; padding: 14px; }
+.phone .slot span { font-size: 10px; }
+.notch { position: absolute; top: 18px; left: 50%; translate: -50% 0; width: 70px; height: 20px; border-radius: 99px; background: #141414; z-index: 2; }
+.hero.dune + * { z-index: 1; }
+.caps { padding-top: 0; } .hero-wrap + .caps .head-c { padding-top: 72px; }
+
+@media (max-width: 1200px) { .phone { right: -10px; width: 180px; } }
+@media (max-width: 809px) {
+  .badges { flex-wrap: wrap; } .slot.bg { padding: 20px; }
+  .hero.dune { height: auto; min-height: 0; padding: 112px 16px 80px; }
+  .hero.dune .hero-in { position: relative; transform: none !important; }
+  .hero.dune .kicker, .hero.dune h1, .hero.dune .sub, .hero.dune .ctas { position: relative; top: auto; left: auto; translate: none; }
+  .hero.dune .kicker { justify-content: center; white-space: normal; }
+  .hero.dune h1 { width: auto; margin-top: 18px; }
+  .hero.dune .sub { width: auto; margin-top: 18px; text-align: center; }
+  .hero.dune .ctas { margin-top: 24px; }
+  .showcase { position: relative; left: auto; top: auto; translate: none; width: 100%; max-width: none; margin-top: 48px; }
+  .win-bar { height: 26px; } .win-bar span { display: none; }
+  .phone { width: 88px; right: -4px; bottom: -28px; border-radius: 22px; padding: 5px; } .phone .slot { border-radius: 18px; padding: 6px; } .phone .slot span { font-size: 7px; } .notch { width: 36px; height: 10px; top: 10px; }
+}
 """
 
 css = (HERE / "blank.css").read_text() + extra_css
