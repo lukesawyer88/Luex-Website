@@ -52,7 +52,7 @@ hero = f"""
       <p class="sub cap18">Over <b class="b60">60</b> tools working together.<br>Enter it once, see it everywhere.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
       <div class="ctas">{btn_trial(TRIAL)}{btn_logo(DEMO)}</div>
-      <p class="trust">14-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
+      <p class="trust">30-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
     </div>
     <div class="showcase">
       <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div><iframe class="appframe" src="app-screen-light.html" title="Luex app: Compliance page" loading="eager" scrolling="no"></iframe></div>
@@ -160,7 +160,7 @@ pricing = f"""
 <section class="pricing" id="pricing">
   <div class="head-l">
     {tag("PRICING")}
-    <div class="row-b"><h2 class="h60">Simple pricing.<br><span class="soft">No surprises.</span></h2><p class="cap18 right" style="width:633px;align-self:end;margin-bottom:5px">Try every app free for 14 days.</p></div>
+    <div class="row-b"><h2 class="h60">Simple pricing.<br><span class="soft">No surprises.</span></h2><p class="cap18 right" style="width:633px;align-self:end;margin-bottom:5px">Try every app free for 30 days.</p></div>
     <div class="row-b2"><p class="cap18" style="width:600px">Start with one app or go straight to the hub. No card needed for the trial, and you can upgrade at any time.</p><div class="tiny-logos">{"".join('<i></i>' for _ in range(4))}</div></div>
   </div>
   <div class="plans">{plan_html}</div>
@@ -170,7 +170,7 @@ pricing = f"""
 
 # ---------------------------------------------------------------- 6 questions
 faq_items = [
-    ("How does the free trial work?", "Sign up, add your team and use every app for 14 days. You don't need a card to start, and nothing is charged unless you choose a plan."),
+    ("How does the free trial work?", "Sign up, add your team and use every app for 30 days. You don't need a card to start, and nothing is charged unless you choose a plan."),
     ("Can I start with just one app?", "Yes. Each single app is priced by the size of your team. When you want more, upgrade to the Luex Hub and everything you've already entered comes with you."),
     ("What's the difference between a full and a light user?", "Full users manage and see everything. Light users fill in forms and timesheets, book time off and read documents, which is all most staff need."),
     ("Does it work on phones?", "Yes. Luex works on a computer, a tablet and a phone, so the office, the site and the van all use the same app."),
@@ -192,7 +192,7 @@ closing = f"""
 <section class="closing" id="demo">
   {slot("PICTURE: a calm, organised workplace using Luex", "full screen · 1440 × 1080", True, "bg")}
   <div class="cl-in">
-    <p class="kicker"><i class="ic w"></i><span>14 days free. No card needed.</span></p>
+    <p class="kicker"><i class="ic w"></i><span>30 days free. No card needed.</span></p>
     <h2 class="d110 split" style="width:900px">Try Luex<br>free today.</h2>
     <div class="ctas">{btn_trial(TRIAL)}{btn_logo(DEMO)}</div>
   </div>
@@ -273,7 +273,7 @@ extra_css = """
 .replaces .rl { font-family: var(--body); font-size: 14px; letter-spacing: .4px; text-transform: uppercase; color: var(--ink); font-weight: 700; -webkit-text-stroke: .5px var(--ink); margin-right: 4px; }
 .replaces s { font-family: var(--head); font-size: 14px; color: #6B6455; text-decoration: none; position: relative; padding: 6px 13px; border-radius: 99px; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(20,20,20,.08); }
 .replaces s::after { content: ""; position: absolute; left: 10px; right: 10px; top: 50%; height: 1.5px; background: #141414; transform: rotate(-4deg); }
-.trust { position: absolute; top: 536px; left: 50%; translate: -50% 0; white-space: nowrap; font-family: var(--head); font-size: 13.5px; color: var(--ink2); }
+.trust { position: absolute; top: 536px; left: 50%; translate: -50% 0; white-space: nowrap; font-family: var(--head); font-size: 13.5px; font-weight: 500; color: var(--ink); }
 .trust i { font-style: normal; color: #A68B55; margin: 0 6px; }
 .hero.dune .ctas { top: 470px; }
 .showcase { position: absolute; left: 50%; top: 582px; translate: -50% 0; width: 1120px; max-width: calc(100% - 48px); z-index: 2; }
