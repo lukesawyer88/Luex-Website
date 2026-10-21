@@ -1,0 +1,483 @@
+<title>Luex Journey</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: scene 1 is a living landscape (still photo animated in WebGL: water, mist, flowers, sun) with real Luex
+   screens on the laptop, tablet and phone. Scrolling pulls the camera back and mist rolls in to carry you to the next area. */
+:root {
+  --ultramarine: #263E92; --midnight: #141E43; --night: #0C1330;
+  --gold: #AF955C; --gold-soft: #CDB27A; --mineral: #9A9DA9; --chalk: #E5E4DF; --paper: #F3F2EE;
+  --ink: #141E43; --ink-soft: #4A5170; --sky: #C8D2F5;
+  --line-dark: rgba(229,228,223,.14); --line-light: rgba(20,30,67,.12);
+  --glass: rgba(14,22,52,.5); --glass-line: rgba(229,228,223,.18);
+  --ok: #2F8F5B; --warn: #C98A1B; --bad: #C2413A; --info: #263E92;
+  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans: "Manrope", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --step--1: clamp(.78rem, .75rem + .15vw, .85rem);
+  --step-0: clamp(1rem, .96rem + .2vw, 1.1rem);
+  --step-1: clamp(1.2rem, 1.1rem + .5vw, 1.45rem);
+  --step-2: clamp(1.6rem, 1.3rem + 1.4vw, 2.4rem);
+  --step-3: clamp(2.3rem, 1.6rem + 3.2vw, 4.2rem);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--night); color: var(--chalk); font-family: var(--sans); font-size: var(--step-0); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--night); }
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 300; margin: 0; text-wrap: balance; letter-spacing: -.015em; }
+h1 em, h2 em { font-style: italic; color: var(--sky); }
+p { margin: 0; }
+.wrap { width: 100%; max-width: 1280px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 760px) { .wrap { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); } }
+.eyebrow { font-size: var(--step--1); font-weight: 600; letter-spacing: .32em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 14px; color: var(--gold-soft); }
+.eyebrow::after { content: ""; width: 40px; height: 1px; background: var(--gold); }
+.btn { display: inline-flex; align-items: center; gap: 12px; font-family: var(--sans); font-size: var(--step--1); font-weight: 600; letter-spacing: .22em; text-transform: uppercase; text-decoration: none; padding: 15px 24px; border: 1px solid currentColor; background: transparent; cursor: pointer; transition: background .25s, color .25s, border-color .25s; color: inherit; }
+.btn .arrow { width: 28px; height: 1px; background: currentColor; position: relative; }
+.btn .arrow::after { content: ""; position: absolute; right: 0; top: -3px; width: 7px; height: 7px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
+.btn-gold { background: var(--gold); border-color: var(--gold); color: var(--midnight); }
+.btn-gold:hover { background: var(--chalk); border-color: var(--chalk); }
+.btn-line { color: var(--chalk); border-color: rgba(229,228,223,.45); }
+.btn-line:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ---------- Nav ---------- */
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 50; transition: background .35s, border-color .35s; border-bottom: 1px solid transparent; }
+.nav.solid { background: rgba(12,19,48,.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--line-dark); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 18px; }
+.logo { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; color: var(--chalk); }
+.logo svg.mark { width: 34px; height: 30px; }
+.logo svg.word { width: 82px; height: 20px; }
+.nav-links { display: none; gap: 34px; list-style: none; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; font-size: var(--step--1); font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: rgba(229,228,223,.82); }
+.nav-links a:hover { color: var(--gold); }
+.nav .btn { padding: 11px 18px; }
+@media (min-width: 960px) { .nav-links { display: flex; } }
+@media (max-width: 480px) { .nav .btn .arrow { display: none; } .nav .btn { letter-spacing: .14em; padding: 10px 14px; } }
+
+/* ---------- Scene 1: the living landscape ---------- */
+.journey { position: relative; height: 260vh; }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--night); }
+.world { position: absolute; inset: 0; transform-origin: 40% 50%; will-change: transform; }
+.world > img.still, .world > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.world > img.still { object-fit: cover; object-position: 30% 50%; }
+.world > canvas { opacity: 0; transition: opacity .6s; }
+.world.live > canvas { opacity: 1; }
+.scr { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; visibility: hidden; color: #1A2140; font-family: var(--sans); background: #F7F7F4; }
+.scr.placed { visibility: visible; }
+.scr::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(118deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 36%), linear-gradient(180deg, rgba(20,30,67,0) 55%, rgba(20,30,67,.12) 100%); }
+#scrLaptop { width: 1280px; height: 800px; border-radius: 4px; }
+#scrTablet { width: 768px; height: 1024px; border-radius: 10px; }
+#scrPhone { width: 390px; height: 844px; border-radius: 40px; }
+
+/* Laptop: dashboard home */
+.d { display: grid; grid-template-columns: 76px 1fr; height: 100%; }
+.d-rail { background: var(--midnight); display: grid; align-content: start; justify-items: center; gap: 22px; padding-top: 24px; }
+.d-rail svg { width: 36px; height: 32px; margin-bottom: 6px; }
+.d-rail i { width: 26px; height: 26px; border-radius: 7px; background: rgba(229,228,223,.2); display: block; }
+.d-rail i.on { background: var(--gold); }
+.d-main { padding: 30px 34px; display: grid; gap: 22px; align-content: start; }
+.d-top { display: flex; align-items: end; gap: 20px; }
+.d-top h5 { flex: 1; margin: 0; font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 1; }
+.d-top h5 small { display: block; font-family: var(--sans); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #7A8099; margin-bottom: 10px; }
+.d-search { width: 300px; height: 42px; border-radius: 99px; background: #ECECE7; display: flex; align-items: center; padding-inline: 18px; font-size: 14px; color: #8B90A3; }
+.d-bell { width: 42px; height: 42px; border-radius: 50%; background: #ECECE7; position: relative; }
+.d-bell::after { content: "3"; position: absolute; top: -4px; right: -4px; width: 19px; height: 19px; border-radius: 50%; background: var(--bad); color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+.d-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.d-tile { background: #fff; border-radius: 14px; padding: 16px 18px; border-top: 4px solid var(--c); }
+.d-tile b { display: block; font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 1.05; }
+.d-tile span { font-size: 13px; color: #6B7189; }
+.d-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; }
+.d-card { background: #fff; border-radius: 14px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; font-size: 15px; }
+.d-card .lbl { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #7A8099; font-weight: 700; }
+.todo { display: grid; grid-template-columns: 18px 1fr auto; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #EEEEE9; }
+.todo:last-child { border-bottom: 0; }
+.todo i { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #C7CADB; display: block; }
+.todo em { font-style: normal; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: #EEF1FB; color: var(--ultramarine); }
+.bar { height: 10px; border-radius: 99px; background: #ECECE7; overflow: hidden; }
+.bar i { display: block; height: 100%; width: var(--w); background: var(--c); }
+.big { font-family: var(--serif); font-weight: 400; font-size: 46px; line-height: 1; }
+/* Tablet: rota */
+.r { padding: 46px 40px; display: grid; gap: 30px; align-content: start; height: 100%; }
+.r-top { display: flex; justify-content: space-between; align-items: end; }
+.r-top h5 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 62px; line-height: 1; }
+.r-top span { font-size: 22px; color: #7A8099; }
+.days { display: grid; grid-template-columns: 70px repeat(5, 1fr); gap: 12px; font-size: 20px; }
+.days .dn { text-align: center; color: #7A8099; font-weight: 600; }
+.days .who i { width: 52px; height: 52px; border-radius: 50%; background: var(--c); display: block; }
+.days .s { height: 66px; border-radius: 12px; background: #E9ECF7; }
+.days .s.on { background: var(--ultramarine); }
+.days .s.am { background: #DCC79A; }
+.days .s.x { background: repeating-linear-gradient(135deg, #F6DCDA 0 10px, #FBEDEC 10px 20px); border: 3px solid var(--bad); }
+.r-alert { background: #FBEDEC; border-left: 9px solid var(--bad); border-radius: 12px; padding: 24px 28px; font-size: 22px; line-height: 1.4; }
+.r-alert b { display: block; font-size: 25px; }
+.r-legend { display: flex; gap: 22px; font-size: 18px; color: #6B7189; }
+.r-legend span::before { content: ""; display: inline-block; width: 16px; height: 16px; border-radius: 4px; background: var(--c); margin-right: 8px; vertical-align: -2px; }
+/* Phone: clock in */
+.p { height: 100%; display: grid; grid-template-rows: auto auto 1fr auto; padding: 74px 28px 40px; gap: 26px; background: linear-gradient(180deg, #F7F7F4 0 60%, #EEF1FB 100%); position: relative; }
+.p::before { content: ""; position: absolute; top: 14px; left: 50%; translate: -50% 0; width: 116px; height: 34px; border-radius: 99px; background: #0B0E18; }
+.p small { font-size: 18px; color: #7A8099; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.p h6 { margin: 4px 0 0; font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 1.05; }
+.p .site { background: #fff; border-radius: 22px; padding: 22px; font-size: 20px; line-height: 1.35; }
+.p .site b { display: block; }
+.p .site em { font-style: normal; color: var(--ok); font-weight: 700; }
+.p .clock { align-self: center; justify-self: center; width: 230px; aspect-ratio: 1; border-radius: 50%; background: var(--midnight); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 28px; box-shadow: 0 0 0 16px rgba(38,62,146,.12), 0 0 0 34px rgba(38,62,146,.06); }
+.p .week { display: flex; justify-content: space-between; align-items: baseline; font-size: 19px; }
+.p .week b { font-family: var(--serif); font-weight: 400; font-size: 28px; }
+
+.shade { position: absolute; inset: 0; pointer-events: none; background:
+  radial-gradient(55% 60% at 80% 18%, rgba(12,19,48,.72), rgba(12,19,48,0) 75%),
+  linear-gradient(180deg, rgba(12,19,48,.6) 0%, rgba(12,19,48,0) 18%, rgba(12,19,48,0) 78%, rgba(12,19,48,.75) 100%); }
+.hero-copy { position: absolute; z-index: 3; right: max(40px, 5vw); top: clamp(92px, 12vh, 130px); width: min(40vw, 540px); display: grid; gap: 18px; }
+.hero-copy h1 { font-size: clamp(2.6rem, 1.3rem + 3.2vw, 4.3rem); line-height: .98; }
+.hero-copy .lede { font-family: var(--serif); font-weight: 300; font-size: var(--step-1); line-height: 1.45; color: rgba(229,228,223,.88); max-width: 30ch; }
+.hero-copy .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.chapter { position: absolute; z-index: 3; left: max(40px, 4vw); bottom: 34px; display: flex; gap: 18px; align-items: center; font-size: var(--step--1); letter-spacing: .26em; text-transform: uppercase; color: rgba(229,228,223,.75); }
+.chapter b { color: var(--gold-soft); font-weight: 700; }
+.chapter i { width: 1px; height: 34px; background: linear-gradient(var(--gold), transparent); display: block; }
+.next-veil { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; background:
+  radial-gradient(120% 90% at 50% 60%, rgba(205,212,232,.95), rgba(150,165,205,.92) 45%, rgba(20,30,67,.96) 100%); }
+.next-copy { position: absolute; z-index: 5; inset: 0; display: grid; place-items: center; text-align: center; opacity: 0; pointer-events: none; padding-inline: 16px; }
+.next-copy h2 { font-size: var(--step-3); line-height: 1.04; color: var(--midnight); }
+.next-copy h2 em { color: var(--ultramarine); }
+.next-copy p { margin-top: 14px; color: var(--ink-soft); font-size: var(--step--1); letter-spacing: .26em; text-transform: uppercase; font-weight: 600; }
+
+@media (max-width: 899px) {
+  .journey { height: auto; }
+  .stage { position: relative; height: auto; overflow: visible; display: grid; }
+  .hero-copy { position: relative; right: auto; top: auto; width: auto; order: 1; padding: 96px max(16px, env(safe-area-inset-right, 0px)) 28px max(16px, env(safe-area-inset-left, 0px)); }
+  .hero-copy h1 { font-size: clamp(2.5rem, 11vw, 3.5rem); }
+  .world { position: relative; inset: auto; order: 2; aspect-ratio: 4 / 3.6; }
+  .world > img.still { object-position: 0% 50%; }
+  .shade { background: linear-gradient(180deg, rgba(12,19,48,.65) 0%, rgba(12,19,48,0) 22%, rgba(12,19,48,0) 80%, rgba(12,19,48,.8) 100%); }
+  .chapter, .next-veil, .next-copy { display: none; }
+}
+
+/* ---------- Next area (placeholder for scene 2) ---------- */
+.area2 { position: relative; background: linear-gradient(180deg, #2A3A78 0%, var(--night) 38%); }
+.area2 .wrap { padding-block: clamp(80px, 10vw, 140px); display: grid; gap: 40px; }
+.area2 .intro { display: grid; gap: 18px; justify-items: center; text-align: center; }
+.area2 h2 { font-size: var(--step-3); line-height: 1.04; max-width: 18ch; }
+.area2 .intro p { color: rgba(229,228,223,.78); max-width: 52ch; }
+.chain { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 900px) { .chain { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
+.link { display: grid; gap: 10px; align-content: start; padding: 24px 24px 26px; background: rgba(229,228,223,.04); border: 1px solid var(--line-dark); }
+.link .where { font-size: var(--step--1); letter-spacing: .26em; text-transform: uppercase; color: var(--gold-soft); font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.link .where i { width: 8px; height: 8px; background: var(--c); transform: rotate(16deg); display: block; }
+.link p { font-family: var(--serif); font-weight: 300; font-size: var(--step-1); line-height: 1.3; }
+.link small { color: var(--mineral); font-size: var(--step--1); }
+.todo-note { border: 1px dashed rgba(205,178,122,.5); padding: 18px 20px; color: var(--gold-soft); font-size: var(--step--1); text-align: center; }
+
+.preview-flag { position: fixed; z-index: 70; left: max(12px, env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); background: var(--gold); color: var(--midnight); font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; padding: 7px 11px; }
+@media (prefers-reduced-motion: reduce) { .btn, .nav, .world > canvas { transition: none; } }
+</style>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Luex home">
+      <svg class="mark" viewBox="0 0 68 60" aria-hidden="true"><rect x="2" y="6" width="14" height="14" rx="1.5" fill="#E5E4DF"/><rect x="16" y="18" width="26" height="26" rx="2" fill="#E5E4DF"/><rect x="38" y="2" width="22" height="22" rx="2" fill="#3A56C4" transform="rotate(16 49 13)"/><rect x="4" y="38" width="16" height="16" rx="1.5" fill="#AF955C"/></svg>
+      <svg class="word" viewBox="-1 -2 90 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" aria-hidden="true"><path d="M1 0 V20 H13"/><path d="M25 0 V12.5 a6.5 6.5 0 0 0 13 0 V0"/><path d="M50 1 H63 M50 10 H63 M50 19 H63"/><path d="M74 0 L87 20 M87 0 L74 20"/></svg>
+    </a>
+    <ul class="nav-links"><li><a href="#area2">The hub</a></li><li><a href="#area2">Apps</a></li><li><a href="#area2">Pricing</a></li><li><a href="#area2">About</a></li></ul>
+    <a class="btn btn-gold" href="#area2">Join the waitlist <span class="arrow"></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="journey" id="journey">
+    <div class="stage" id="stage">
+      <div class="world" id="world">
+        <img class="still" id="still" src="img/scene1/scene.webp" width="1672" height="941" alt="Luex on a laptop, tablet and phone, resting on a lapis lazuli rock above a misty mountain lake at sunrise" fetchpriority="high">
+        <canvas id="gl" aria-hidden="true"></canvas>
+
+        <div class="scr" id="scrLaptop" aria-hidden="true">
+          <div class="d">
+            <div class="d-rail">
+              <svg viewBox="0 0 68 60"><rect x="2" y="6" width="14" height="14" rx="1.5" fill="#E5E4DF"/><rect x="16" y="18" width="26" height="26" rx="2" fill="#E5E4DF"/><rect x="38" y="2" width="22" height="22" rx="2" fill="#3A56C4" transform="rotate(16 49 13)"/><rect x="4" y="38" width="16" height="16" rx="1.5" fill="#AF955C"/></svg>
+              <i class="on"></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="d-main">
+              <div class="d-top"><h5><small>Thursday 29 January</small>Good morning, Ciara</h5><div class="d-search">Search everything</div><div class="d-bell"></div></div>
+              <div class="d-tiles">
+                <div class="d-tile" style="--c: var(--info)"><b>50</b><span>Rostered today</span></div>
+                <div class="d-tile" style="--c: var(--ok)"><b>37</b><span>On site now</span></div>
+                <div class="d-tile" style="--c: var(--warn)"><b>14</b><span>Timesheets to approve</span></div>
+                <div class="d-tile" style="--c: var(--bad)"><b>8</b><span>Certificates expired</span></div>
+              </div>
+              <div class="d-grid">
+                <div class="d-card">
+                  <span class="lbl">Needs you today</span>
+                  <div class="todo"><i></i><span>Book CSCS renewal for Seán Byrne</span><em>Compliance</em></div>
+                  <div class="todo"><i></i><span>Approve 14 timesheets</span><em>Time</em></div>
+                  <div class="todo"><i></i><span>Sign off telehandler TH-04 repair</span><em>Assets</em></div>
+                  <div class="todo"><i></i><span>Send quote for Kingsway refit</span><em>CRM</em></div>
+                </div>
+                <div class="d-card">
+                  <span class="lbl">Compliance score</span><span class="big">96%</span>
+                  <div class="bar" style="--w:96%; --c: var(--ok)"><i></i></div>
+                  <span style="color:#6B7189;font-size:13px">Up from 91% last month</span>
+                  <span class="lbl" style="margin-top:8px">Sites</span>
+                  <span>Docklands Block C · Kingsway · Ringsend · Unit 7</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scr" id="scrTablet" aria-hidden="true">
+          <div class="r">
+            <div class="r-top"><h5>Rota</h5><span>Week of 2 Feb</span></div>
+            <div class="days">
+              <span></span><span class="dn">Mon</span><span class="dn">Tue</span><span class="dn">Wed</span><span class="dn">Thu</span><span class="dn">Fri</span>
+              <span class="who"><i style="--c:#263E92"></i></span><span class="s x"></span><span class="s x"></span><span class="s on"></span><span class="s on"></span><span class="s"></span>
+              <span class="who"><i style="--c:#AF955C"></i></span><span class="s on"></span><span class="s am"></span><span class="s on"></span><span class="s"></span><span class="s on"></span>
+              <span class="who"><i style="--c:#9A9DA9"></i></span><span class="s am"></span><span class="s on"></span><span class="s"></span><span class="s on"></span><span class="s on"></span>
+              <span class="who"><i style="--c:#141E43"></i></span><span class="s on"></span><span class="s on"></span><span class="s am"></span><span class="s on"></span><span class="s"></span>
+              <span class="who"><i style="--c:#2F8F5B"></i></span><span class="s"></span><span class="s on"></span><span class="s on"></span><span class="s am"></span><span class="s on"></span>
+            </div>
+            <div class="r-alert"><b>Can't book Seán on Mon or Tue</b>His CSCS card runs out on 2 Feb. Renew it in Compliance to unlock these shifts.</div>
+            <div class="r-legend"><span style="--c:#263E92">Day</span><span style="--c:#DCC79A">Early</span><span style="--c:#C2413A">Blocked</span></div>
+          </div>
+        </div>
+
+        <div class="scr" id="scrPhone" aria-hidden="true">
+          <div class="p">
+            <div><small>Thursday</small><h6>Morning, Aoife</h6></div>
+            <div class="site"><b>Docklands Block C</b><em>You're on site</em></div>
+            <div class="clock">Clock in</div>
+            <div class="week"><span>This week</span><b>31h 45m</b></div>
+          </div>
+        </div>
+
+        <div class="shade"></div>
+      </div>
+
+      <div class="hero-copy" id="heroCopy">
+        <span class="eyebrow">Business software, connected</span>
+        <h1>Organisation opens <em>freedom.</em></h1>
+        <p class="lede">Every tool your business runs on, connected in one hub. On the desk, on site and in your pocket.</p>
+        <div class="ctas">
+          <a class="btn btn-gold" href="#area2">Join the waitlist <span class="arrow"></span></a>
+          <a class="btn btn-line" href="#area2">See how it works</a>
+        </div>
+      </div>
+      <div class="chapter" id="chapter"><i></i><span><b>01</b> Lapis Lazuli</span><span>Scroll to explore</span></div>
+      <div class="next-veil" id="veil"></div>
+      <div class="next-copy" id="nextCopy"><div><h2>One change, and <em>everything follows.</em></h2><p>02 · Connected</p></div></div>
+    </div>
+  </section>
+
+  <section class="area2" id="area2">
+    <div class="wrap">
+      <div class="intro">
+        <span class="eyebrow">02 · Connected</span>
+        <h2>One change, and <em>everything follows.</em></h2>
+        <p>Every tool in Luex shares the same people, sites and records, so when something changes in one place, the rest of the business knows straight away.</p>
+      </div>
+      <div class="chain">
+        <div class="link" style="--c:#E0A33A"><span class="where"><i></i>Compliance</span><p>Seán's CSCS card is 12 days from expiring.</p><small>Picked up from the date on file.</small></div>
+        <div class="link" style="--c:#E05A50"><span class="where"><i></i>Rota</span><p>He can't be booked on site after it runs out.</p><small>The block applies everywhere, not just one screen.</small></div>
+        <div class="link" style="--c:#4FBF83"><span class="where"><i></i>Tasks</span><p>His supervisor gets a task to book the renewal.</p><small>Renewed? The shifts unlock by themselves.</small></div>
+      </div>
+      <p class="todo-note">Scene 2 goes here: the next landscape from the brand themes, with the camera arriving out of the mist.</p>
+    </div>
+  </section>
+</main>
+
+<div class="preview-flag">Preview · Scene 1</div>
+
+<script>
+/* ===== Scene geometry, in the photo's own pixels (1672 x 941) ===== */
+const IW = 1672, IH = 941;
+const SCREENS = {
+  scrLaptop: { size: [1280, 800], quad: [[86.5, 291.6], [477.9, 288.3], [507.6, 531.1], [109.2, 559.2]] },
+  scrTablet: { size: [768, 1024], quad: [[548.7, 298.0], [729.5, 298.0], [770.4, 543.3], [586.4, 551.4]] },
+  scrPhone:  { size: [390, 844],  quad: [[800.5, 412.5], [875.0, 411.5], [903.5, 584.5], [825.0, 582.0]] }
+};
+const world = document.getElementById('world');
+const still = document.getElementById('still');
+const canvas = document.getElementById('gl');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- cover maths shared by the photo, the WebGL layer and the screens ---- */
+function cover() {
+  const cw = world.clientWidth, ch = world.clientHeight;
+  const s = Math.max(cw / IW, ch / IH);
+  const pos = getComputedStyle(still).objectPosition.split(' ').map(v => parseFloat(v) / 100);
+  const px = isNaN(pos[0]) ? .5 : pos[0], py = isNaN(pos[1]) ? .5 : pos[1];
+  return { cw, ch, s, ox: (cw - IW * s) * px, oy: (ch - IH * s) * py };
+}
+
+/* ---- project a flat element onto a four-corner screen in the photo ---- */
+function solve(A, b) {
+  const n = b.length;
+  for (let i = 0; i < n; i++) {
+    let p = i; for (let r = i + 1; r < n; r++) if (Math.abs(A[r][i]) > Math.abs(A[p][i])) p = r;
+    [A[i], A[p]] = [A[p], A[i]]; [b[i], b[p]] = [b[p], b[i]];
+    for (let r = i + 1; r < n; r++) { const f = A[r][i] / A[i][i]; for (let c = i; c < n; c++) A[r][c] -= f * A[i][c]; b[r] -= f * b[i]; }
+  }
+  const x = new Array(n).fill(0);
+  for (let i = n - 1; i >= 0; i--) { let s = b[i]; for (let c = i + 1; c < n; c++) s -= A[i][c] * x[c]; x[i] = s / A[i][i]; }
+  return x;
+}
+function quadMatrix(w, h, dst) {
+  const src = [[0, 0], [w, 0], [w, h], [0, h]], A = [], b = [];
+  for (let i = 0; i < 4; i++) {
+    const [x, y] = src[i], [u, v] = dst[i];
+    A.push([x, y, 1, 0, 0, 0, -x * u, -y * u]); b.push(u);
+    A.push([0, 0, 0, x, y, 1, -x * v, -y * v]); b.push(v);
+  }
+  const k = solve(A, b);
+  return [k[0], k[3], 0, k[6], k[1], k[4], 0, k[7], 0, 0, 1, 0, k[2], k[5], 0, 1];
+}
+function placeScreens() {
+  const c = cover();
+  for (const [id, sc] of Object.entries(SCREENS)) {
+    const el = document.getElementById(id);
+    const dst = sc.quad.map(([x, y]) => [c.ox + x * c.s, c.oy + y * c.s]);
+    el.style.transform = `matrix3d(${quadMatrix(sc.size[0], sc.size[1], dst).join(',')})`;
+    el.classList.add('placed');
+  }
+  if (gl) resizeGL(c);
+}
+
+/* ===== The living landscape: one WebGL pass over the still photo =====
+   mask.png  R = water (ripple + sparkle), G = flowers and moss (sway), B = sky (light shimmer)
+   mist.png  where mist may drift (everything behind the devices and rock) */
+let gl = null, prog, uni = {}, texReady = 0, mistBoost = 0;
+const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
+const FRAG = `
+precision mediump float;
+uniform sampler2D uImg, uMask, uMist;
+uniform vec2 uOff, uSize; uniform float uDpr, uCanvasH, uTime, uBoost;
+float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float n(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
+  return mix(mix(h(i), h(i+vec2(1,0)), f.x), mix(h(i+vec2(0,1)), h(i+vec2(1,1)), f.x), f.y); }
+float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++){ v += a*n(p); p *= 2.03; a *= 0.5; } return v; }
+void main(){
+  vec2 css = vec2(gl_FragCoord.x / uDpr, uCanvasH - gl_FragCoord.y / uDpr);
+  vec2 uv = (css - uOff) / uSize;
+  vec4 m = texture2D(uMask, uv);
+  float t = uTime;
+  vec2 d = vec2(0.0);
+  // water: fine horizontal ripples, stronger towards the viewer
+  float depth = smoothstep(0.40, 0.85, uv.y);
+  d.x += m.r * (sin(uv.y * 900.0 + t * 1.7 + fbm(uv * 30.0 + t * 0.2) * 6.0) * (0.0006 + 0.0012 * depth));
+  d.y += m.r * (sin(uv.x * 160.0 - t * 0.9) * 0.0005 * depth);
+  // flowers and moss: a slow breeze, stronger at the front
+  float wind = fbm(vec2(uv.x * 5.0 - t * 0.18, uv.y * 3.0)) - 0.5;
+  float gust = 0.6 + 0.4 * sin(t * 0.35);
+  d.x += m.g * wind * 0.006 * gust * smoothstep(0.55, 1.0, uv.y);
+  d.y += m.g * (fbm(uv * 9.0 + t * 0.25) - 0.5) * 0.0018;
+  vec3 col = texture2D(uImg, uv + d).rgb;
+  // sun sparkle on the water, along the sun's reflection
+  float lane = exp(-pow((uv.x - 0.975) * 9.0, 2.0)) + 0.35 * exp(-pow((uv.x - 0.9) * 5.0, 2.0));
+  float spark = smoothstep(0.82, 0.98, n(vec2(uv.x * 340.0, uv.y * 900.0 + t * 2.4))) * lane * m.r;
+  col += vec3(1.0, 0.82, 0.5) * spark * 0.55;
+  // sky: a slow light shimmer, no movement
+  col *= 1.0 + m.b * (fbm(uv * 3.0 + vec2(t * 0.012, 0.0)) - 0.5) * 0.06;
+  // mist drifting through the valley and over the lake
+  float mz = texture2D(uMist, uv).r;
+  float band = smoothstep(0.26, 0.38, uv.y) * (1.0 - smoothstep(0.50, 0.70, uv.y));
+  float lake = smoothstep(0.42, 0.55, uv.y) * (1.0 - smoothstep(0.80, 0.92, uv.y)) * 0.55;
+  float fog = fbm(vec2(uv.x * 3.2 - t * 0.025, uv.y * 9.0 + sin(t * 0.05) * 0.4));
+  fog = smoothstep(0.42, 0.85, fog);
+  float mist = mz * fog * (band * 0.55 + lake * 0.45);
+  vec3 mistCol = mix(vec3(0.72, 0.76, 0.88), vec3(1.0, 0.86, 0.66), smoothstep(0.6, 1.0, uv.x) * 0.6);
+  col = mix(col, mistCol, clamp(mist, 0.0, 0.6));
+  // breathing sun glow
+  vec2 sp = vec2(0.978, 0.298); vec2 q = (uv - sp) * vec2(1.0, 0.56);
+  float glow = exp(-dot(q, q) * 160.0) * (0.22 + 0.06 * sin(t * 0.6));
+  col += vec3(1.0, 0.72, 0.38) * glow;
+  // scroll: mist rolls in to carry you to the next area
+  float roll = uBoost * (0.55 + 0.45 * fbm(uv * 2.5 + vec2(t * 0.05, 0.0)));
+  col = mix(col, vec3(0.80, 0.83, 0.92), clamp(roll * 1.2, 0.0, 1.0));
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+function initGL() {
+  try { gl = canvas.getContext('webgl', { premultipliedAlpha: false, antialias: false }); } catch (e) { gl = null; }
+  if (!gl) return;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; } return s; };
+  const v = sh(gl.VERTEX_SHADER, VERT), f = sh(gl.FRAGMENT_SHADER, FRAG);
+  if (!v || !f) { gl = null; return; }
+  prog = gl.createProgram(); gl.attachShader(prog, v); gl.attachShader(prog, f); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { gl = null; return; }
+  gl.useProgram(prog);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  ['uImg', 'uMask', 'uMist', 'uOff', 'uSize', 'uDpr', 'uCanvasH', 'uTime', 'uBoost'].forEach(k => uni[k] = gl.getUniformLocation(prog, k));
+  const load = (src, unit, name) => {
+    const img = new Image();
+    img.onload = () => {
+      const tx = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, tx);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.uniform1i(uni[name], unit);
+      if (++texReady === 3) { resizeGL(cover()); world.classList.add('live'); requestAnimationFrame(frame); }
+    };
+    img.src = src;
+  };
+  load('img/scene1/scene.webp', 0, 'uImg');
+  load('img/scene1/mask.png', 1, 'uMask');
+  load('img/scene1/mist.png', 2, 'uMist');
+}
+function resizeGL(c) {
+  if (!gl) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+  canvas.width = Math.round(c.cw * dpr); canvas.height = Math.round(c.ch * dpr);
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.uniform2f(uni.uOff, c.ox, c.oy); gl.uniform2f(uni.uSize, IW * c.s, IH * c.s);
+  gl.uniform1f(uni.uDpr, dpr); gl.uniform1f(uni.uCanvasH, c.ch);
+}
+let visible = true, t0 = performance.now();
+new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(world);
+function frame(now) {
+  if (visible && gl) {
+    const t = reduceMotion ? 6.0 : (now - t0) / 1000;
+    gl.uniform1f(uni.uTime, t); gl.uniform1f(uni.uBoost, mistBoost);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+  if (!reduceMotion || mistBoost >= 0) requestAnimationFrame(frame);
+}
+
+/* ===== Scroll: pull the camera back, then mist carries you to the next area (desktop) ===== */
+const journey = document.getElementById('journey');
+const heroCopy = document.getElementById('heroCopy'), chapter = document.getElementById('chapter');
+const veil = document.getElementById('veil'), nextCopy = document.getElementById('nextCopy');
+const desk = matchMedia('(min-width: 900px)');
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const ease = v => v * v * (3 - 2 * v);
+function onScroll() {
+  if (!desk.matches) { world.style.transform = ''; mistBoost = 0; return; }
+  const total = journey.offsetHeight - innerHeight;
+  const p = clamp01(-journey.getBoundingClientRect().top / total);
+  const a = ease(clamp01(p / 0.55));            // pull back
+  const b = ease(clamp01((p - 0.45) / 0.35));   // mist rolls in
+  const c = ease(clamp01((p - 0.72) / 0.22));   // next title appears
+  world.style.transform = reduceMotion ? '' : `scale(${(1.06 - 0.06 * a).toFixed(4)}) translateY(${(-1.5 * a).toFixed(2)}%)`;
+  heroCopy.style.opacity = (1 - clamp01(p / 0.3)).toFixed(3);
+  heroCopy.style.transform = `translateY(${(-30 * clamp01(p / 0.3)).toFixed(1)}px)`;
+  chapter.style.opacity = (1 - clamp01(p / 0.2)).toFixed(3);
+  mistBoost = b;
+  veil.style.opacity = (gl ? b * 0.35 + c * 0.65 : b).toFixed(3);
+  nextCopy.style.opacity = c.toFixed(3);
+  nextCopy.style.transform = `translateY(${(24 * (1 - c)).toFixed(1)}px)`;
+}
+
+/* ---- Nav ---- */
+const nav = document.getElementById('nav');
+const setNav = () => nav.classList.toggle('solid', window.scrollY > journey.offsetHeight - innerHeight * 1.05 || !desk.matches && window.scrollY > 40);
+
+function layout() { placeScreens(); onScroll(); setNav(); }
+initGL();
+placeScreens(); onScroll(); setNav();
+addEventListener('resize', layout);
+addEventListener('scroll', () => { onScroll(); setNav(); }, { passive: true });
+if (!still.complete) still.addEventListener('load', placeScreens);
+</script>
