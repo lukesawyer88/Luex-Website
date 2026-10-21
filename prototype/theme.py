@@ -515,3 +515,89 @@ page7 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-desert-glass.html").write_text(page7)
 print("wrote app-desert-glass.html", len(page7))
+
+# =============================================================== reference lessons: plain bg, few big tinted boxes, air
+REF_CSS = """
+.v-ref.frame { padding: 28px; background: var(--plain); border-radius: 26px; }
+.v-ref .m-page { background: var(--surface); border-radius: 30px; padding: 12px; gap: 12px; box-shadow: 0 30px 60px -34px rgba(0,0,0,.35); }
+.v-ref .soft-rail { border-radius: 24px; }
+.v-ref .m-main { gap: 12px; grid-template-rows: 58px 84px 1fr; }
+.v-ref .tiles { gap: 12px; }
+.v-ref .tile { border-radius: 24px; padding: 14px 18px; box-shadow: none !important; background: var(--t-plain); }
+.v-ref .tile:nth-child(2) { background: var(--t-plain); }
+.v-ref .tile.sel { background: var(--t-dark); }
+.v-ref .tile.sel b { color: #fff; } .v-ref .tile.sel .t-top, .v-ref .tile.sel small { color: rgba(255,255,255,.75); }
+.v-ref .tile small { display: none; }
+.v-ref .tile b { font-size: 28px; }
+.v-ref .m-body { gap: 12px; grid-template-columns: 1fr 360px; }
+.v-ref .mw { background: var(--t-cream); border-radius: 26px; padding: 20px 20px 76px; box-shadow: none; }
+.v-ref .dw { background: var(--t-grad); border-radius: 26px; padding: 20px; box-shadow: none; }
+.v-ref .mw-tools .pill:nth-of-type(n+3):not(.ghost), .v-ref .mw-tools .ghost { display: none; }
+.v-ref .mw-tools .pill { background: rgba(255,255,255,.7); box-shadow: none; }
+.v-ref .mw-tools::after { content: "Filters"; order: 9; display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 99px; background: rgba(255,255,255,.7); font-size: 12px; color: var(--ink2); }
+.v-ref .seg { order: 10; background: rgba(255,255,255,.55); }
+.v-ref .lhead { display: none; }
+.v-ref .lrows { gap: 8px; margin-top: 16px; }
+.v-ref .lhead + .lrows { margin-top: 16px; }
+.v-ref .lr { background: rgba(255,255,255,.82); box-shadow: none; border-radius: 18px; padding: 11px 14px; grid-template-columns: 0 36px 1.6fr 1fr 1fr 110px; }
+.v-ref .lr .tk { visibility: hidden; }
+.v-ref .lr .ci { background: var(--t-cream); }
+.v-ref .lr.open { background: #fff; box-shadow: 0 12px 24px -14px rgba(60,45,20,.35); }
+.v-ref .lr.open .lr-n b::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); margin-right: 7px; vertical-align: 2px; }
+.v-ref .st-pill { background: #fff; }
+.v-ref .chip { background: rgba(255,255,255,.7); }
+.v-ref .dw-r .rnd.sm { background: rgba(255,255,255,.7); box-shadow: none; }
+.v-ref .key { flex-direction: column; text-align: center; background: rgba(255,255,255,.55) !important; box-shadow: none !important; padding: 18px; gap: 10px; border-radius: 22px; }
+.v-ref .key-r p, .v-ref .key-r p b, .v-ref .mini-ring b { color: var(--ink) !important; }
+.v-ref .mini-ring small { color: var(--ink2) !important; }
+.v-ref .mini-ring { width: 128px; height: 128px; }
+.v-ref .mini-ring::before { inset: 14px; background: #fff !important; box-shadow: inset 0 2px 6px rgba(0,0,0,.06), 0 10px 20px -10px rgba(60,45,20,.35) !important; }
+.v-ref .mini-ring .tr { stroke: rgba(255,255,255,.7) !important; stroke-width: 6; } .v-ref .mini-ring .pr { stroke: var(--ink) !important; stroke-width: 6; }
+.v-ref .mini-ring b { font-size: 30px; }
+.v-ref .key-b { justify-content: center; }
+.v-ref .key .btn-d { background: var(--ink) !important; color: #fff !important; }
+.v-ref .key .btn-l { background: #fff !important; color: var(--ink) !important; }
+.v-ref .facts { gap: 10px; }
+.v-ref .facts div { background: rgba(255,255,255,.6) !important; box-shadow: none !important; border-radius: 16px; }
+.v-ref .facts div:nth-child(n+3) { display: none; }
+.v-ref .dtabs { background: rgba(255,255,255,.45); }
+.v-ref .acts .act:nth-child(3) { display: none; }
+.v-ref .cmt { background: rgba(255,255,255,.7); }
+.v-ref .tabbar { box-shadow: 0 10px 24px -14px rgba(60,45,20,.4); }
+.v-ref .m-hd .user, .v-ref .m-hd .srch, .v-ref .m-hd .rnd:not(.dark) { background: var(--t-plain); box-shadow: none; }
+.v-ref .ask { background: var(--t-plain); box-shadow: none; }
+"""
+REF_L = WHITE_L + (" --plain:#E6E6E6; --t-plain:#F1F1F0; --t-dark:#141414; --t-cream:#ECE6D8;"
+                   " --t-grad: linear-gradient(180deg, #DCDFE4 0%, #E9E6DC 55%, #F1E6C8 100%);")
+REF_D = WHITE_D + (" --plain:#0E0E0E; --t-plain:#1C1C1C; --t-dark:#3A3226; --t-cream:#211E19;"
+                   " --t-grad: linear-gradient(180deg, #1E2026 0%, #24211C 55%, #3A3022 100%);")
+REF_D_FIX = """
+.v-ref.dark .lr { background: rgba(255,255,255,.05); } .v-ref.dark .lr.open { background: rgba(255,255,255,.1); }
+.v-ref.dark .st-pill, .v-ref.dark .key, .v-ref.dark .facts div, .v-ref.dark .chip, .v-ref.dark .cmt, .v-ref.dark .mw-tools .pill, .v-ref.dark .mw-tools::after { background: rgba(255,255,255,.07) !important; }
+.v-ref.dark .mini-ring::before { background: #1C1C1C !important; }
+.v-ref.dark .mini-ring .pr { stroke: #CFB783 !important; } .v-ref.dark .mini-ring .tr { stroke: rgba(255,255,255,.12) !important; }
+.v-ref.dark .key .btn-d { background: #CFB783 !important; color: #141414 !important; } .v-ref.dark .key .btn-l { background: rgba(255,255,255,.1) !important; color: #F5F3EF !important; }
+.v-ref.dark .tile.sel b { color: #CFB783; }
+.v-ref.dark .dtabs { background: rgba(255,255,255,.06); } .v-ref.dark .dtabs span { color: #C8C6C1; } .v-ref.dark .dtabs .on { background: rgba(255,255,255,.14); color: #F5F3EF; }
+.v-ref.dark .dw-r .rnd.sm { background: rgba(255,255,255,.08) !important; color: #F5F3EF; }
+.v-ref.dark .seg { background: rgba(255,255,255,.06); } .v-ref.dark .seg .on { background: rgba(255,255,255,.16); color: #F5F3EF; }
+"""
+rcls = "v-ink v-rich v-white v-ref"
+page8 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Reference Style</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}{REF_CSS}{REF_D_FIX}</style></head><body>
+<div class="wrap">
+  <h1>Following the reference's rules</h1>
+  <p class="lead">Plain grey background. One white frame. Fewer, bigger boxes with even gaps, each with its own soft colour: cream for the records, a grey-to-gold gradient for the detail, black for the chosen tile. Less on screen: extra filters behind one "Filters" button, column headings and tick boxes hidden until needed, only the key facts shown, and one big ring as the visual.</p>
+  <div class="pair">
+    <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {rcls}" style="{REF_L} {STATUS_L}">{SFR}</div></div>
+    <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {rcls} dark" style="{REF_D} {STATUS_D}">{to_dark(SFR)}</div></div>
+  </div>
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-reference-style.html").write_text(page8)
+print("wrote app-reference-style.html", len(page8))
