@@ -1,0 +1,22 @@
+{
+  "_readme": "Luex brand: 03 Lapis Lazuli. Colours and fonts used across the website. Change them here.",
+  "theme": "03 Lapis Lazuli",
+  "line": "Organisation opens freedom",
+  "colours": {
+    "ultramarine": "#263E92",
+    "midnight": "#141E43",
+    "antiqueGold": "#AF955C",
+    "mineralGrey": "#9A9DA9",
+    "chalk": "#E5E4DF",
+    "paper": "#F3F2EE"
+  },
+  "fonts": {
+    "display": "Newsreader (serif, light, with an italic accent word in headlines)",
+    "body": "Manrope (sans, labels in spaced capitals)"
+  },
+  "voice": [
+    "Plain, confident, short sentences. UK English.",
+    "Talk about real work: certificates, shifts, sites, timesheets.",
+    "One italic word per headline for the accent, as in 'Organisation opens freedom.'"
+  ]
+}

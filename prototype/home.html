@@ -1,0 +1,848 @@
+<title>Luex Homepage</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: midnight hero with a turning lapis stone, then chalk and midnight bands that alternate down the page; devices pin and open out on scroll. */
+:root {
+  /* Lapis Lazuli brand palette */
+  --ultramarine: #263E92;
+  --midnight: #141E43;
+  --gold: #AF955C;
+  --mineral: #9A9DA9;
+  --chalk: #E5E4DF;
+  --paper: #F3F2EE;
+  --ink: #141E43;
+  --ink-soft: #4A5170;
+  --line-dark: rgba(229, 228, 223, 0.14);
+  --line-light: rgba(20, 30, 67, 0.12);
+  /* app status colours, used only inside the product screens */
+  --ok: #2F8F5B;
+  --warn: #C98A1B;
+  --bad: #C2413A;
+  --info: #263E92;
+
+  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans: "Manrope", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.85rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --step-2: clamp(1.6rem, 1.3rem + 1.4vw, 2.4rem);
+  --step-3: clamp(2.3rem, 1.6rem + 3.2vw, 4.2rem);
+  --step-4: clamp(2.9rem, 1.8rem + 5.2vw, 6.2rem);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 60; background: var(--midnight);
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.wrap {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 760px) {
+  .wrap {
+    padding-left: max(40px, env(safe-area-inset-left, 0px));
+    padding-right: max(40px, env(safe-area-inset-right, 0px));
+  }
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 14px;
+}
+.eyebrow::after { content: ""; width: 40px; height: 1px; background: var(--gold); }
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 300; margin: 0; text-wrap: balance; letter-spacing: -0.015em; }
+h1 em, h2 em { font-style: italic; font-weight: 300; }
+p { margin: 0; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--sans); font-size: var(--step--1); font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
+  padding: 15px 24px; border: 1px solid currentColor; border-radius: 0;
+  background: transparent; cursor: pointer; transition: background .25s, color .25s, border-color .25s;
+}
+.btn .arrow { width: 28px; height: 1px; background: currentColor; position: relative; }
+.btn .arrow::after { content: ""; position: absolute; right: 0; top: -3px; width: 7px; height: 7px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
+.btn-gold { background: var(--gold); border-color: var(--gold); color: var(--midnight); }
+.btn-gold:hover { background: var(--chalk); border-color: var(--chalk); }
+.btn-line { color: var(--chalk); border-color: rgba(229,228,223,.45); }
+.btn-line:hover { border-color: var(--gold); color: var(--gold); }
+.btn-ink { color: var(--midnight); }
+.btn-ink:hover { background: var(--midnight); color: var(--chalk); }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+  background: rgba(20, 30, 67, 0.82);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line-dark);
+  color: var(--chalk);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 16px; }
+.logo { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; color: var(--chalk); }
+.logo svg.mark { width: 34px; height: 30px; }
+.logo svg.word { width: 82px; height: 20px; }
+.nav-links { display: none; gap: 34px; list-style: none; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; font-size: var(--step--1); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(229,228,223,.75); }
+.nav-links a:hover { color: var(--gold); }
+.nav .btn { padding: 11px 18px; }
+@media (min-width: 960px) { .nav-links { display: flex; } }
+@media (max-width: 480px) { .nav .btn .arrow { display: none; } .nav .btn { letter-spacing: .14em; padding: 10px 14px; } }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; background: var(--midnight); color: var(--chalk); overflow: hidden; isolation: isolate; }
+.hero .wrap { display: grid; grid-template-columns: 1fr; gap: 32px; padding-block: 56px 72px; position: relative; z-index: 2; }
+@media (min-width: 960px) { .hero .wrap { grid-template-columns: 1.05fr 1fr; align-items: center; padding-block: 96px 120px; } }
+.hero-copy { display: grid; gap: 28px; min-width: 0; }
+.hero .eyebrow { color: var(--gold); }
+.hero h1 { font-size: var(--step-4); line-height: 0.98; }
+.hero h1 em { color: #C8D2F5; }
+.hero .lede { font-size: var(--step-1); line-height: 1.5; color: rgba(229,228,223,.78); max-width: 34ch; font-family: var(--serif); font-weight: 300; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+.hero .meta { display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: var(--step--1); letter-spacing: .2em; text-transform: uppercase; color: var(--mineral); }
+.hero .meta b { color: var(--gold); font-weight: 600; }
+
+.stone-stage { position: relative; aspect-ratio: 1 / 1; width: 100%; max-width: 620px; justify-self: center; }
+#stone { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stone-fallback {
+  position: absolute; inset: 14%; border-radius: 46% 54% 50% 50% / 52% 46% 54% 48%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 35%),
+    radial-gradient(circle at 62% 58%, #AF955C 0 1.2%, transparent 1.6%),
+    radial-gradient(circle at 40% 70%, #AF955C 0 .8%, transparent 1.2%),
+    radial-gradient(circle at 55% 35%, #3550B8, #1E3080 45%, #0E1638 100%);
+  box-shadow: 0 40px 80px rgba(0,0,0,.45);
+}
+.stone-stage.webgl .stone-fallback { display: none; }
+.orbits { position: absolute; inset: -8%; width: 116%; height: 116%; pointer-events: none; overflow: visible; }
+.orbits circle, .orbits ellipse { fill: none; stroke: var(--gold); stroke-width: 0.6; opacity: .55; }
+.tile-float {
+  position: absolute; width: 13%; aspect-ratio: 1; background: var(--ultramarine);
+  border-radius: 3px; right: 6%; top: 10%; transform: rotate(16deg);
+  box-shadow: 0 18px 40px rgba(0,0,0,.4);
+}
+.stone-label { position: absolute; left: 0; bottom: 4%; display: grid; gap: 4px; font-size: var(--step--1); letter-spacing: .24em; text-transform: uppercase; color: var(--mineral); }
+.stone-label span:first-child { font-family: var(--serif); font-size: var(--step-1); letter-spacing: 0; text-transform: none; color: var(--gold); }
+
+/* ---------- Devices ---------- */
+.devices { background: var(--paper); position: relative; overflow-x: clip; }
+.devices-head { display: grid; gap: 18px; padding-block: 96px 24px; text-align: center; justify-items: center; }
+.devices-head .eyebrow { color: var(--ultramarine); }
+.devices-head h2 { font-size: var(--step-3); line-height: 1.02; }
+.devices-head p { color: var(--ink-soft); max-width: 52ch; }
+.devices-pin { position: relative; }
+.devices-stage {
+  position: relative; display: grid; place-items: center;
+  padding-block: 32px 110px; min-height: 0;
+}
+.rig { position: relative; width: min(100%, 980px); }
+
+.laptop { position: relative; z-index: 2; width: 100%; }
+.laptop .lid {
+  background: #0B1129; border-radius: 18px 18px 6px 6px; padding: 1.6% 1.6% 2.2%;
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 40px 80px -30px rgba(20,30,67,.55);
+}
+.laptop .base {
+  height: 14px; margin: 0 -6%; border-radius: 0 0 22px 22px;
+  background: linear-gradient(#C9CAD0, #8E909A);
+  box-shadow: 0 30px 50px -20px rgba(20,30,67,.5);
+}
+.laptop .base::before { content: ""; display: block; width: 16%; height: 5px; margin: 0 auto; background: #A9AAB2; border-radius: 0 0 8px 8px; }
+
+.tablet, .phone {
+  position: absolute; z-index: 3; background: #0B1129;
+  box-shadow: 0 30px 70px -20px rgba(20,30,67,.6);
+}
+.tablet { width: 30%; left: -6%; bottom: -10%; border-radius: 22px; padding: 2.2%; }
+.phone { width: 15.5%; right: -3%; bottom: -12%; border-radius: 26px; padding: 1.4%; }
+
+.screen { container-type: inline-size; background: #F7F7F4; overflow: hidden; color: #1A2140; font-family: var(--sans); }
+.laptop .screen { aspect-ratio: 16 / 10; border-radius: 6px; }
+.tablet .screen { aspect-ratio: 3 / 4; border-radius: 12px; }
+.phone .screen { aspect-ratio: 9 / 19; border-radius: 20px; }
+
+/* Compliance screen (laptop) — sized in container units so it scales with the device */
+.app { display: grid; grid-template-columns: 6cqw 1fr; height: 100%; }
+.app-rail { background: var(--midnight); display: grid; align-content: start; justify-items: center; gap: 2.2cqw; padding-top: 2cqw; }
+.app-rail i { display: block; width: 2.2cqw; height: 2.2cqw; border-radius: .6cqw; background: rgba(229,228,223,.22); }
+.app-rail i.on { background: var(--gold); }
+.app-rail .m { width: 3cqw; height: 3cqw; background: none; position: relative; }
+.app-rail .m::before, .app-rail .m::after { content: ""; position: absolute; border-radius: .3cqw; }
+.app-rail .m::before { width: 1.9cqw; height: 1.9cqw; background: #E5E4DF; left: .4cqw; top: .9cqw; }
+.app-rail .m::after { width: 1.3cqw; height: 1.3cqw; background: #4C66D1; right: 0; top: 0; transform: rotate(16deg); }
+.app-main { padding: 2.2cqw 2.4cqw; display: grid; grid-template-rows: auto auto 1fr; gap: 1.8cqw; min-width: 0; }
+.app-top { display: flex; align-items: center; justify-content: space-between; gap: 2cqw; }
+.app-title { font-family: var(--serif); font-size: 3cqw; font-weight: 400; line-height: 1; }
+.app-title small { display: block; font-family: var(--sans); font-size: 1cqw; letter-spacing: .2em; text-transform: uppercase; color: #7A8099; margin-bottom: .6cqw; }
+.app-search { flex: 0 1 30cqw; height: 3.2cqw; border-radius: 99px; background: #ECECE7; display: flex; align-items: center; padding-inline: 1.4cqw; font-size: 1.1cqw; color: #8B90A3; }
+.app-avatar { width: 3.2cqw; height: 3.2cqw; border-radius: 50%; background: var(--gold); }
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; }
+.tile { background: #fff; border-radius: 1cqw; padding: 1.2cqw 1.4cqw; border-top: .35cqw solid var(--c); }
+.tile b { display: block; font-family: var(--serif); font-weight: 400; font-size: 3cqw; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.tile span { font-size: 1.05cqw; color: #6B7189; letter-spacing: .04em; }
+.app-body { display: grid; grid-template-columns: 1.7fr 1fr; gap: 1.4cqw; min-height: 0; }
+.rows { background: #fff; border-radius: 1cqw; padding: .6cqw 1.4cqw; display: grid; align-content: start; }
+.row { display: grid; grid-template-columns: 2.6cqw 1fr auto; gap: 1.2cqw; align-items: center; padding: 1cqw 0; border-bottom: 1px solid #EEEEE9; font-size: 1.15cqw; }
+.row:last-child { border-bottom: 0; }
+.row .ic { width: 2.6cqw; height: 2.6cqw; border-radius: .7cqw; background: #EEF1FB; }
+.row b { font-weight: 600; display: block; }
+.row em { font-style: normal; color: #7A8099; font-size: 1cqw; }
+.chip { font-size: .95cqw; font-weight: 700; padding: .35cqw .9cqw; border-radius: 99px; color: #fff; background: var(--c); white-space: nowrap; }
+.row.sel { background: #F3F5FD; margin-inline: -1.4cqw; padding-inline: 1.4cqw; }
+.detail { background: #fff; border-radius: 1cqw; padding: 1.6cqw; display: grid; align-content: start; gap: 1.2cqw; justify-items: center; text-align: center; }
+.detail .ring { width: 12cqw; height: 12cqw; }
+.detail .ring circle { fill: none; stroke-width: 6; }
+.detail h4 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 1.7cqw; }
+.detail p { font-size: 1.05cqw; color: #6B7189; }
+.detail .acts { display: flex; gap: .8cqw; flex-wrap: wrap; justify-content: center; }
+.detail .acts span { font-size: 1cqw; font-weight: 700; padding: .7cqw 1.2cqw; border-radius: 99px; background: #ECECE7; }
+.detail .acts span.p { background: var(--midnight); color: #fff; }
+
+/* Rota screen (tablet) */
+.rota { padding: 5cqw; display: grid; gap: 4cqw; height: 100%; align-content: start; }
+.rota-top { display: flex; justify-content: space-between; align-items: end; }
+.rota-top h5 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 8cqw; line-height: 1; }
+.rota-top span { font-size: 3.2cqw; color: #7A8099; }
+.days { display: grid; grid-template-columns: 9cqw repeat(5, 1fr); gap: 1.6cqw; font-size: 2.8cqw; }
+.days .d { text-align: center; color: #7A8099; font-weight: 600; }
+.days .who { display: grid; align-items: center; font-weight: 600; }
+.days .who i { width: 7cqw; height: 7cqw; border-radius: 50%; background: var(--c); display: block; }
+.days .s { height: 9cqw; border-radius: 1.6cqw; background: #E9ECF7; }
+.days .s.on { background: var(--ultramarine); }
+.days .s.am { background: #DCC79A; }
+.days .s.x { background: repeating-linear-gradient(135deg, #F6DCDA 0 1.4cqw, #FBEDEC 1.4cqw 2.8cqw); border: .4cqw solid var(--bad); }
+.rota-alert { background: #FBEDEC; border-left: 1.2cqw solid var(--bad); border-radius: 1.6cqw; padding: 3.2cqw 4cqw; font-size: 3.1cqw; line-height: 1.35; }
+.rota-alert b { display: block; font-size: 3.4cqw; }
+
+/* Timesheet screen (phone) */
+.clock { height: 100%; display: grid; grid-template-rows: auto auto 1fr auto; padding: 10cqw 7cqw 9cqw; gap: 6cqw; background: linear-gradient(180deg, #F7F7F4 0 60%, #EEF1FB 100%); }
+.clock small { font-size: 5cqw; color: #7A8099; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.clock h6 { margin: 1cqw 0 0; font-family: var(--serif); font-weight: 400; font-size: 10cqw; line-height: 1.05; }
+.clock .site { background: #fff; border-radius: 5cqw; padding: 5cqw; font-size: 5.4cqw; line-height: 1.3; }
+.clock .site b { display: block; }
+.clock .site em { font-style: normal; color: var(--ok); font-weight: 700; }
+.clock .btn-clock { align-self: center; justify-self: center; width: 58cqw; aspect-ratio: 1; border-radius: 50%; background: var(--midnight); color: #fff; display: grid; place-items: center; text-align: center; font-weight: 700; font-size: 7cqw; box-shadow: 0 0 0 4cqw rgba(38,62,146,.12), 0 0 0 9cqw rgba(38,62,146,.06); }
+.clock .week { display: flex; justify-content: space-between; font-size: 5cqw; }
+.clock .week b { font-family: var(--serif); font-weight: 400; font-size: 7cqw; }
+
+.device-notes { display: grid; grid-template-columns: 1fr; gap: 28px; padding-block: 0 96px; }
+@media (min-width: 760px) { .device-notes { grid-template-columns: repeat(3, 1fr); gap: 40px; } }
+.note { display: grid; gap: 10px; border-top: 1px solid var(--line-light); padding-top: 22px; }
+.note h3 { font-size: var(--step-1); }
+.note p { color: var(--ink-soft); font-size: var(--step-0); }
+.note .tag { font-size: var(--step--1); letter-spacing: .24em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+
+@media (max-width: 759px) {
+  .tablet { width: 38%; left: -2%; bottom: -26%; border-radius: 16px; }
+  .phone { width: 22%; right: -1%; bottom: -30%; border-radius: 18px; }
+  .devices-stage { padding-bottom: 130px; }
+}
+
+/* ---------- Connected ---------- */
+.connected { background: var(--midnight); color: var(--chalk); position: relative; overflow: hidden; }
+.connected .wrap { padding-block: 112px; display: grid; gap: 56px; position: relative; z-index: 1; }
+.connected .eyebrow { color: var(--gold); }
+.connected h2 { font-size: var(--step-3); line-height: 1.02; max-width: 16ch; }
+.connected h2 em { color: #C8D2F5; }
+.chain { display: grid; grid-template-columns: 1fr; gap: 0; counter-reset: step; }
+@media (min-width: 900px) { .chain { grid-template-columns: repeat(3, 1fr); } }
+.link { position: relative; padding: 32px 0; border-top: 1px solid var(--line-dark); display: grid; gap: 14px; align-content: start; }
+@media (min-width: 900px) { .link { padding: 36px 40px 0 0; } .link + .link { padding-left: 40px; border-left: 1px solid var(--line-dark); } }
+.link .where { font-size: var(--step--1); letter-spacing: .26em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.link p { font-family: var(--serif); font-weight: 300; font-size: var(--step-2); line-height: 1.18; }
+.link small { color: var(--mineral); font-size: var(--step--1); letter-spacing: .04em; }
+.connected .rings { position: absolute; right: -18vw; top: -10%; width: 70vw; max-width: 900px; aspect-ratio: 1; opacity: .28; pointer-events: none; }
+.connected .rings circle { fill: none; stroke: var(--gold); stroke-width: .4; }
+
+/* ---------- Modules ---------- */
+.modules .wrap { padding-block: 112px; display: grid; gap: 56px; }
+.modules-head { display: grid; gap: 22px; }
+@media (min-width: 960px) { .modules-head { grid-template-columns: 1.2fr 1fr; align-items: end; gap: 60px; } }
+.modules .eyebrow { color: var(--ultramarine); }
+.modules h2 { font-size: var(--step-3); line-height: 1.02; }
+.modules-head p { color: var(--ink-soft); max-width: 46ch; }
+.count { font-family: var(--serif); font-weight: 300; color: var(--ultramarine); }
+.count b { font-size: var(--step-3); font-weight: 300; line-height: 1; }
+.groups { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line-light); }
+@media (min-width: 620px) { .groups { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .groups { grid-template-columns: repeat(4, 1fr); } }
+.group { padding: 24px 22px 26px 0; border-bottom: 1px solid var(--line-light); display: grid; gap: 8px; align-content: start; transition: background .3s; }
+.group h3 { font-size: var(--step-1); display: flex; justify-content: space-between; gap: 10px; }
+.group h3 span { font-family: var(--sans); font-size: var(--step--1); color: var(--gold); letter-spacing: .1em; font-variant-numeric: tabular-nums; padding-top: 6px; }
+.group p { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.55; }
+
+/* ---------- Apps ---------- */
+.apps { background: var(--chalk); }
+.apps .wrap { padding-block: 112px; display: grid; gap: 48px; }
+.apps .eyebrow { color: var(--ultramarine); }
+.apps h2 { font-size: var(--step-3); line-height: 1.02; max-width: 18ch; }
+.apps-intro { display: grid; gap: 20px; }
+.apps-intro p { color: var(--ink-soft); max-width: 56ch; }
+.app-cards { display: grid; grid-template-columns: 1fr; gap: 18px; }
+@media (min-width: 620px) { .app-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .app-cards { grid-template-columns: repeat(4, 1fr); } }
+.app-card { background: var(--paper); padding: 28px 26px 26px; display: grid; gap: 14px; align-content: start; text-decoration: none; border: 1px solid transparent; transition: border-color .25s, transform .25s; }
+.app-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.app-card .glyph { width: 40px; height: 40px; position: relative; }
+.app-card .glyph::before { content: ""; position: absolute; inset: 6px 10px 10px 6px; background: var(--midnight); border-radius: 2px; }
+.app-card .glyph::after { content: ""; position: absolute; width: 16px; height: 16px; right: 2px; top: 0; background: var(--c); border-radius: 2px; transform: rotate(16deg); }
+.app-card h3 { font-size: var(--step-2); line-height: 1.05; }
+.app-card p { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.55; }
+.app-card .go { font-size: var(--step--1); letter-spacing: .22em; text-transform: uppercase; font-weight: 600; color: var(--ultramarine); margin-top: 6px; }
+
+/* ---------- Pricing ---------- */
+.pricing { background: var(--midnight); color: var(--chalk); position: relative; overflow: hidden; }
+.pricing .wrap { padding-block: 112px; display: grid; gap: 48px; position: relative; z-index: 1; }
+@media (min-width: 960px) { .pricing .wrap { grid-template-columns: 1fr 1.1fr; align-items: center; gap: 72px; } }
+.pricing .eyebrow { color: var(--gold); }
+.pricing h2 { font-size: var(--step-3); line-height: 1.02; }
+.pricing h2 em { color: #C8D2F5; }
+.pricing-copy { display: grid; gap: 24px; }
+.pricing-copy p { color: rgba(229,228,223,.75); max-width: 44ch; }
+.price-card { border: 1px solid rgba(175,149,92,.5); padding: clamp(24px, 4vw, 44px); display: grid; gap: 26px; background: rgba(229,228,223,.03); }
+.price-main { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; }
+.price-main b { font-family: var(--serif); font-weight: 300; font-size: var(--step-4); line-height: .9; color: var(--chalk); font-variant-numeric: tabular-nums; }
+.price-main span { color: var(--mineral); font-size: var(--step--1); letter-spacing: .14em; text-transform: uppercase; }
+.price-lines { display: grid; gap: 0; }
+.price-line { display: flex; justify-content: space-between; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line-dark); }
+.price-line span { color: rgba(229,228,223,.8); }
+.price-line small { display: block; color: var(--mineral); font-size: var(--step--1); }
+.price-line b { font-family: var(--serif); font-weight: 400; font-size: var(--step-1); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.fine { font-size: var(--step--1); color: var(--mineral); }
+.pricing .tile-float { right: 4%; top: 12%; width: 72px; opacity: .9; }
+
+/* ---------- Waitlist ---------- */
+.waitlist .wrap { padding-block: 112px 120px; display: grid; gap: 48px; }
+@media (min-width: 960px) { .waitlist .wrap { grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; } }
+.waitlist .eyebrow { color: var(--ultramarine); }
+.waitlist h2 { font-size: var(--step-3); line-height: 1.02; }
+.waitlist-copy { display: grid; gap: 22px; }
+.waitlist-copy p { color: var(--ink-soft); max-width: 44ch; }
+.perks { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 12px; }
+.perks li { display: flex; gap: 14px; align-items: baseline; }
+.perks li::before { content: ""; flex: none; width: 8px; height: 8px; background: var(--gold); transform: rotate(16deg) translateY(-2px); }
+form.wl { display: grid; gap: 18px; background: #fff; padding: clamp(22px, 4vw, 40px); border: 1px solid var(--line-light); }
+.field { display: grid; gap: 8px; }
+.field label { font-size: var(--step--1); font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
+.field input, .field select {
+  font: inherit; color: var(--ink); background: var(--paper); border: 1px solid transparent; border-bottom-color: rgba(20,30,67,.25);
+  padding: 13px 14px; border-radius: 0; width: 100%; min-width: 0;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--ultramarine); background: #fff; }
+.two { display: grid; gap: 18px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .two { grid-template-columns: 1fr 1fr; } }
+.consent { display: flex; gap: 12px; align-items: flex-start; font-size: var(--step--1); color: var(--ink-soft); line-height: 1.5; }
+.consent input { margin-top: 3px; accent-color: var(--ultramarine); width: 16px; height: 16px; flex: none; }
+form.wl .btn { justify-self: start; background: var(--midnight); color: var(--chalk); border-color: var(--midnight); }
+form.wl .btn:hover { background: var(--ultramarine); border-color: var(--ultramarine); }
+.form-msg { font-size: var(--step--1); padding: 14px 16px; background: #EEF1FB; border-left: 3px solid var(--ultramarine); }
+.form-msg.err { background: #FBEDEC; border-left-color: var(--bad); }
+
+/* ---------- Footer ---------- */
+footer { background: var(--midnight); color: var(--mineral); border-top: 1px solid var(--line-dark); }
+footer .wrap { padding-block: 56px; display: grid; gap: 32px; }
+@media (min-width: 760px) { footer .wrap { grid-template-columns: 1.4fr repeat(3, 1fr); } }
+footer h4 { margin: 0 0 12px; font-size: var(--step--1); letter-spacing: .24em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: var(--step--1); }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--chalk); }
+footer .tagline { font-family: var(--serif); font-size: var(--step-1); color: var(--chalk); font-weight: 300; margin-top: 16px; max-width: 22ch; }
+footer .legal { grid-column: 1 / -1; border-top: 1px solid var(--line-dark); padding-top: 22px; font-size: var(--step--1); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+.preview-flag { position: fixed; z-index: 70; left: max(12px, env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); background: var(--gold); color: var(--midnight); font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; padding: 7px 11px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .app-card, .btn { transition: none; }
+}
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Luex home">
+      <svg class="mark" viewBox="0 0 68 60" aria-hidden="true">
+        <rect x="2" y="6" width="14" height="14" rx="1.5" fill="currentColor"/>
+        <rect x="16" y="18" width="26" height="26" rx="2" fill="currentColor"/>
+        <rect x="38" y="2" width="22" height="22" rx="2" fill="#3A56C4" transform="rotate(16 49 13)"/>
+        <rect x="4" y="38" width="16" height="16" rx="1.5" fill="#AF955C"/>
+      </svg>
+      <svg class="word" viewBox="-1 -2 90 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" aria-hidden="true">
+        <path d="M1 0 V20 H13"/>
+        <path d="M25 0 V12.5 a6.5 6.5 0 0 0 13 0 V0"/>
+        <path d="M50 1 H63 M50 10 H63 M50 19 H63"/>
+        <path d="M74 0 L87 20 M87 0 L74 20"/>
+      </svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#hub">The hub</a></li>
+      <li><a href="#apps">Apps</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a class="btn btn-gold" href="#waitlist">Join the waitlist <span class="arrow"></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">Business software, connected</span>
+        <h1>Organisation opens <em>freedom.</em></h1>
+        <p class="lede">Compliance, people, time, assets and customers in one hub. Every record knows about the others, so nothing slips through.</p>
+        <div class="ctas">
+          <a class="btn btn-gold" href="#waitlist">Join the waitlist <span class="arrow"></span></a>
+          <a class="btn btn-line" href="#hub">See the hub</a>
+        </div>
+        <div class="meta"><span>Launching <b>January 2027</b></span><span>Built for the UK and Ireland</span></div>
+      </div>
+      <div class="stone-stage" id="stoneStage">
+        <svg class="orbits" viewBox="0 0 100 100" aria-hidden="true">
+          <ellipse cx="50" cy="52" rx="46" ry="16" transform="rotate(-18 50 52)"/>
+          <circle cx="56" cy="46" r="41"/>
+          <ellipse cx="46" cy="54" rx="40" ry="44" transform="rotate(24 46 54)"/>
+        </svg>
+        <div class="stone-fallback"></div>
+        <canvas id="stone" aria-hidden="true"></canvas>
+        <div class="tile-float" aria-hidden="true"></div>
+        <div class="stone-label"><span>03 Lapis Lazuli</span><span>Organisation opens freedom</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="devices" id="hub">
+    <div class="wrap devices-head">
+      <span class="eyebrow">One hub, every screen</span>
+      <h2>At the desk, on site, <em>in your pocket.</em></h2>
+      <p>Managers run the business from the desktop. Supervisors plan the week on a tablet. The team clocks in and fills in checks from their phone, even with no signal.</p>
+    </div>
+    <div class="devices-pin" id="devicesPin">
+      <div class="wrap devices-stage">
+        <div class="rig" id="rig">
+          <div class="laptop" id="laptop">
+            <div class="lid">
+              <div class="screen">
+                <div class="app">
+                  <div class="app-rail"><i class="m"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+                  <div class="app-main">
+                    <div class="app-top">
+                      <div class="app-title"><small>Compliance</small>Certificates and tickets</div>
+                      <div class="app-search">Search people, sites, records</div>
+                      <div class="app-avatar"></div>
+                    </div>
+                    <div class="tiles">
+                      <div class="tile" style="--c: var(--info)"><b>248</b><span>Total records</span></div>
+                      <div class="tile" style="--c: var(--ok)"><b>219</b><span>Compliant</span></div>
+                      <div class="tile" style="--c: var(--warn)"><b>21</b><span>Due in 30 days</span></div>
+                      <div class="tile" style="--c: var(--bad)"><b>8</b><span>Expired</span></div>
+                    </div>
+                    <div class="app-body">
+                      <div class="rows">
+                        <div class="row sel"><span class="ic"></span><span><b>Seán Byrne</b><em>CSCS card · Docklands Block C</em></span><span class="chip" style="--c: var(--warn)">12 days</span></div>
+                        <div class="row"><span class="ic"></span><span><b>Aoife Kelly</b><em>First aid at work</em></span><span class="chip" style="--c: var(--ok)">Valid</span></div>
+                        <div class="row"><span class="ic"></span><span><b>Telehandler TH-04</b><em>LOLER thorough examination</em></span><span class="chip" style="--c: var(--bad)">Expired</span></div>
+                        <div class="row"><span class="ic"></span><span><b>Mark Doyle</b><em>IPAF 3a / 3b</em></span><span class="chip" style="--c: var(--warn)">19 days</span></div>
+                        <div class="row"><span class="ic"></span><span><b>Unit 7, Kingsway</b><em>Fire risk assessment</em></span><span class="chip" style="--c: var(--ok)">Valid</span></div>
+                      </div>
+                      <div class="detail">
+                        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                          <circle cx="50" cy="50" r="42" stroke="#EEEEE9"/>
+                          <circle cx="50" cy="50" r="42" stroke="#C98A1B" stroke-dasharray="264" stroke-dashoffset="228" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+                          <text x="50" y="49" text-anchor="middle" font-family="Newsreader, Georgia, serif" font-size="20" fill="#1A2140">12</text>
+                          <text x="50" y="64" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-size="8" fill="#7A8099">days left</text>
+                        </svg>
+                        <h4>CSCS card, Seán Byrne</h4>
+                        <p>Expires 2 Feb. Booked on 6 shifts after that date.</p>
+                        <div class="acts"><span class="p">Renew</span><span>Remind</span><span>Assign</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="base"></div>
+          </div>
+
+          <div class="tablet" id="tablet">
+            <div class="screen">
+              <div class="rota">
+                <div class="rota-top"><h5>Rota</h5><span>w/c 2 Feb</span></div>
+                <div class="days">
+                  <span></span><span class="d">Mon</span><span class="d">Tue</span><span class="d">Wed</span><span class="d">Thu</span><span class="d">Fri</span>
+                  <span class="who"><i style="--c:#263E92"></i></span><span class="s x"></span><span class="s x"></span><span class="s on"></span><span class="s on"></span><span class="s"></span>
+                  <span class="who"><i style="--c:#AF955C"></i></span><span class="s on"></span><span class="s am"></span><span class="s on"></span><span class="s"></span><span class="s on"></span>
+                  <span class="who"><i style="--c:#9A9DA9"></i></span><span class="s am"></span><span class="s on"></span><span class="s"></span><span class="s on"></span><span class="s on"></span>
+                  <span class="who"><i style="--c:#141E43"></i></span><span class="s on"></span><span class="s on"></span><span class="s am"></span><span class="s on"></span><span class="s"></span>
+                </div>
+                <div class="rota-alert"><b>Can't book Seán on Mon or Tue</b>His CSCS card runs out on 2 Feb. Renew it in Compliance to unlock these shifts.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phone" id="phone">
+            <div class="screen">
+              <div class="clock">
+                <div><small>Thursday</small><h6>Morning, Aoife</h6></div>
+                <div class="site"><b>Docklands Block C</b><em>You're on site</em></div>
+                <div class="btn-clock">Clock in</div>
+                <div class="week"><span>This week</span><b>31h 45m</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap device-notes">
+      <div class="note"><span class="tag">Desktop</span><h3>See the whole business</h3><p>Every site, person, asset and deadline in one place, with the things that need you at the top.</p></div>
+      <div class="note"><span class="tag">Tablet</span><h3>Plan the week on site</h3><p>Build the rota, check who's qualified, and swap shifts without going back to the office.</p></div>
+      <div class="note"><span class="tag">Phone</span><h3>Simple for the team</h3><p>Clock in, fill in a check, read a document. It saves when there's no signal and sends when there is.</p></div>
+    </div>
+  </section>
+
+  <section class="connected">
+    <svg class="rings" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="49"/><circle cx="40" cy="58" r="38"/><circle cx="58" cy="44" r="26"/></svg>
+    <div class="wrap">
+      <span class="eyebrow">Why connected matters</span>
+      <h2>One change, and <em>everything follows.</em></h2>
+      <div class="chain">
+        <div class="link"><span class="where">Compliance</span><p>Seán's CSCS card is 12 days from expiring.</p><small>Spotted automatically from the date on file.</small></div>
+        <div class="link"><span class="where">Rota</span><p>He can't be booked on site after it runs out.</p><small>The block applies everywhere, not just one screen.</small></div>
+        <div class="link"><span class="where">Tasks</span><p>His supervisor gets a task to book the renewal.</p><small>Renewed? The shifts unlock by themselves.</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="modules">
+    <div class="wrap">
+      <div class="modules-head">
+        <div style="display:grid; gap:20px">
+          <span class="eyebrow">The hub</span>
+          <h2>Everything your business <em>runs on.</em></h2>
+        </div>
+        <div style="display:grid; gap:16px">
+          <div class="count"><b id="toolCount">80</b> tools in <b id="groupCount">24</b> areas</div>
+          <p>Switch on the tools you need at setup and add more whenever you like. No extra charge per tool, and no half-featured plans.</p>
+        </div>
+      </div>
+      <div class="groups" id="groups"></div>
+    </div>
+  </section>
+
+  <section class="apps" id="apps">
+    <div class="wrap">
+      <div class="apps-intro">
+        <span class="eyebrow">Individual apps</span>
+        <h2>Need just one thing? <em>Start there.</em></h2>
+        <p>Each tool is also available on its own. When you're ready, move to the full hub and everything you've entered comes with you.</p>
+      </div>
+      <div class="app-cards">
+        <a class="app-card" href="#waitlist" style="--c:#263E92"><span class="glyph"></span><h3>Timesheets</h3><p>Clock in on site or fill in a sheet. Overtime, breaks and payroll exports done for you.</p><span class="go">Learn more</span></a>
+        <a class="app-card" href="#waitlist" style="--c:#AF955C"><span class="glyph"></span><h3>Rota</h3><p>Plan people and plant together. Changes after publishing need the person's OK.</p><span class="go">Learn more</span></a>
+        <a class="app-card" href="#waitlist" style="--c:#2F8F5B"><span class="glyph"></span><h3>Compliance</h3><p>Every certificate, ticket and inspection with reminders before anything expires.</p><span class="go">Learn more</span></a>
+        <a class="app-card" href="#waitlist" style="--c:#9A9DA9"><span class="glyph"></span><h3>CRM</h3><p>Leads, quotes and customers in one place, linked to the jobs you deliver.</p><span class="go">Learn more</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="tile-float" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="pricing-copy">
+        <span class="eyebrow">Pricing</span>
+        <h2>One price. <em>Every tool</em> included.</h2>
+        <p>No tiers and no features held back. You pay for people, and frontline staff who only clock in and fill in forms cost less.</p>
+        <a class="btn btn-line" href="#waitlist" style="justify-self:start">Get launch pricing <span class="arrow"></span></a>
+      </div>
+      <div class="price-card">
+        <div class="price-main"><b id="priceBase">£60</b><span>a month, <span id="priceUsers">3</span> users included</span></div>
+        <div class="price-lines">
+          <div class="price-line"><span>Each extra full user<small>Managers, admins and owners</small></span><b id="priceFull">£20</b></div>
+          <div class="price-line"><span>Each extra light user<small>Clock in, forms, documents</small></span><b id="priceLight">£8</b></div>
+          <div class="price-line"><span>All 80 tools<small>Switch on what you need</small></span><b>Included</b></div>
+        </div>
+        <p class="fine">Example prices, excluding VAT. Final prices confirmed before launch.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="waitlist" id="waitlist">
+    <div class="wrap">
+      <div class="waitlist-copy">
+        <span class="eyebrow">Waitlist</span>
+        <h2>Be first in <em>January.</em></h2>
+        <p>Join the list and we'll let you know the moment Luex opens, with early access and launch pricing for the first businesses on board.</p>
+        <ul class="perks">
+          <li>Early access before public launch</li>
+          <li>Launch pricing locked in</li>
+          <li>Help with setup from the Luex team</li>
+        </ul>
+      </div>
+      <form class="wl" id="wl" novalidate>
+        <div class="two">
+          <div class="field"><label for="wl-name">Your name</label><input id="wl-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="wl-email">Work email</label><input id="wl-email" name="email" type="email" autocomplete="email" required></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="wl-company">Company</label><input id="wl-company" name="company" autocomplete="organization"></div>
+          <div class="field"><label for="wl-size">Team size</label>
+            <select id="wl-size" name="size"><option>1 to 10</option><option>11 to 50</option><option>51 to 200</option><option>200 or more</option></select>
+          </div>
+        </div>
+        <label class="consent" for="wl-consent"><input id="wl-consent" type="checkbox" required> I'd like emails about the Luex launch. I can unsubscribe at any time.</label>
+        <button class="btn" type="submit">Join the waitlist <span class="arrow"></span></button>
+        <div class="form-msg" id="wl-msg" hidden></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer id="about">
+  <div class="wrap">
+    <div>
+      <a class="logo" href="#top" aria-label="Luex home">
+        <svg class="mark" viewBox="0 0 68 60" aria-hidden="true" style="width:34px;height:30px">
+          <rect x="2" y="6" width="14" height="14" rx="1.5" fill="#E5E4DF"/>
+          <rect x="16" y="18" width="26" height="26" rx="2" fill="#E5E4DF"/>
+          <rect x="38" y="2" width="22" height="22" rx="2" fill="#3A56C4" transform="rotate(16 49 13)"/>
+          <rect x="4" y="38" width="16" height="16" rx="1.5" fill="#AF955C"/>
+        </svg>
+        <svg class="word" viewBox="-1 -2 90 24" fill="none" stroke="#E5E4DF" stroke-width="1.7" stroke-linecap="square" aria-hidden="true" style="width:82px;height:20px">
+          <path d="M1 0 V20 H13"/><path d="M25 0 V12.5 a6.5 6.5 0 0 0 13 0 V0"/><path d="M50 1 H63 M50 10 H63 M50 19 H63"/><path d="M74 0 L87 20 M87 0 L74 20"/>
+        </svg>
+      </a>
+      <p class="tagline">Tools for organised businesses and brighter tomorrows.</p>
+    </div>
+    <div><h4>Product</h4><ul><li><a href="#hub">The hub</a></li><li><a href="#apps">Individual apps</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="#about">About</a></li><li><a href="#waitlist">Contact</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="#about">Privacy</a></li><li><a href="#about">Terms</a></li></ul></div>
+    <div class="legal"><span>© 2026 Luex Group</span><span>luexgroup.com</span></div>
+  </div>
+</footer>
+
+<div class="preview-flag">Preview</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+/* ---- Data: mirrors src/data/pricing.json and modules.json in the repo ---- */
+const PRICING = { base: 60, usersIncluded: 3, full: 20, light: 8 };
+const GROUPS = [
+  ['Home', ['Dashboard','Reports','Analytics']],
+  ['Tasks and Calendar', ['Tasks','Calendar','Approvals','Appointments']],
+  ['Messages', ['Discuss','Communications','Forum']],
+  ['Documents', ['Documents','Knowledge','Sign','Policies','Contracts']],
+  ['Forms and Inspections', ['Forms','Surveys','Checklists']],
+  ['People', ['Employees','Directory','Recruitment','Onboarding','Appraisals','Training']],
+  ['Time', ['Time Off','Timesheets','Rota']],
+  ['Payroll', ['Payroll','Pay Bands','Benefits and Pensions']],
+  ['Contractors', ['Contractors','Agency Workers','Subcontractor Compliance']],
+  ['Compliance', ['Compliance','Governance','ESG']],
+  ['Health, Safety and Quality', ['Health and Safety','Incidents','Quality','Corrective Actions']],
+  ['Assets', ['Assets','Maintenance','Rentals']],
+  ['Fleet', ['Fleet','Route Planning']],
+  ['Sites and Property', ['Sites and Buildings','Property and Leases','Utilities and Energy','Waste']],
+  ['Workplace', ['Visitors','Security and Access','Desk and Room Booking','Cleaning']],
+  ['Projects', ['Projects','Job Costing']],
+  ['Field Service', ['Field Service','Service Contracts and SLAs']],
+  ['Customer Service', ['Helpdesk','Live Chat','Client Portal']],
+  ['CRM and Sales', ['CRM','Quotes and Sales','Point of Sale']],
+  ['Marketing', ['Campaigns','Events','Website and Blog']],
+  ['Stock and Purchasing', ['Inventory','Procurement','Suppliers','Manufacturing']],
+  ['Finance', ['Invoicing','Accounting','Subscriptions']],
+  ['Spend', ['Expenses','Travel','Company Cards']],
+  ['IT', ['IT Systems','Devices','Password Vault','IT Help Requests']]
+];
+
+(function fillData() {
+  const g = document.getElementById('groups');
+  let total = 0;
+  g.innerHTML = GROUPS.map(([name, mods]) => {
+    total += mods.length;
+    return `<div class="group"><h3>${name}<span>${String(mods.length).padStart(2,'0')}</span></h3><p>${mods.join(' · ')}</p></div>`;
+  }).join('');
+  document.getElementById('toolCount').textContent = total;
+  document.getElementById('groupCount').textContent = GROUPS.length;
+  document.getElementById('priceBase').textContent = '£' + PRICING.base;
+  document.getElementById('priceUsers').textContent = PRICING.usersIncluded;
+  document.getElementById('priceFull').textContent = '£' + PRICING.full;
+  document.getElementById('priceLight').textContent = '£' + PRICING.light;
+})();
+
+/* ---- Waitlist (preview only: nothing is sent yet) ---- */
+document.getElementById('wl').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = e.currentTarget, msg = document.getElementById('wl-msg');
+  const name = f.querySelector('#wl-name').value.trim();
+  const email = f.querySelector('#wl-email').value.trim();
+  const ok = f.querySelector('#wl-consent').checked;
+  msg.hidden = false;
+  if (!name || !/^\S+@\S+\.\S+$/.test(email)) { msg.className = 'form-msg err'; msg.textContent = 'Add your name and a work email so we can reach you.'; return; }
+  if (!ok) { msg.className = 'form-msg err'; msg.textContent = 'Tick the box so we can email you about the launch.'; return; }
+  msg.className = 'form-msg';
+  msg.textContent = `Thanks, ${name.split(' ')[0]}. This is a preview, so your details weren't saved. On the live site you'll get a confirmation email.`;
+});
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- Lapis stone (Three.js) ---- */
+(function stone() {
+  if (typeof THREE === 'undefined') return;
+  const stage = document.getElementById('stoneStage');
+  const canvas = document.getElementById('stone');
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); } catch (e) { return; }
+  stage.classList.add('webgl');
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
+  camera.position.set(0, 0, 6.2);
+
+  // Seeded random so the stone looks the same on every visit
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  // Lapis texture: deep blues, white calcite veins, gold pyrite flecks
+  const W = 1024, H = 512;
+  const tex = document.createElement('canvas'); tex.width = W; tex.height = H;
+  const c = tex.getContext('2d');
+  c.fillStyle = '#16245E'; c.fillRect(0, 0, W, H);
+  const blues = ['#1B2C78', '#2441A6', '#2E4FC2', '#122059', '#3A5BD0', '#0E1846'];
+  for (let i = 0; i < 2200; i++) {
+    const x = rnd() * W, y = rnd() * H, r = 4 + rnd() * 38;
+    const g = c.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, blues[(rnd() * blues.length) | 0] + 'CC'); g.addColorStop(1, blues[0] + '00');
+    c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fill();
+  }
+  c.globalAlpha = 0.18; c.strokeStyle = '#DCE2F2';
+  for (let i = 0; i < 26; i++) {
+    c.lineWidth = 0.6 + rnd() * 2.4; c.beginPath();
+    let x = rnd() * W, y = rnd() * H; c.moveTo(x, y);
+    for (let k = 0; k < 8; k++) { x += (rnd() - 0.4) * 70; y += (rnd() - 0.5) * 40; c.lineTo(x, y); }
+    c.stroke();
+  }
+  c.globalAlpha = 1;
+  const metal = document.createElement('canvas'); metal.width = W; metal.height = H;
+  const m = metal.getContext('2d'); m.fillStyle = '#000'; m.fillRect(0, 0, W, H);
+  for (let i = 0; i < 900; i++) {
+    const x = rnd() * W, y = rnd() * H, r = 0.6 + Math.pow(rnd(), 3) * 4.5;
+    c.fillStyle = rnd() > 0.3 ? '#D4B46A' : '#AF955C';
+    c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fill();
+    m.fillStyle = '#fff'; m.beginPath(); m.arc(x, y, r, 0, Math.PI * 2); m.fill();
+  }
+  const map = new THREE.CanvasTexture(tex); map.wrapS = map.wrapT = THREE.RepeatWrapping;
+  if ('encoding' in map) map.encoding = THREE.sRGBEncoding;
+  const metalMap = new THREE.CanvasTexture(metal);
+
+  // Rough, rounded stone shape
+  const geo = new THREE.IcosahedronGeometry(1.25, 5);
+  const pos = geo.attributes.position, v = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i).normalize();
+    const n = Math.sin(v.x * 2.1 + 1.3) * 0.09 + Math.sin(v.y * 3.3 + 0.4) * 0.07 + Math.sin(v.z * 2.7 + 2.1) * 0.08
+            + Math.sin((v.x + v.y) * 6.0) * 0.02 + Math.sin((v.y - v.z) * 7.5) * 0.015;
+    v.multiplyScalar(1.25 * (1 + n)); v.x *= 1.12; v.y *= 0.92;
+    pos.setXYZ(i, v.x, v.y, v.z);
+  }
+  geo.computeVertexNormals();
+  const mat = new THREE.MeshStandardMaterial({ map, metalnessMap: metalMap, metalness: 0.85, roughness: 0.42 });
+  const rock = new THREE.Mesh(geo, mat);
+  rock.rotation.set(0.35, 0.6, 0.1);
+  scene.add(rock);
+
+  scene.add(new THREE.AmbientLight(0x8090C8, 0.55));
+  const key = new THREE.DirectionalLight(0xFFF1D6, 1.5); key.position.set(3, 3, 4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x4C6BFF, 1.1); rim.position.set(-4, -1, -2); scene.add(rim);
+  const gold = new THREE.PointLight(0xC9A75E, 0.9, 12); gold.position.set(-2, 2.5, 3); scene.add(gold);
+
+  function size() {
+    const r = stage.getBoundingClientRect();
+    renderer.setSize(r.width, r.height, false);
+    camera.aspect = r.width / r.height; camera.updateProjectionMatrix();
+  }
+  size(); window.addEventListener('resize', size);
+
+  let mx = 0, my = 0, scrollSpin = 0;
+  window.addEventListener('pointermove', (e) => { mx = (e.clientX / innerWidth - 0.5); my = (e.clientY / innerHeight - 0.5); });
+  window.addEventListener('scroll', () => { scrollSpin = scrollY * 0.002; }, { passive: true });
+
+  let visible = true;
+  new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(stage);
+  let t = 0;
+  function frame() {
+    if (visible) {
+      if (!reduceMotion) t += 0.0035;
+      rock.rotation.y = 0.6 + t + scrollSpin;
+      rock.rotation.x = 0.35 + my * 0.25 + Math.sin(t * 0.7) * 0.05;
+      rock.rotation.z = 0.1 + mx * 0.15;
+      rock.position.y = reduceMotion ? 0 : Math.sin(t * 1.4) * 0.05;
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ---- Scroll motion (GSAP) ---- */
+(function motion() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
+
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    // Hero orbits and floating tile drift as you leave the hero
+    gsap.to('.hero .orbits', { rotate: 20, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.hero .tile-float', { y: -80, rotate: 40, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+    // Connected chain: each step rises in turn
+    gsap.utils.toArray('.chain .link').forEach((el, i) => {
+      gsap.from(el, { y: 40, opacity: 0.15, duration: 0.9, ease: 'power3.out', delay: i * 0.12, scrollTrigger: { trigger: '.chain', start: 'top 80%' } });
+    });
+    gsap.from('.groups .group', { y: 24, opacity: 0.2, duration: 0.7, ease: 'power2.out', stagger: 0.03, scrollTrigger: { trigger: '.groups', start: 'top 85%' } });
+    gsap.to('.pricing .tile-float', { y: 120, rotate: 60, ease: 'none', scrollTrigger: { trigger: '.pricing', start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+
+  // Devices: laptop opens up, then tablet and phone slide out (desktop, pinned)
+  mm.add('(min-width: 900px) and (prefers-reduced-motion: no-preference)', () => {
+    const tl = gsap.timeline({ scrollTrigger: { trigger: '#devicesPin', start: 'top 8%', end: '+=1100', scrub: 0.6, pin: true } });
+    tl.from('#laptop', { scale: 0.82, rotateX: 18, y: 40, transformPerspective: 1600, transformOrigin: '50% 100%', duration: 1, ease: 'power2.out' })
+      .from('#tablet', { xPercent: 70, yPercent: 10, rotate: -6, opacity: 0, duration: 1, ease: 'power2.out' }, 0.6)
+      .from('#phone', { xPercent: -120, yPercent: 10, rotate: 8, opacity: 0, duration: 1, ease: 'power2.out' }, 0.8)
+      .to('#rig', { y: -10, duration: 0.4 });
+  });
+
+  // Phones and tablets: lighter, no pinning
+  mm.add('(max-width: 899px) and (prefers-reduced-motion: no-preference)', () => {
+    gsap.from('#laptop', { y: 40, opacity: 0.3, duration: 0.9, ease: 'power2.out', scrollTrigger: { trigger: '#rig', start: 'top 85%' } });
+    gsap.from(['#tablet', '#phone'], { y: 60, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power2.out', scrollTrigger: { trigger: '#rig', start: 'top 70%' } });
+  });
+})();
+</script>
