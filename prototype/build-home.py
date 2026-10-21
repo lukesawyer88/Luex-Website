@@ -49,7 +49,7 @@ hero = f"""
     <div class="hero-in" id="heroIn">
       <p class="kicker"><img class="kick-mark" src="img/logo-mark.png" width="26" height="23" alt=""><span>Every business. Every team. One place.</span></p>
       <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
-      <p class="sub cap18">Over 60 tools working together.<br>Enter it once, see it everywhere.</p>
+      <p class="sub cap18">Over <b class="b60">60</b> tools working together.<br>Enter it once, see it everywhere.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
       <div class="ctas">{btn_trial(TRIAL)}{btn_logo(DEMO)}</div>
       <p class="trust">14-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
@@ -246,6 +246,7 @@ extra_css = """
 .badges { display: flex; gap: 10px; }
 .logo { display: flex; align-items: center; gap: 8px; } .nav-mark { width: 24px; height: auto; } .logo .logo-ph { width: auto; }
 .ic-logo::before { display: none; } .ic-logo img { width: 15px; height: auto; display: block; }
+.b60 { font-weight: 700; color: var(--ink); -webkit-text-stroke: .5px var(--ink); }
 .kick-mark { width: 26px; height: auto; flex: none; }
 .btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }
