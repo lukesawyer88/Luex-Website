@@ -45,8 +45,8 @@ hero = f"""
       <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
     </div>
     <div class="showcase">
-      <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div>{slot("APP SCREEN: Dashboard. Real screenshot goes here", "1120 × 662")}</div>
-      <div class="phone"><div class="notch"></div>{slot("APP SCREEN: Staff app on phone", "390 × 844")}</div>
+      <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div><iframe class="appframe" src="app-screen-light.html" title="Luex app: Compliance page" loading="eager" scrolling="no"></iframe></div>
+      <!-- phone screen returns once the staff app screen is designed -->
     </div>
   </section>
 </div>"""
@@ -259,6 +259,7 @@ extra_css = """
 .win-bar i { width: 10px; height: 10px; border-radius: 50%; background: #D8D0C0; }
 .win-bar span { margin-left: auto; margin-right: auto; font-family: var(--mono); font-size: 11px; color: #8E8778; padding-right: 44px; }
 .win .slot { aspect-ratio: 1120 / 662; height: auto; background: #F4F0E8; }
+.appframe { display: block; width: 100%; aspect-ratio: 1280 / 800; border: 0; background: #fff; pointer-events: none; }
 .phone { position: absolute; right: -86px; bottom: -96px; width: 196px; aspect-ratio: 390 / 844; border-radius: 38px; background: #141414; padding: 9px; box-shadow: 0 30px 60px -20px rgba(40,30,10,.55); }
 .phone .slot { border-radius: 30px; background: #F4F0E8; padding: 14px; }
 .phone .slot span { font-size: 10px; }
