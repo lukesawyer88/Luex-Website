@@ -107,3 +107,79 @@ page = f"""<!doctype html>
 out = pathlib.Path(__file__).with_name("app-venus-themes.html")
 out.write_text(page)
 print("wrote", out, len(page))
+
+# =============================================================== mixed colours with gradients
+MIX_CSS = """
+.mix .m-page { background: var(--page-bg); }
+.mix .m-rail { background: var(--rail-grad); }
+.mix .m-rail .nv.on { background: var(--gold-grad); color: #141414; box-shadow: 0 6px 14px -6px rgba(166,139,85,.7); }
+.mix .tile.sel { background: var(--sel-grad); box-shadow: inset 0 0 0 1.5px var(--sel-line), 0 10px 22px -12px rgba(119,102,75,.55); }
+.mix .tile.sel .t-top, .mix .tile.sel small { color: var(--sel-ink2); } .mix .tile.sel b { color: var(--sel-ink); }
+.mix .key { background: var(--key-grad); box-shadow: 0 14px 28px -16px rgba(60,45,20,.6); }
+.mix .key-r p, .mix .key-r p b, .mix .mini-ring b { color: var(--key-ink); }
+.mix .mini-ring small { color: var(--key-ink2); }
+.mix .mini-ring .tr { stroke: rgba(255,255,255,.22); } .mix .mini-ring .pr { stroke: var(--key-ring); }
+.mix .key .btn-d { background: var(--key-btn); color: var(--key-btn-ink); }
+.mix .key .btn-l { background: rgba(255,255,255,.16); color: var(--key-ink); }
+.mix .btn-d, .mix .rnd.dark, .mix .tabbar .add, .mix .cmt .i, .mix .snd { background: var(--btn-grad); color: var(--btn-ink); }
+.mix .ask { border: 1.5px solid transparent; box-shadow: none; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--gold-grad) border-box; }
+.mix .lr.open { box-shadow: 0 0 0 2px var(--open-line); }
+.mix .mw, .mix .dw, .mix .tile:not(.sel) { background: var(--panel); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.mix .user, .mix .srch, .mix .rnd:not(.dark):not(.sm) { background: var(--field); }
+.mix .dz-lg i { background: var(--logo); } .mix .dz-lg i:nth-child(3) { background: var(--gold-grad); }
+"""
+
+GOLD = "linear-gradient(135deg, #E7D3A2 0%, #CFB783 45%, #A68B55 100%)"
+MIX = {
+    "subtle": {
+        "name": "Mixed, subtle", "blurb": "Gradients only where your eye should go: the black-to-bronze nav rail, the selected tile and the 'next action' card. Everything you read stays plain.",
+        "light": f"--surface:#FFFFFF; --panel:#F4EFE5; --field:#F8F4EC; --sel:#EDE5D6; --line:#E6DDCD; --ink:#141414; --ink2:#4A4740; --muted:#8E8778; --acc:#141414; --on-acc:#FFFFFF; --gold:#CFB783; --rail:#141414; --rail-ic:#AAA091; --rail-line:#3A342B; --nav-on:#CFB783; --nav-on-ic:#141414; --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA;"
+                 f"--page-bg:#FFFFFF; --rail-grad:linear-gradient(180deg,#141414 0%,#2A241B 60%,#4A3F2E 100%); --gold-grad:{GOLD};"
+                 "--sel-grad:linear-gradient(140deg,#FFFDF8 0%,#F3E8D2 100%); --sel-line:#CFB783; --sel-ink:#141414; --sel-ink2:#77664B;"
+                 "--key-grad:linear-gradient(135deg,#2A241B 0%,#4A3F2E 55%,#77664B 100%); --key-ink:#F6F0E4; --key-ink2:#CFC3AB; --key-ring:#CFB783; --key-btn:#CFB783; --key-btn-ink:#141414;"
+                 "--btn-grad:#141414; --btn-ink:#FFFFFF; --open-line:#141414;",
+        "dark": f"--surface:#14120F; --panel:#211D18; --field:#2A251F; --sel:#2E2922; --line:#352F27; --ink:#F3ECDD; --ink2:#D2C6AE; --muted:#9A8D74; --acc:#CFB783; --on-acc:#141414; --gold:#CFB783; --rail:#000; --rail-ic:#8E8778; --rail-line:#2A251F; --nav-on:#CFB783; --nav-on-ic:#141414; --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA;"
+                f"--page-bg:#14120F; --rail-grad:linear-gradient(180deg,#000 0%,#14110C 55%,#2E2619 100%); --gold-grad:{GOLD};"
+                "--sel-grad:linear-gradient(140deg,#2E2619 0%,#4A3F2E 100%); --sel-line:#A68B55; --sel-ink:#F6F0E4; --sel-ink2:#CFC3AB;"
+                "--key-grad:linear-gradient(135deg,#4A3F2E 0%,#77664B 55%,#A68B55 100%); --key-ink:#FFFDF8; --key-ink2:#E7DECA; --key-ring:#F3E2B8; --key-btn:#F6F0E4; --key-btn-ink:#141414;"
+                "--btn-grad:#CFB783; --btn-ink:#141414; --open-line:#CFB783;",
+    },
+    "wow": {
+        "name": "Mixed, wow", "blurb": "The desert comes into the app: a soft sand-to-gold glow behind see-through panels, gold gradient buttons, a gold ring round Ask Luex and the gold active item. Lists stay plain so they're still easy to read.",
+        "light": f"--surface:#FFFDF9; --panel:rgba(255,252,246,.72); --field:rgba(255,255,255,.7); --sel:#EDE5D6; --line:#E6DCC9; --ink:#141414; --ink2:#4A4740; --muted:#8C7F66; --acc:#141414; --on-acc:#FFFFFF; --gold:#CFB783; --rail:#141414; --rail-ic:#AAA091; --rail-line:#3A342B; --nav-on:#CFB783; --nav-on-ic:#141414; --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA;"
+                 f"--page-bg:radial-gradient(70% 90% at 85% 100%, #EBD7AE 0%, rgba(235,215,174,0) 60%), radial-gradient(60% 70% at 10% 0%, #F7EFE0 0%, rgba(247,239,224,0) 70%), linear-gradient(180deg,#FBF7EF 0%,#F2E6CF 100%);"
+                 f"--rail-grad:linear-gradient(180deg,#141414 0%,#2A241B 55%,#77664B 100%); --gold-grad:{GOLD};"
+                 "--sel-grad:linear-gradient(140deg,#FFF9EC 0%,#EBD7AE 100%); --sel-line:#A68B55; --sel-ink:#141414; --sel-ink2:#77664B;"
+                 "--key-grad:linear-gradient(135deg,#141414 0%,#4A3F2E 50%,#A68B55 100%); --key-ink:#FFFDF8; --key-ink2:#E7DECA; --key-ring:#E7D3A2; --key-btn:linear-gradient(135deg,#F3E2B8,#CFB783); --key-btn-ink:#141414;"
+                 f"--btn-grad:linear-gradient(135deg,#2A241B 0%,#141414 100%); --btn-ink:#FFFFFF; --open-line:#A68B55;",
+        "dark": f"--surface:#13110E; --panel:rgba(32,28,22,.72); --field:rgba(48,42,33,.7); --sel:#2E2922; --line:#3A3329; --ink:#F3ECDD; --ink2:#D2C6AE; --muted:#9A8D74; --acc:#CFB783; --on-acc:#141414; --gold:#CFB783; --rail:#000; --rail-ic:#8E8778; --rail-line:#2A251F; --nav-on:#CFB783; --nav-on-ic:#141414; --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA;"
+                f"--page-bg:radial-gradient(70% 90% at 85% 100%, rgba(166,139,85,.35) 0%, rgba(166,139,85,0) 60%), radial-gradient(60% 70% at 10% 0%, rgba(119,102,75,.25) 0%, rgba(119,102,75,0) 70%), linear-gradient(180deg,#14120F 0%,#1C1812 100%);"
+                f"--rail-grad:linear-gradient(180deg,#000 0%,#14110C 50%,#4A3F2E 100%); --gold-grad:{GOLD};"
+                "--sel-grad:linear-gradient(140deg,#3A3022 0%,#77664B 100%); --sel-line:#CFB783; --sel-ink:#FFFDF8; --sel-ink2:#E7DECA;"
+                "--key-grad:linear-gradient(135deg,#4A3F2E 0%,#A68B55 60%,#CFB783 100%); --key-ink:#141414; --key-ink2:#3A3022; --key-ring:#141414; --key-btn:#141414; --key-btn-ink:#F6F0E4;"
+                f"--btn-grad:{GOLD}; --btn-ink:#141414; --open-line:#CFB783;",
+    },
+}
+mblocks = ""
+for key, t in MIX.items():
+    mblocks += f'''<h2>{t["name"]}</h2><p class="lead">{t["blurb"]}</p>
+    <div class="pair">
+      <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame mix" style="{t["light"]} {STATUS_L}">{FR}</div></div>
+      <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame mix" style="{t["dark"]} {STATUS_D}">{FR}</div></div>
+    </div>'''
+page2 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Mixed Venus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{MIX_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Luex in mixed Venus colours</h1>
+  <p class="lead">Black and bronze frame the page, cream holds the work, gold marks what matters, with gradients in a few chosen places. Two strengths, each in light and dark. Status colours stay green, amber and red.</p>
+  <div class="sw">{"".join(f'<span><b style="background:{c}"></b>{n} {c}</span>' for n, c in pal)}</div>
+  {mblocks}
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-venus-mix.html").write_text(page2)
+print("wrote app-venus-mix.html", len(page2))
