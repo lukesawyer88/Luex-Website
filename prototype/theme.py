@@ -601,3 +601,105 @@ page8 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-reference-style.html").write_text(page8)
 print("wrote app-reference-style.html", len(page8))
+
+# =============================================================== best version (Claude's pick)
+I = M.ic
+def best_detail():
+    return f'''<section class="dw best-dw">
+      <div class="hero-obj">
+        <div class="ho-top"><span class="live"><i></i>Due soon</span><span class="ho-r"><span class="gl">{I("edit")}</span><span class="gl">{I("dots")}</span></span></div>
+        <div class="idcard">
+          <div class="idc-top"><span class="idc-logo">CSCS</span><span class="idc-chip"></span></div>
+          <div class="idc-mid"><span class="idc-ph">SB</span><div><b>SEÁN BYRNE</b><small>Skilled worker · Blue card</small><small class="mono">CS-4471 902</small></div></div>
+          <div class="idc-ft"><span>Valid to</span><b>02 / 02 / 2026</b></div>
+        </div>
+        <div class="ho-pills"><span class="gp">{I("people")}Seán Byrne</span><span class="gp">{I("cal")}Docklands</span></div>
+      </div>
+      <div class="best-head"><div><small>Cards and tickets</small><h5>CSCS card</h5></div>
+        <div class="ring-s" style="--p:12"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="33" class="tr"/><circle cx="40" cy="40" r="33" class="pr"/></svg><span><b>12</b><small>days</small></span></div></div>
+      <p class="best-note">Seán can't be booked on shifts after <b>2 February</b>.</p>
+      <div class="best-acts"><span class="btn-d">{I("tick")}Renew</span><span class="btn-l">{I("bellring")}Remind</span></div>
+      <div class="dtabs"><span class="on">Activity</span><span>Evidence <em>2</em></span><span>Linked <em>3</em></span><span>History</span></div>
+      <div class="acts"><div class="act"><span class="av sm">CM</span><p><b>Ciara Murphy</b> sent a reminder<small>Today, 08:02</small></p></div>
+        <div class="act"><span class="av sm">SB</span><p><b>Seán Byrne</b> booked a renewal for 30 Jan<small>Yesterday</small></p></div></div>
+    </section>'''
+
+TINTS = ["#E9DFC7", "#DDE6DF", "#E7D9D6", "#E3E0EA", "#EADBC9", "#DFE3E8"]
+def best_frame(dark=False):
+    mw = M.main_window("listplain", False)
+    k = [0]
+    def tint(m):
+        c = TINTS[k[0] % len(TINTS)]; k[0] += 1
+        return f'<span class="ci sm" style="--tint:{c}">'
+    import re as _re
+    mw = _re.sub(r'<span class="ci sm">', tint, mw)
+    h = f'''<div class="fit"><div class="m-page">{rail_soft()}<div class="m-main">{M.header_ai(True)}{M.tiles(2, False)}<div class="m-body">{mw}{best_detail()}</div></div></div></div>'''
+    for a, b in [("#C98A1B", "var(--amber)"), ("#2F8F5B", "var(--green)"), ("#C2413A", "var(--red)"), ("#1C1C1E", "var(--ink)")]:
+        h = h.replace(a, b)
+    return to_dark(h) if dark else h
+
+BEST_CSS = """
+.v-best .lr .ci { background: var(--tint); color: #3A3226; }
+.v-best.dark .lr .ci { background: color-mix(in srgb, var(--tint) 18%, transparent); color: #E7DECA; }
+.v-best .tile { position: relative; padding-bottom: 22px !important; }
+.v-best .tile::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 11px; height: 3px; border-radius: 99px; background: linear-gradient(90deg, var(--c) var(--w), color-mix(in srgb, var(--c) 16%, transparent) var(--w)); }
+.v-best .tile:nth-child(1) { --w: 100%; } .v-best .tile:nth-child(2) { --w: 88%; } .v-best .tile:nth-child(3) { --w: 9%; } .v-best .tile:nth-child(4) { --w: 4%; }
+.v-best .tile.sel::after { background: linear-gradient(90deg, #CFB783 30%, rgba(255,255,255,.18) 30%); }
+.v-best .tile.sel b { color: #CFB783; }
+.best-dw { padding: 12px !important; display: flex; flex-direction: column; gap: 12px; }
+.hero-obj { position: relative; height: 244px; border-radius: 20px; overflow: hidden; background: radial-gradient(90% 80% at 70% 100%, #F1E2BC 0%, rgba(241,226,188,0) 60%), linear-gradient(160deg, #E4E6EA 0%, #EDE6D6 60%, #E9D7AE 100%); display: grid; place-items: center; }
+.v-best.dark .hero-obj { background: radial-gradient(90% 80% at 70% 100%, rgba(207,183,131,.35) 0%, rgba(207,183,131,0) 60%), linear-gradient(160deg, #1F2126 0%, #26221C 60%, #3A3022 100%); }
+.ho-top { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; z-index: 2; }
+.live { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 99px; background: #fff; font-size: 11px; color: #141414; box-shadow: 0 4px 10px -4px rgba(0,0,0,.2); }
+.live i { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px color-mix(in srgb, var(--amber) 25%, transparent); }
+.ho-r { display: flex; gap: 6px; }
+.gl { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.75); color: #141414; backdrop-filter: blur(6px); }
+.gl .i { width: 13px; height: 13px; }
+.ho-pills { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; gap: 6px; z-index: 2; }
+.gp { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: 99px; background: rgba(255,255,255,.8); font-size: 11px; color: #141414; backdrop-filter: blur(6px); }
+.gp .i { width: 12px; height: 12px; }
+.idcard { width: 210px; height: 132px; margin-top: 4px; border-radius: 16px; padding: 14px 16px; color: #F6F0E4; display: flex; flex-direction: column; justify-content: space-between;
+  background: linear-gradient(135deg, #141414 0%, #2A241B 55%, #6E5E43 100%); transform: rotate(-5deg); box-shadow: 0 24px 34px -14px rgba(40,25,5,.55), 0 2px 0 rgba(255,255,255,.08) inset; }
+.idc-top { display: flex; justify-content: space-between; align-items: center; }
+.idc-logo { font-size: 12px; font-weight: 500; letter-spacing: 2px; color: #CFB783; }
+.idc-chip { width: 28px; height: 20px; border-radius: 5px; background: linear-gradient(135deg, #F3E2B8, #A68B55); }
+.idc-mid { display: flex; gap: 10px; align-items: center; }
+.idc-ph { width: 38px; height: 46px; border-radius: 8px; background: rgba(255,255,255,.12); display: grid; place-items: center; font-size: 12px; }
+.idc-mid b { display: block; font-size: 12px; font-weight: 500; letter-spacing: .8px; }
+.idc-mid small { display: block; font-size: 9.5px; color: #CFC3AB; }
+.idc-mid .mono { font-family: ui-monospace, Menlo, monospace; letter-spacing: .5px; margin-top: 2px; }
+.idc-ft { display: flex; justify-content: space-between; font-size: 9.5px; color: #CFC3AB; } .idc-ft b { font-weight: 500; color: #F6F0E4; letter-spacing: .5px; }
+.best-head { display: flex; justify-content: space-between; align-items: center; padding: 2px 6px 0; }
+.best-head small { font-size: 11px; color: var(--muted); } .best-head h5 { margin: 2px 0 0; font-size: 24px; font-weight: 500; letter-spacing: -.8px; }
+.ring-s { position: relative; width: 62px; height: 62px; flex: none; }
+.ring-s svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-s .tr { fill: none; stroke: var(--line); stroke-width: 6; } .ring-s .pr { fill: none; stroke: var(--amber); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 207; stroke-dashoffset: calc(207 - 207 * var(--p) / 100); }
+.ring-s span { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; } .ring-s b { font-size: 18px; font-weight: 500; line-height: 1; } .ring-s small { font-size: 9px; color: var(--muted); }
+.best-note { margin: -4px 6px 0; font-size: 12.5px; color: var(--ink2); font-weight: 400; } .best-note b { font-weight: 500; color: var(--ink); }
+.best-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 2px; }
+.best-acts .btn-d, .best-acts .btn-l { height: 40px; font-size: 13px; }
+.v-best .best-acts .btn-l { background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.v-best.dark .best-acts .btn-d { background: #CFB783; color: #141414; }
+.v-best.dark .best-acts .btn-l { background: rgba(255,255,255,.07); color: #F5F3EF; box-shadow: none; }
+.best-dw .dtabs { margin-top: 0; }
+.best-dw .acts { padding: 0 4px; }
+"""
+bcls = "v-ink v-rich v-white v-ref v-best"
+page9 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Best Version</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}{REF_CSS}{REF_D_FIX}{BEST_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Luex: my best version</h1>
+  <p class="lead">Ink sidebar, white frame, plain background, Venus accents and the reference's few big boxes. New: the open record shown as an object at the top of the detail window (here, Seán's CSCS card) in place of the reference's photo, softly coloured icons per record type, and a thin progress line on each status tile.</p>
+  <div class="pair">
+    <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {bcls}" style="{REF_L} {STATUS_L}">{best_frame()}</div></div>
+    <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {bcls} dark" style="{REF_D} {STATUS_D}">{best_frame(True)}</div></div>
+  </div>
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-best.html").write_text(page9)
+print("wrote app-best.html", len(page9))
