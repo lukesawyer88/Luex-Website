@@ -75,7 +75,7 @@ slides = "".join(f'<div class="slide">{slot(f"APP SCREEN {i+1}: {n}", d + " · 8
 looks = f"""
 <section class="caps" id="looks">
   <div class="head-c">
-    {tag("THE APP")}
+    <span class="tag"><i class="ic ic-logo"><img src="img/logo-mark-dark.png" alt=""></i><span>THE APP</span></span>
     <h2 class="d110 split">What Luex<br><span class="soft">looks like.</span></h2>
     <p class="sub cap18" style="width:650px">Every screen below is the real app. One login takes you from the morning dashboard to the rota, the timesheets and the compliance records.</p>
   </div>
@@ -245,6 +245,7 @@ extra_css = """
 .slot.logo { width: 100px; height: 44px; padding: 0; } .slot.logo::before { inset: 4px; } .slot.logo span { font-size: 9px; }
 .badges { display: flex; gap: 10px; }
 .logo { display: flex; align-items: center; gap: 8px; } .nav-mark { width: 24px; height: auto; } .logo .logo-ph { width: auto; }
+.ic-logo::before { display: none; } .ic-logo img { width: 15px; height: auto; display: block; }
 .kick-mark { width: 26px; height: auto; flex: none; }
 .btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }
