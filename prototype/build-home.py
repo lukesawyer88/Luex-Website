@@ -22,6 +22,10 @@ def slot(label, size="", dark=False, cls=""):
 def btn(text, kind="dark", href="#pricing"):
     return f'<a class="btn {kind}" href="{href}"><span class="roll"><span>{text}</span><span>{text}</span></span>{DOTS}</a>'
 
+LOGO = '<img class="btn-logo" src="img/logo-mark.png" width="18" height="16" alt="">'
+def btn_logo(text, kind="white", href="#demo"):
+    return f'<a class="btn {kind}" href="{href}"><span class="roll"><span>{text}</span><span>{text}</span></span>{LOGO}</a>'
+
 def tag(text, cls=""):
     return f'<span class="tag {cls}">{ICON}<span>{text}</span></span>'
 
@@ -43,7 +47,7 @@ hero = f"""
       <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
       <p class="sub cap18">Over 60 tools working together. Enter it once, see it everywhere.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
-      <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
+      <div class="ctas">{btn(TRIAL, "dark")}{btn_logo(DEMO)}</div>
       <p class="trust">14-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
     </div>
     <div class="showcase">
@@ -186,7 +190,7 @@ closing = f"""
   <div class="cl-in">
     <p class="kicker"><i class="ic w"></i><span>14 days free. No card needed.</span></p>
     <h2 class="d110 split" style="width:900px">Try Luex<br>free today.</h2>
-    <div class="ctas">{btn(TRIAL, "dark")}{btn(DEMO, "white", "#demo")}</div>
+    <div class="ctas">{btn(TRIAL, "dark")}{btn_logo(DEMO)}</div>
   </div>
 </section>"""
 
@@ -236,6 +240,8 @@ extra_css = """
 .slot.round span { font-size: 9px; }
 .slot.logo { width: 100px; height: 44px; padding: 0; } .slot.logo::before { inset: 4px; } .slot.logo span { font-size: 9px; }
 .badges { display: flex; gap: 10px; }
+.btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }
 .badges .slot { width: 130px; height: 44px; padding: 0; } .badges .slot::before { inset: 4px; } .badges .slot span { font-size: 8.5px; }
 .closing .slot.bg { padding-bottom: 40px; }
 .qs-img > .slot { position: absolute; inset: 0; }
