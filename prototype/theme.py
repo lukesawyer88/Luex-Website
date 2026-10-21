@@ -453,8 +453,12 @@ WHITE_CSS = """
 .v-white .m-page { background: var(--surface); }
 .v-nobg.frame { background: var(--surface); padding: 0; }
 .v-nobg .m-page { box-shadow: none; border-radius: 0; }
+.v-blur.frame { position: relative; overflow: hidden; padding: 22px; background: var(--surface); }
+.v-blur.frame::before { content: ""; position: absolute; inset: -60px; background: var(--desert) center 40% / cover no-repeat; filter: blur(26px) saturate(1.05); transform: scale(1.05); }
+.v-blur .fit { position: relative; z-index: 1; }
+.v-blur .m-page { box-shadow: 0 40px 80px -30px rgba(40,25,5,.55); }
 """
-cls = "v-ink v-rich v-desert v-white v-nobg"
+cls = "v-ink v-rich v-desert v-white v-blur"
 page6 = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Luex Ink White</title>
@@ -463,7 +467,7 @@ page6 = f"""<!doctype html>
 <style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}</style></head><body>
 <div class="wrap">
   <h1>Ink, in white</h1>
-  <p class="lead">The Ink sidebar with clean white and neutral grey surfaces and no background, so the Venus gold, bronze and black stand out as accents.</p>
+  <p class="lead">The Ink sidebar with clean white and neutral grey surfaces, and the desert softly blurred behind, so it reads as warm light rather than a photo. The Venus gold, bronze and black stand out as accents.</p>
   <div class="pair">
     <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {cls}" style="{WHITE_L} {STATUS_L}">{SFR}</div></div>
     <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {cls}" style="{WHITE_D} {STATUS_D}">{to_dark(SFR)}</div></div>
