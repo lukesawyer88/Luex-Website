@@ -737,3 +737,75 @@ page10 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-main-options.html").write_text(page10)
 print("wrote app-main-options.html", len(page10))
+
+# =============================================================== status tile icons
+M.P.update({
+ "layers": '<path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/>',
+ "shieldok": '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+ "hourglass": '<path d="M7 3.5h10M7 20.5h10M8 3.5c0 4 4 5 4 8.5s-4 4.5-4 8.5M16 3.5c0 4-4 5-4 8.5s4 4.5 4 8.5"/>',
+ "alert": '<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.5h.01"/>',
+ "folder": '<path d="M3.5 7a1.5 1.5 0 0 1 1.5-1.5h4l2 2h8a1.5 1.5 0 0 1 1.5 1.5v8.5A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5z"/>',
+ "calok": '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4M9 15l2 2 4-4"/>',
+ "calclock": '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4M12 13v2.5l1.6 1"/>',
+ "calx": '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4M10 13.5l4 4M14 13.5l-4 4"/>',
+ "gridi": '<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
+ "tickc": '<circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/>',
+ "clockc": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+ "xc": '<circle cx="12" cy="12" r="8.5"/><path d="M9 9l6 6M15 9l-6 6"/>',
+})
+SETS = {
+    "A": ("A. Meaning (my pick)", "What each tile is about: a stack for everything, a shield with a tick for valid, an hourglass for running out, a warning sign for expired.", ["layers", "shieldok", "hourglass", "alert"]),
+    "B": ("B. Calendar", "All built on a calendar, because Compliance is about dates: a folder, then calendar with a tick, a clock and a cross.", ["folder", "calok", "calclock", "calx"]),
+    "C. ": ("C. Simple marks", "The most minimal: a grid, a tick, a clock and a cross in circles. Works in any module with almost no thought.", ["gridi", "tickc", "clockc", "xc"]),
+}
+def iconify(h, icons):
+    parts = h.split('<span class="sdot"></span>')
+    # only the first four sdots belong to the tiles
+    out = parts[0]
+    for i, p in enumerate(parts[1:]):
+        out += (f'<span class="tico">{M.ic(icons[i])}</span>' if i < 4 else '<span class="sdot"></span>') + p
+    return out
+TICO_CSS = """
+.tico { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex: none; background: color-mix(in srgb, var(--c) 24%, #fff); color: color-mix(in srgb, var(--c) 85%, #000); }
+.tico .i { width: 15px; height: 15px; stroke-width: 2; }
+.v-ref .m-main { grid-template-rows: 58px 92px 1fr; }
+.v-ref .tile { padding-top: 12px; }
+.tile:first-child .tico { background: #E6E6E6; color: #141414; }
+.dark .tico { background: color-mix(in srgb, var(--c) 26%, transparent); color: var(--c); }
+.dark .tile:first-child .tico { background: rgba(255,255,255,.1); color: #F5F3EF; }
+.tile.sel .tico { background: linear-gradient(135deg,#F3E2B8,#CFB783); color: #141414; }
+.v-ref .t-top { gap: 10px; }
+.strip .tiles { grid-template-columns: repeat(4, 1fr); }
+.strip { background: #fff; padding: 14px; border-radius: 22px; }
+.strip.dark { background: #141414; }
+.strip { color: var(--ink); } .strip .tile b { color: var(--ink); } .strip .tile.sel b { color: #CFB783; }
+"""
+GB = "--t-cream:#E6E9EE;"; GBD = "--t-cream:#1B1D22;"
+full = iconify(best_frame(), SETS["A"][2]); fulld = iconify(best_frame(True), SETS["A"][2])
+strips = ""
+for key, (name, blurb, icons) in SETS.items():
+    t = iconify(M.tiles(2, False), icons)
+    for a, b in [("#C98A1B", "var(--amber)"), ("#2F8F5B", "var(--green)"), ("#C2413A", "var(--red)"), ("#1C1C1E", "var(--ink)")]: t = t.replace(a, b)
+    strips += f'''<h2>{name}</h2><p class="lead">{blurb}</p>
+    <div class="pair"><div class="frame soft {bcls} strip" style="{REF_L} {GB} {STATUS_L}">{t}</div>
+    <div class="frame soft {bcls} strip dark" style="{REF_D} {GBD} {STATUS_D}">{t}</div></div>'''
+page11 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Tile Icons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}{REF_CSS}{REF_D_FIX}{BEST_CSS}{OPT_CSS}{TICO_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Icons for the status tiles</h1>
+  <p class="lead">The dot becomes an icon in a small circle tinted in the tile's status colour. On the black chosen tile it turns gold. Three sets to compare, then the full page with my pick.</p>
+  {strips}
+  <h2>Full page with set A</h2>
+  <div class="pair">
+    <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {bcls}" style="{REF_L} {GB} {STATUS_L}">{full}</div></div>
+    <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {bcls} dark" style="{REF_D} {GBD} {STATUS_D}">{fulld}</div></div>
+  </div>
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-tile-icons.html").write_text(page11)
+print("wrote app-tile-icons.html", len(page11))
