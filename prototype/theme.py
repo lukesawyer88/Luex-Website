@@ -882,3 +882,13 @@ _f.write_text(_f.read_text().replace('</style>', '''
 .v-ref .m-main { grid-template-rows: 58px 104px 1fr !important; }
 .v-ref .tile b { padding: 0; justify-content: flex-start; align-self: stretch; text-align: left; }
 </style>''', 1))
+
+# dark: selected tile matches selected sidebar pill
+_f.write_text(_f.read_text().replace('</style>', '''
+.dark .v-ref .tile.sel, .v-ref.dark .tile.sel { background: linear-gradient(135deg, #F3E2B8 0%, #CFB783 55%, #B39A63 100%) !important; box-shadow: 0 12px 24px -12px rgba(207,183,131,.55) !important; }
+.v-ref.dark .tile.sel b { color: #141414 !important; }
+.v-ref.dark .tile.sel .t-top, .v-ref.dark .tile.sel .t-top .i { color: #3A3022 !important; }
+.v-ref.dark .tile.sel .tico { background: #141414 !important; color: #CFB783 !important; box-shadow: none !important; }
+.v-ref.dark .tile.sel .tico .i { color: #CFB783 !important; }
+.v-ref.dark .tile.sel::after { background: linear-gradient(90deg, #141414 30%, rgba(20,20,20,.18) 30%) !important; }
+</style>''', 1))
