@@ -526,6 +526,7 @@ main > section, main > div { position: relative; }
 .slot.round span { font-size: 9px; }
 .slot.logo { width: 100px; height: 44px; padding: 0; } .slot.logo::before { inset: 4px; } .slot.logo span { font-size: 9px; }
 .badges { display: flex; gap: 10px; }
+.logo { display: flex; align-items: center; gap: 8px; } .nav-mark { width: 24px; height: auto; } .logo .logo-ph { width: auto; }
 .btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }
 .badges .slot { width: 130px; height: 44px; padding: 0; } .badges .slot::before { inset: 4px; } .badges .slot span { font-size: 8.5px; }
@@ -690,7 +691,7 @@ main > section, main > div { position: relative; }
 <body>
 
 <nav class="nav" aria-label="Main">
-  <a class="logo" href="#top" aria-label="Luex home"><span class="logo-ph">luex</span></a>
+  <a class="logo" href="#top" aria-label="Luex home"><img class="nav-mark" src="img/logo-mark-dark.png" width="24" height="21" alt=""><span class="logo-ph">luex</span></a>
   <button type="button" id="menuBtn" aria-label="Toggle menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </nav>
 <div class="drop" id="drop">
@@ -707,7 +708,7 @@ main > section, main > div { position: relative; }
       <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
       <p class="sub cap18">Over 60 tools working together. Enter it once, see it everywhere.</p>
       <div class="replaces"><span class="rl">Replaces</span><s>Rota app</s><s>Timesheet app</s><s>Spreadsheets</s><s>CRM</s><s>Shared drive</s></div>
-      <div class="ctas"><a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="3" cy="3" r="1.3"/><circle cx="3" cy="9" r="1.3"/><circle cx="6.5" cy="6" r="1.3"/><circle cx="9.5" cy="3" r="1"/><circle cx="9.5" cy="9" r="1"/><circle cx="3" cy="6" r="1"/></svg></a><a class="btn white" href="#demo"><span class="roll"><span>Book a demo</span><span>Book a demo</span></span><img class="btn-logo" src="img/logo-mark.png" width="18" height="16" alt=""></a></div>
+      <div class="ctas"><a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><img class="btn-logo" src="img/logo-mark-dark.png" width="18" height="16" alt=""></a><a class="btn white" href="#demo"><span class="roll"><span>Book a demo</span><span>Book a demo</span></span><img class="btn-logo" src="img/logo-mark.png" width="18" height="16" alt=""></a></div>
       <p class="trust">14-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
     </div>
     <div class="showcase">
@@ -791,7 +792,7 @@ main > section, main > div { position: relative; }
         <p class="price">£15<span>/month</span></p>
         <span class="pill2">Per company · excl. VAT</span>
         <ul><li>1 to 3 users: £15</li><li>4 to 10 users: £29</li><li>11 to 25 users: £59</li><li>26 or more users: £99</li></ul>
-        <a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="3" cy="3" r="1.3"/><circle cx="3" cy="9" r="1.3"/><circle cx="6.5" cy="6" r="1.3"/><circle cx="9.5" cy="3" r="1"/><circle cx="9.5" cy="9" r="1"/><circle cx="3" cy="6" r="1"/></svg></a>
+        <a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><img class="btn-logo" src="img/logo-mark-dark.png" width="18" height="16" alt=""></a>
       </div>
     </article>
     <article class="plan">
@@ -801,7 +802,7 @@ main > section, main > div { position: relative; }
         <p class="price">£60<span>/month</span></p>
         <span class="pill2">3 users included · excl. VAT</span>
         <ul><li>Every app included</li><li>3 users included</li><li>One login, one bill</li><li>Upgrade from a single app any time</li></ul>
-        <a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="3" cy="3" r="1.3"/><circle cx="3" cy="9" r="1.3"/><circle cx="6.5" cy="6" r="1.3"/><circle cx="9.5" cy="3" r="1"/><circle cx="9.5" cy="9" r="1"/><circle cx="3" cy="6" r="1"/></svg></a>
+        <a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><img class="btn-logo" src="img/logo-mark-dark.png" width="18" height="16" alt=""></a>
       </div>
     </article>
     <article class="plan">
@@ -811,7 +812,7 @@ main > section, main > div { position: relative; }
         <p class="price">£8<span>/user</span></p>
         <span class="pill2">Per user, per month · excl. VAT</span>
         <ul><li>Light user: £8</li><li>Forms, timesheets, documents</li><li>Full user: £20</li><li>Manages and sees everything</li></ul>
-        <a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="3" cy="3" r="1.3"/><circle cx="3" cy="9" r="1.3"/><circle cx="6.5" cy="6" r="1.3"/><circle cx="9.5" cy="3" r="1"/><circle cx="9.5" cy="9" r="1"/><circle cx="3" cy="6" r="1"/></svg></a>
+        <a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><img class="btn-logo" src="img/logo-mark-dark.png" width="18" height="16" alt=""></a>
       </div>
     </article></div>
   <p class="cap20 center" style="margin-top:60px">Works with the tools you already use</p>
@@ -832,7 +833,7 @@ main > section, main > div { position: relative; }
   <div class="cl-in">
     <p class="kicker"><i class="ic w"></i><span>14 days free. No card needed.</span></p>
     <h2 class="d110 split" style="width:900px">Try Luex<br>free today.</h2>
-    <div class="ctas"><a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="3" cy="3" r="1.3"/><circle cx="3" cy="9" r="1.3"/><circle cx="6.5" cy="6" r="1.3"/><circle cx="9.5" cy="3" r="1"/><circle cx="9.5" cy="9" r="1"/><circle cx="3" cy="6" r="1"/></svg></a><a class="btn white" href="#demo"><span class="roll"><span>Book a demo</span><span>Book a demo</span></span><img class="btn-logo" src="img/logo-mark.png" width="18" height="16" alt=""></a></div>
+    <div class="ctas"><a class="btn dark" href="#pricing"><span class="roll"><span>Start free trial</span><span>Start free trial</span></span><img class="btn-logo" src="img/logo-mark-dark.png" width="18" height="16" alt=""></a><a class="btn white" href="#demo"><span class="roll"><span>Book a demo</span><span>Book a demo</span></span><img class="btn-logo" src="img/logo-mark.png" width="18" height="16" alt=""></a></div>
   </div>
 </section>
 </main>

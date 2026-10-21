@@ -23,6 +23,10 @@ def btn(text, kind="dark", href="#pricing"):
     return f'<a class="btn {kind}" href="{href}"><span class="roll"><span>{text}</span><span>{text}</span></span>{DOTS}</a>'
 
 LOGO = '<img class="btn-logo" src="img/logo-mark.png" width="18" height="16" alt="">'
+LOGO_D = '<img class="btn-logo" src="img/logo-mark-dark.png" width="18" height="16" alt="">'
+def btn_trial(text, href="#pricing"):
+    return f'<a class="btn dark" href="{href}"><span class="roll"><span>{text}</span><span>{text}</span></span>{LOGO_D}</a>'
+
 def btn_logo(text, kind="white", href="#demo"):
     return f'<a class="btn {kind}" href="{href}"><span class="roll"><span>{text}</span><span>{text}</span></span>{LOGO}</a>'
 
@@ -47,7 +51,7 @@ hero = f"""
       <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
       <p class="sub cap18">Over 60 tools working together. Enter it once, see it everywhere.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
-      <div class="ctas">{btn(TRIAL, "dark")}{btn_logo(DEMO)}</div>
+      <div class="ctas">{btn_trial(TRIAL)}{btn_logo(DEMO)}</div>
       <p class="trust">14-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
     </div>
     <div class="showcase">
@@ -149,7 +153,7 @@ plan_html = "".join(f"""
         <p class="price">{pr}<span>{per}</span></p>
         <span class="pill2">{note}</span>
         <ul>{"".join(f'<li>{f}</li>' for f in feats)}</ul>
-        {btn(TRIAL, "dark")}
+        {btn_trial(TRIAL)}
       </div>
     </article>""" for n, d, t, pr, per, note, feats, ic in plans)
 pricing = f"""
@@ -190,7 +194,7 @@ closing = f"""
   <div class="cl-in">
     <p class="kicker"><i class="ic w"></i><span>14 days free. No card needed.</span></p>
     <h2 class="d110 split" style="width:900px">Try Luex<br>free today.</h2>
-    <div class="ctas">{btn(TRIAL, "dark")}{btn_logo(DEMO)}</div>
+    <div class="ctas">{btn_trial(TRIAL)}{btn_logo(DEMO)}</div>
   </div>
 </section>"""
 
@@ -219,7 +223,7 @@ footer = f"""
 
 nav = f"""
 <nav class="nav" aria-label="Main">
-  <a class="logo" href="#top" aria-label="Luex home"><span class="logo-ph">luex</span></a>
+  <a class="logo" href="#top" aria-label="Luex home"><img class="nav-mark" src="img/logo-mark-dark.png" width="24" height="21" alt=""><span class="logo-ph">luex</span></a>
   <button type="button" id="menuBtn" aria-label="Toggle menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </nav>
 <div class="drop" id="drop">
@@ -240,6 +244,7 @@ extra_css = """
 .slot.round span { font-size: 9px; }
 .slot.logo { width: 100px; height: 44px; padding: 0; } .slot.logo::before { inset: 4px; } .slot.logo span { font-size: 9px; }
 .badges { display: flex; gap: 10px; }
+.logo { display: flex; align-items: center; gap: 8px; } .nav-mark { width: 24px; height: auto; } .logo .logo-ph { width: auto; }
 .btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }
 .badges .slot { width: 130px; height: 44px; padding: 0; } .badges .slot::before { inset: 4px; } .badges .slot span { font-size: 8.5px; }
