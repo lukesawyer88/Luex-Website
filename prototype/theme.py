@@ -361,3 +361,77 @@ page4 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-clean-variations.html").write_text(page4)
 print("wrote app-clean-variations.html", len(page4))
+
+# =============================================================== richer Ink variations
+RICH_CSS = """
+/* shared: Ink + gold touches */
+.v-rich .brand { padding-bottom: 18px; border-bottom: 1px solid rgba(207,183,131,.35); }
+.v-rich .sni.on { background: linear-gradient(135deg, #F3E2B8 0%, #CFB783 55%, #B39A63 100%); color: #141414; box-shadow: 0 10px 20px -10px rgba(207,183,131,.7); }
+.v-rich .sni.on .ico { background: #141414; color: #CFB783; }
+.v-rich .sni.on em { background: #141414; color: #CFB783; }
+.v-rich .tile.sel { background: var(--sel-bg); box-shadow: 0 14px 26px -14px rgba(20,15,5,.6); }
+.v-rich .tile.sel b { color: #CFB783; } .v-rich .tile.sel .t-top, .v-rich .tile.sel small { color: #C9BFAE; }
+.v-rich .tile.sel .sdot { box-shadow: 0 0 0 3px rgba(224,138,30,.25); }
+.v-rich .st-pill { background: color-mix(in srgb, var(--c) 15%, transparent); color: var(--ink); font-weight: 500; }
+.v-rich .lr .ci, .v-rich .chip .i { color: var(--bronze); }
+.v-rich .lr .ci { background: color-mix(in srgb, #CFB783 24%, transparent); }
+.v-rich .lr.open { box-shadow: inset 0 0 0 1.5px var(--ink), 0 12px 22px -14px rgba(20,15,5,.45); }
+.v-rich .mini-ring .pr { stroke: #CFB783; }
+.v-rich .tl h4::after { content: "."; color: #CFB783; }
+
+/* desert: photo behind, glow in the rail, bronze action card */
+.v-desert.frame { background: var(--desert) center 40% / cover no-repeat; }
+.v-desert .soft-rail { background: radial-gradient(130% 45% at 50% 108%, rgba(166,139,85,.55), rgba(166,139,85,0) 65%), var(--ink-rail); }
+.v-desert .key { background: linear-gradient(135deg, #141414 0%, #3A3022 55%, #77664B 100%); box-shadow: 0 14px 28px -16px rgba(40,30,15,.6); }
+.v-desert .key-r p, .v-desert .key-r p b, .v-desert .mini-ring b { color: #F6F0E4; } .v-desert .mini-ring small { color: #CFC3AB; }
+.v-desert .mini-ring::before { background: rgba(255,255,255,.06); box-shadow: none; }
+.v-desert .mini-ring .tr { stroke: rgba(255,255,255,.18); }
+.v-desert .key .btn-d { background: linear-gradient(135deg, #F3E2B8, #CFB783); color: #141414; }
+.v-desert .key .btn-l { background: rgba(255,255,255,.12); color: #F6F0E4; }
+.v-desert .m-page { box-shadow: 0 40px 80px -30px rgba(40,25,5,.6); }
+
+/* colour: tinted tiles, progress bars, split bar */
+.v-colour .tile:not(.sel) { background: color-mix(in srgb, var(--c) 9%, var(--panel)); }
+.v-colour .tile { padding-bottom: 20px; }
+.v-colour .tile::after { content: ""; position: absolute; left: 16px; right: 16px; bottom: 9px; height: 4px; border-radius: 99px; background: linear-gradient(90deg, var(--bar-c, var(--c)) var(--w), color-mix(in srgb, var(--c) 18%, transparent) var(--w)); }
+.v-colour .tile:nth-child(1) { --w: 100%; } .v-colour .tile:nth-child(2) { --w: 88%; } .v-colour .tile:nth-child(3) { --w: 8.5%; --bar-c: #CFB783; } .v-colour .tile:nth-child(4) { --w: 3.2%; }
+.v-colour .tile:nth-child(1)::after { background: var(--ink); opacity: .85; }
+.split { display: none; }
+.v-colour .split { display: flex; height: 8px; border-radius: 99px; overflow: hidden; gap: 3px; margin-left: auto; width: 220px; }
+.v-colour .split i { display: block; height: 100%; border-radius: 99px; }
+.v-colour .mw-h { width: 100%; } .mw-h > span:nth-child(2) { font-size: 12px; color: var(--muted); font-weight: 400; }
+.v-colour .split-l { display: none; } .v-colour .split-l { display: inline; font-size: 11px; color: var(--muted); }
+"""
+SPLIT = '<span class="split"><i style="flex:219;background:var(--green)"></i><i style="flex:21;background:var(--amber)"></i><i style="flex:8;background:var(--red)"></i></span>'
+SFR = SF.replace('<div class="mw-h"><b>Due soon</b><span>21 records</span></div>', f'<div class="mw-h"><b>Due soon</b><span>21 records</span>{SPLIT}</div>')
+inkL = base_l + " --ink-rail:#141414; --sel-bg:#141414; --bronze:#77664B;"
+inkD = base_d + " --ink-rail:#0B0A09; --sel-bg:linear-gradient(135deg,#2A241B,#4A3F2E); --bronze:#CFB783;"
+RICH = [
+    ("v-ink v-rich", "Ink + gold", "Gold pill for the page you're on, a fine gold line under the logo, the chosen tile in black with a gold number, status pills tinted in their colour and icons in soft gold circles.", inkL, inkD),
+    ("v-ink v-rich v-desert", "Ink + desert", "Everything above, with the dune photo from the website behind the app (dusk in dark mode), a bronze glow at the foot of the sidebar and a bronze 'next action' card.",
+     inkL + " --desert: linear-gradient(rgba(255,250,240,.15), rgba(255,250,240,.15)), url(img/dune-hero.webp);",
+     inkD + " --desert: linear-gradient(rgba(8,6,3,.72), rgba(8,6,3,.82)), url(img/dune-hero.webp);"),
+    ("v-ink v-rich v-colour", "Ink + colour", "Everything in Ink + gold, with each status tile softly tinted in its colour and a small progress bar, and a split bar above the list showing valid, due and expired at a glance.", inkL, inkD),
+]
+rb = ""
+for cls, name, blurb, L, D in RICH:
+    rb += f'''<h2>{name}</h2><p class="lead">{blurb}</p>
+    <div class="pair">
+      <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {cls}" style="{L} {STATUS_L}">{SFR}</div></div>
+      <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {cls}" style="{D} {STATUS_D}">{to_dark(SFR)}</div></div>
+    </div>'''
+page5 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Ink Variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Luex, Ink sidebar with more life</h1>
+  <p class="lead">The Ink sidebar you picked, three ways to make it richer while keeping it clean. Each in Venus light and dark. The list itself stays plain so it's always easy to read.</p>
+  {rb}
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-ink-variations.html").write_text(page5)
+print("wrote app-ink-variations.html", len(page5))
