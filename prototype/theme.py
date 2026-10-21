@@ -873,3 +873,12 @@ print("wrote app-final.html v2", len(page13))
 _f = pathlib.Path(__file__).with_name("app-final.html")
 _f.write_text(_f.read_text().replace('<span class="tl-l">Valid</span>', '<span class="tl-l">Compliant</span>'))
 print("renamed Valid -> Compliant")
+# centre the tile number between icon row and bar
+_f.write_text(_f.read_text().replace('</style>', '''
+.v-ref .tile { display: flex !important; flex-direction: column; padding: 14px 18px 16px !important; }
+.v-ref .tile b { flex: 1; display: flex; align-items: center; line-height: 1; margin: 0; }
+.v-ref .tile::after { position: static !important; flex: none; height: 3px; margin: 0 !important; }
+.v-ref .tile .t-top { flex: none; }
+.v-ref .m-main { grid-template-rows: 58px 104px 1fr !important; }
+.v-ref .tile b { padding: 0; justify-content: flex-start; align-self: stretch; text-align: left; }
+</style>''', 1))
