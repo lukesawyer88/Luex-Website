@@ -477,3 +477,41 @@ page6 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-ink-desert-white.html").write_text(page6)
 print("wrote app-ink-desert-white.html", len(page6))
+
+# =============================================================== glass over a sharp desert
+GLASS_CSS = """
+.v-glass.frame { padding: 0; background: var(--desert-sharp) center 45% / cover no-repeat; }
+.v-glass .m-page { background: transparent; box-shadow: none; border-radius: 0; }
+.v-glass .soft-rail { background: var(--glass-rail); backdrop-filter: blur(22px) saturate(1.1); -webkit-backdrop-filter: blur(22px) saturate(1.1); box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); }
+.v-glass .tile:not(.sel), .v-glass .mw, .v-glass .dw, .v-glass .user, .v-glass .srch, .v-glass .rnd:not(.dark):not(.sm), .v-glass .pill:not(.srch), .v-glass .tabbar, .v-glass .ask {
+  background: var(--glass); backdrop-filter: blur(24px) saturate(1.15); -webkit-backdrop-filter: blur(24px) saturate(1.15);
+  box-shadow: inset 0 0 0 1px var(--glass-edge), 0 14px 30px -18px rgba(40,25,5,.45); }
+.v-glass .lr, .v-glass .facts div, .v-glass .cmt, .v-glass .dtabs { background: var(--glass-solid); box-shadow: inset 0 0 0 1px var(--glass-edge); }
+.v-glass .dtabs .on { background: var(--surface); }
+.v-glass .m-hd { padding: 4px 6px 0; }
+.v-glass .m-title small, .v-glass .tl h4 { text-shadow: 0 1px 12px var(--title-glow); }
+.v-glass .lr.open { box-shadow: inset 0 0 0 1.5px var(--ink), 0 12px 22px -14px rgba(20,15,5,.45); }
+"""
+GL = WHITE_L + (" --desert-sharp: url(img/dune-hero.webp); --glass: rgba(255,255,255,.62); --glass-solid: rgba(255,255,255,.86);"
+                " --glass-edge: rgba(255,255,255,.7); --glass-rail: rgba(20,20,20,.78); --title-glow: rgba(255,255,255,.7);")
+GD = WHITE_D + (" --desert-sharp: linear-gradient(rgba(6,5,3,.55), rgba(6,5,3,.7)), url(img/dune-hero.webp); --glass: rgba(20,20,20,.55); --glass-solid: rgba(24,24,24,.82);"
+                " --glass-edge: rgba(255,255,255,.08); --glass-rail: rgba(8,8,8,.72); --title-glow: rgba(0,0,0,.6);")
+gcls = "v-ink v-rich v-desert v-white v-glass"
+page7 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Desert Glass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}{RICH_CSS}{WHITE_CSS}{GLASS_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Desert glass</h1>
+  <p class="lead">The desert photo sharp behind the whole app. Every box is frosted glass, so the desert shows through blurred. List rows and facts are near-solid so they stay easy to read. Light and dark (dusk).</p>
+  <div class="pair">
+    <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {gcls}" style="{GL} {STATUS_L}">{SFR}</div></div>
+    <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {gcls}" style="{GD} {STATUS_D}">{to_dark(SFR)}</div></div>
+  </div>
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-desert-glass.html").write_text(page7)
+print("wrote app-desert-glass.html", len(page7))
