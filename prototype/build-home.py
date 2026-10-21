@@ -270,7 +270,7 @@ extra_css = """
 .hero.dune h1 em, .hero.dune h1 .dot { color: var(--accent); }
 .hero.dune .sub { top: 346px; color: var(--ink2); width: 760px; }
 .replaces { position: absolute; top: 420px; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-.replaces .rl { font-family: var(--body); font-size: 14px; letter-spacing: .4px; text-transform: uppercase; color: var(--ink3); margin-right: 4px; }
+.replaces .rl { font-family: var(--body); font-size: 14px; letter-spacing: .4px; text-transform: uppercase; color: var(--ink); font-weight: 700; -webkit-text-stroke: .5px var(--ink); margin-right: 4px; }
 .replaces s { font-family: var(--head); font-size: 14px; color: #6B6455; text-decoration: none; position: relative; padding: 6px 13px; border-radius: 99px; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(20,20,20,.08); }
 .replaces s::after { content: ""; position: absolute; left: 10px; right: 10px; top: 50%; height: 1.5px; background: #141414; transform: rotate(-4deg); }
 .trust { position: absolute; top: 536px; left: 50%; translate: -50% 0; white-space: nowrap; font-family: var(--head); font-size: 13.5px; color: var(--ink2); }
