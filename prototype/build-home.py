@@ -64,7 +64,7 @@ hero = f"""
       <p class="sub cap18">Over <b class="b60">60</b> tools working together.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
       <div class="ctas">{btn_trial(TRIAL)}{btn_logo(DEMO)}</div>
-      <p class="trust">30-day free trial <i>·</i> No card needed</p>
+      <p class="trust">30-day free trial <i>·</i> No card needed <i>·</i> Works offline on site</p>
     </div>
     <div class="showcase">
       <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div><iframe class="appframe" src="app-screen-light.html" title="Luex app: Compliance page" loading="eager" scrolling="no"></iframe></div>
