@@ -132,12 +132,12 @@ why = f"""
 <div class="qs-wrap">
 <section class="qs cream" id="why">
   <div class="qs-grid">
-    <div class="qs-img">{slot("PICTURE: someone using Luex on their phone at work", "414 × 700")}</div>
+    <div class="qs-img"><img class="why-img" src="img/why-phone.webp" width="1536" height="2304" alt="Someone at their desk checking the Luex app on their phone"></div>
     <div class="qs-main">
       <div class="lab"><span class="sq32">{ICON}</span><span class="cap18t">Why Luex</span></div>
       <h2 class="h52">Built to replace<br><span class="soft">the pile of apps,</span><br>not add to it.</h2>
       <p class="cap18 ink bottom" style="width:460px">Most businesses run on a rota app, a timesheet app, a spreadsheet for certificates, a CRM and a shared drive. None of them talk to each other. Luex puts it all in one place, so things are entered once and everyone sees the same thing.</p>
-      {btn(DEMO, "dark", "#demo")}
+      {btn_trial(DEMO, "#demo")}
     </div>
     <div class="qs-side">
       <div class="qs-card"><div class="lab"><span class="sq32">{ICON}</span><span class="cap18t">One login</span></div>{odo("1", "login")}<p class="cap14 ink" style="width:230px">One place for the office, the site and the van.</p></div>
@@ -267,6 +267,7 @@ extra_css = """
 .closing .kicker { top: 130px !important; }
 .closing h2 { top: 180px !important; }
 .closing .ctas { top: 440px !important; }
+.why-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
 .kick-mark { width: 26px; height: auto; flex: none; }
 .btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }

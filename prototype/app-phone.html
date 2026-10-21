@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=390, initial-scale=1">
+<title>Luex Phone Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>
+:root { --ink:#141414; --ink2:#4A4A4F; --muted:#8A8A8E; --panel:#F2F2F1; --gb:#E6E9EE; --gold:#CFB783; --amber:#E08A1E; --green:#2F8F5B; --red:#C2413A; color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #fff; }
+body { width: 390px; height: 844px; overflow: hidden; font-family: "Google Sans", Arial, sans-serif; color: var(--ink); letter-spacing: -.2px; position: relative; }
+.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sb { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 14px 30px 0 34px; font-size: 15px; font-weight: 500; }
+.sb .r { display: flex; gap: 6px; align-items: center; }
+.sb .bat { width: 25px; height: 12px; border-radius: 4px; border: 1.5px solid var(--ink); position: relative; } .sb .bat::after { content:""; position:absolute; inset:1.5px; right:5px; background:var(--ink); border-radius:2px; }
+.notch { position: absolute; top: 11px; left: 50%; translate: -50% 0; width: 118px; height: 33px; border-radius: 99px; background: #000; }
+.hd { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 0; }
+.hd small { font-size: 13px; color: var(--muted); } .hd h1 { margin: 2px 0 0; font-size: 28px; font-weight: 500; letter-spacing: -1px; }
+.av { width: 42px; height: 42px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 500; }
+.search { margin: 14px 20px 0; height: 42px; border-radius: 99px; background: var(--panel); display: flex; align-items: center; gap: 8px; padding: 0 16px; font-size: 14px; color: var(--muted); }
+.shift { margin: 14px 20px 0; border-radius: 22px; padding: 16px; background: linear-gradient(135deg,#141414 0%,#2A241B 60%,#5A4C36 100%); color: #F6F0E4; }
+.shift .top { display: flex; justify-content: space-between; font-size: 12px; color: #CFC3AB; }
+.shift b { display: block; font-size: 22px; font-weight: 500; letter-spacing: -.6px; margin-top: 6px; }
+.shift .meta { font-size: 13px; color: #CFC3AB; margin-top: 2px; }
+.clock { margin-top: 14px; height: 50px; border-radius: 99px; background: linear-gradient(135deg,#F3E2B8,#CFB783 55%,#B39A63); color: #141414; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 500; }
+.sec { display: flex; justify-content: space-between; align-items: center; margin: 18px 20px 8px; } .sec b { font-size: 16px; font-weight: 500; } .sec span { font-size: 12px; color: var(--muted); }
+.needs { margin: 0 20px; background: var(--gb); border-radius: 20px; padding: 6px; display: grid; gap: 6px; }
+.n { background: #fff; border-radius: 15px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+.n .ic { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 18%, #fff); color: color-mix(in srgb, var(--c) 85%, #000); flex: none; }
+.n .ic .i { width: 16px; height: 16px; }
+.n p { margin: 0; flex: 1; font-size: 14px; font-weight: 500; } .n p small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 400; }
+.n em { font-style: normal; font-size: 11px; padding: 4px 9px; border-radius: 99px; background: color-mix(in srgb, var(--c) 15%, #fff); color: color-mix(in srgb, var(--c) 85%, #000); }
+.grid { margin: 4px 20px 0; display: grid; grid-template-columns: repeat(4,1fr); gap: 12px 8px; }
+.app { display: grid; justify-items: center; gap: 5px; font-size: 11px; color: var(--ink2); }
+.app span { width: 56px; height: 56px; border-radius: 16px; background: var(--panel); display: grid; place-items: center; color: var(--ink); }
+.app span .i { width: 22px; height: 22px; }
+.bar { position: absolute; left: 14px; right: 14px; bottom: 26px; height: 64px; border-radius: 26px; background: #141414; display: flex; justify-content: space-around; align-items: center; color: #8E8C88; }
+.bar .on { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#F3E2B8,#CFB783 55%,#B39A63); color: #141414; display: grid; place-items: center; }
+.bar .i { width: 22px; height: 22px; }
+.home-ind { position: absolute; bottom: 8px; left: 50%; translate: -50% 0; width: 134px; height: 5px; border-radius: 99px; background: #141414; }
+</style></head><body>
+<div class="notch"></div>
+<div class="sb"><span>08:02</span><span class="r"><svg class="i" viewBox="0 0 24 24" style="width:16px"><path d="M2 20h2M7 20v-4M12 20v-8M17 20V8M22 20V4"/></svg><span class="bat"></span></span></div>
+<div class="hd"><div><small>Thursday 29 January</small><h1>Morning, Seán.</h1></div><span class="av">SB</span></div>
+<div class="search"><svg class="i" viewBox="0 0 24 24" style="width:16px"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Search apps, people, documents</div>
+<div class="shift"><div class="top"><span>NEXT SHIFT · TODAY</span><span>Docklands</span></div><b>07:30 – 16:00</b><div class="meta">Block C · Supervisor: Ciara Murphy</div>
+  <div class="clock"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Clock in</div></div>
+<div class="sec"><b>Needs you</b><span>3 items</span></div>
+<div class="needs">
+  <div class="n" style="--c:var(--amber)"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4A2 2 0 0 0 7 17.8V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4A2 2 0 0 0 17 6.2V2"/></svg></span><p>Renew your CSCS card<small>Compliance</small></p><em>12 days</em></div>
+  <div class="n" style="--c:#4A6FA5"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z"/><path d="M14 3.5V8h4M9 13h6M9 16.5h6"/></svg></span><p>Sign the new site policy<small>Policies</small></p><em>Today</em></div>
+  <div class="n" style="--c:var(--green)"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span><p>Holiday approved<small>Time off · 3–7 March</small></p><em>New</em></div>
+</div>
+<div class="sec"><b>Your apps</b><span>Edit</span></div>
+<div class="grid">
+  <div class="app"><span><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>Timesheets</div>
+  <div class="app"><span><svg class="i" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>Time off</div>
+  <div class="app"><span><svg class="i" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z"/><path d="M14 3.5V8h4"/></svg></span>Documents</div>
+  <div class="app"><span><svg class="i" viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><rect x="4" y="3.5" width="16" height="17" rx="3"/></svg></span>Forms</div>
+</div>
+<div class="bar"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><svg class="i" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span class="on"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></span><svg class="i" viewBox="0 0 24 24"><path d="M4 13l2.5-7h11L20 13v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"/></svg></div>
+<div class="home-ind"></div>
+</body></html>
