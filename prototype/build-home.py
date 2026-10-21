@@ -247,21 +247,22 @@ extra_css = """
 
 /* ---------- hero: desert, dark text, dashboard rising from the sand ---------- */
 .hero-wrap { height: auto; margin-bottom: 0; }
-.hero.dune { position: relative; height: 1494px; color: var(--ink); clip-path: none; }
+.hero.dune { position: relative; height: 1352px; color: var(--ink); clip-path: none; }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .hero.dune::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(transparent, var(--g7)); pointer-events: none; }
-.hero.dune .kicker { top: 136px; color: var(--ink); }
-.hero.dune h1 { top: 180px; color: var(--ink); }
+.hero.dune .kicker { top: 112px; color: var(--ink); }
+.hero.dune h1.d110 { font-size: 84px; line-height: 88px; letter-spacing: -4.6px; width: 1000px; }
+.hero.dune h1 { top: 150px; color: var(--ink); }
 .hero.dune h1 em, .hero.dune h1 .dot { color: var(--accent); }
-.hero.dune .sub { top: 436px; color: var(--ink2); width: 560px; }
-.replaces { position: absolute; top: 500px; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.hero.dune .sub { top: 346px; color: var(--ink2); width: 560px; }
+.replaces { position: absolute; top: 390px; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .replaces .rl { font-family: var(--body); font-size: 14px; letter-spacing: .4px; text-transform: uppercase; color: var(--ink3); margin-right: 4px; }
 .replaces s { font-family: var(--head); font-size: 14px; color: #6B6455; text-decoration: none; position: relative; padding: 6px 13px; border-radius: 99px; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(20,20,20,.08); }
 .replaces s::after { content: ""; position: absolute; left: 10px; right: 10px; top: 50%; height: 1.5px; background: #141414; transform: rotate(-4deg); }
-.trust { position: absolute; top: 634px; left: 50%; translate: -50% 0; white-space: nowrap; font-family: var(--head); font-size: 13.5px; color: var(--ink2); }
+.trust { position: absolute; top: 506px; left: 50%; translate: -50% 0; white-space: nowrap; font-family: var(--head); font-size: 13.5px; color: var(--ink2); }
 .trust i { font-style: normal; color: #A68B55; margin: 0 6px; }
-.hero.dune .ctas { top: 562px; }
-.showcase { position: absolute; left: 50%; top: 694px; translate: -50% 0; width: 1120px; max-width: calc(100% - 48px); z-index: 2; }
+.hero.dune .ctas { top: 440px; }
+.showcase { position: absolute; left: 50%; top: 552px; translate: -50% 0; width: 1120px; max-width: calc(100% - 48px); z-index: 2; }
 .win { border-radius: 14px; overflow: hidden; background: rgba(255,255,255,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 40px 80px -30px rgba(70,50,20,.45), 0 0 0 1px rgba(255,255,255,.6); }
 .win-bar { height: 38px; display: flex; align-items: center; gap: 7px; padding: 0 16px; background: rgba(255,255,255,.65); border-bottom: 1px solid rgba(20,20,20,.06); }
 .win-bar i { width: 10px; height: 10px; border-radius: 50%; background: #D8D0C0; }
@@ -285,9 +286,10 @@ extra_css = """
   .replaces .rl { width: 100%; text-align: center; margin: 0 0 2px; font-size: 12px; }
   .trust { white-space: normal; text-align: center; margin-top: 14px; font-size: 12.5px; }
   .hero.dune .kicker { justify-content: center; white-space: normal; }
-  .hero.dune h1 { width: auto; margin-top: 18px; }
+  .hero.dune h1, .hero.dune h1.d110 { width: auto; margin-top: 18px; font-size: 52px; line-height: 54px; letter-spacing: -3px; }
   .hero.dune .sub { width: auto; margin-top: 18px; text-align: center; }
-  .hero.dune .ctas { margin-top: 24px; }
+  .hero.dune .ctas { margin-top: 22px; flex-direction: row; gap: 8px; } .hero.dune .ctas .btn { height: 46px; padding: 0 16px; font-size: 12.5px; }
+  .hero.dune { padding-top: 96px !important; } .hero.dune .sub { margin-top: 12px !important; } .showcase { margin-top: 30px !important; }
   .showcase { position: relative; left: auto; top: auto; translate: none; width: 100%; max-width: none; margin-top: 48px; }
   .win-bar { height: 26px; } .win-bar span { display: none; }
   .phone { width: 88px; right: -4px; bottom: -28px; border-radius: 22px; padding: 5px; } .phone .slot { border-radius: 18px; padding: 6px; } .phone .slot span { font-size: 7px; } .notch { width: 36px; height: 10px; top: 10px; }
