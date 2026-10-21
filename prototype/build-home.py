@@ -61,10 +61,10 @@ hero = f"""
     <div class="hero-in" id="heroIn">
       <p class="kicker"><img class="kick-mark" src="img/logo-mark.png" width="26" height="23" alt=""><span>Every business. Every team. One place.</span></p>
       <h1 class="d110 split">Run your entire operation<br>from a single <em>hub</em><span class="dot">.</span></h1>
-      <p class="sub cap18">Over <b class="b60">60</b> tools working together.<br>Enter it once, see it everywhere.</p>
+      <p class="sub cap18">Over <b class="b60">60</b> tools working together.</p>
       <div class="replaces"><span class="rl">Replaces</span>{"".join(f'<s>{t}</s>' for t in ["Rota app", "Timesheet app", "Spreadsheets", "CRM", "Shared drive"])}</div>
       <div class="ctas">{btn_trial(TRIAL)}{btn_logo(DEMO)}</div>
-      <p class="trust">30-day free trial <i>·</i> No card needed <i>·</i> Works on desktop, tablet and phone</p>
+      <p class="trust">30-day free trial <i>·</i> No card needed</p>
     </div>
     <div class="showcase">
       <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>app.luex.com</span></div><iframe class="appframe" src="app-screen-light.html" title="Luex app: Compliance page" loading="eager" scrolling="no"></iframe></div>
@@ -136,6 +136,7 @@ why = f"""
     <div class="qs-main">
       <div class="lab"><span class="sq32">{ICON}</span><span class="cap18t">Why Luex</span></div>
       <h2 class="h52">Built to replace<br><span class="soft">the pile of apps,</span><br>not add to it.</h2>
+      <p class="once">Enter it once, see it everywhere.</p>
       <p class="cap18 ink bottom" style="width:460px">Most businesses run on a rota app, a timesheet app, a spreadsheet for certificates, a CRM and a shared drive. None of them talk to each other. Luex puts it all in one place, so things are entered once and everyone sees the same thing.</p>
       {btn_trial(DEMO, "#demo")}
     </div>
@@ -268,6 +269,7 @@ extra_css = """
 .closing h2 { top: 180px !important; }
 .closing .ctas { top: 440px !important; }
 .why-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+.once { margin-top: 22px; font-family: var(--head); font-weight: 500; font-size: 22px; letter-spacing: -.8px; color: #A68B55; }
 .kick-mark { width: 26px; height: auto; flex: none; }
 .btn-logo { width: 18px; height: auto; flex: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .btn:hover .btn-logo { transform: rotate(-8deg) scale(1.08); }
@@ -282,7 +284,7 @@ extra_css = """
 
 /* ---------- hero: desert, dark text, dashboard rising from the sand ---------- */
 .hero-wrap { height: auto; margin-bottom: 0; }
-.hero.dune { position: relative; height: 1382px; color: var(--ink); clip-path: none; }
+.hero.dune { position: relative; height: 1354px; color: var(--ink); clip-path: none; }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .hero.dune::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(transparent, var(--g7)); pointer-events: none; }
 .hero.dune .kicker { top: 112px; color: var(--ink); }
@@ -290,14 +292,14 @@ extra_css = """
 .hero.dune h1 { top: 150px; color: var(--ink); }
 .hero.dune h1 em, .hero.dune h1 .dot { color: var(--accent); }
 .hero.dune .sub { top: 346px; color: var(--ink2); width: 760px; }
-.replaces { position: absolute; top: 420px; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.replaces { position: absolute; top: 392px; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .replaces .rl { font-family: var(--body); font-size: 14px; letter-spacing: .4px; text-transform: uppercase; color: var(--ink); font-weight: 700; -webkit-text-stroke: .5px var(--ink); margin-right: 4px; }
 .replaces s { font-family: var(--head); font-size: 14px; color: #6B6455; text-decoration: none; position: relative; padding: 6px 13px; border-radius: 99px; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(20,20,20,.08); }
 .replaces s::after { content: ""; position: absolute; left: 10px; right: 10px; top: 50%; height: 1.5px; background: #141414; transform: rotate(-4deg); }
-.trust { position: absolute; top: 536px; left: 50%; translate: -50% 0; white-space: nowrap; font-family: var(--head); font-size: 13.5px; font-weight: 500; color: var(--ink); }
+.trust { position: absolute; top: 508px; left: 50%; translate: -50% 0; white-space: nowrap; font-family: var(--head); font-size: 13.5px; font-weight: 500; color: var(--ink); }
 .trust i { font-style: normal; color: #A68B55; margin: 0 6px; }
-.hero.dune .ctas { top: 470px; }
-.showcase { position: absolute; left: 50%; top: 582px; translate: -50% 0; width: 1120px; max-width: calc(100% - 48px); z-index: 2; }
+.hero.dune .ctas { top: 442px; }
+.showcase { position: absolute; left: 50%; top: 554px; translate: -50% 0; width: 1120px; max-width: calc(100% - 48px); z-index: 2; }
 .win { border-radius: 14px; overflow: hidden; background: rgba(255,255,255,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 40px 80px -30px rgba(70,50,20,.45), 0 0 0 1px rgba(255,255,255,.6); }
 .win-bar { height: 38px; display: flex; align-items: center; gap: 7px; padding: 0 16px; background: rgba(255,255,255,.65); border-bottom: 1px solid rgba(20,20,20,.06); }
 .win-bar i { width: 10px; height: 10px; border-radius: 50%; background: #D8D0C0; }
