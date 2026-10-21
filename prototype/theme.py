@@ -266,3 +266,98 @@ page3 = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-soft-style.html").write_text(page3)
 print("wrote app-soft-style.html", len(page3))
+
+# =============================================================== clean variations
+def to_dark(h):
+    return (h.replace('<span class="on"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/>', '<span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/>')
+             .replace('<span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14.5', '<span class="on"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14.5'))
+
+VAR_CSS = """
+/* Paper: flat, hairlines, table list, gold bar for the active item */
+.v-paper .soft-rail, .v-paper .tile, .v-paper .mw, .v-paper .dw, .v-paper .user, .v-paper .srch, .v-paper .rnd:not(.dark):not(.sm), .v-paper .modepill { box-shadow: inset 0 0 0 1px var(--line); }
+.v-paper .m-page { box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.v-paper .tile.sel { box-shadow: inset 0 0 0 1.5px var(--c); }
+.v-paper .sni.on { background: transparent; color: var(--ink); font-weight: 500; box-shadow: none; position: relative; }
+.v-paper .sni.on::before { content: ""; position: absolute; left: -12px; top: 11px; width: 3px; height: 20px; border-radius: 0 3px 3px 0; background: var(--gold-ring); }
+.v-paper .sni.on .ico { background: var(--panel); border-radius: 10px; }
+.v-paper .lrows { gap: 0; }
+.v-paper .lr { background: transparent; box-shadow: none; border-radius: 0; border-bottom: 1px solid var(--line); }
+.v-paper .lr.open { background: var(--surface); border-radius: 12px; box-shadow: inset 0 0 0 1.5px var(--ink); border-bottom-color: transparent; }
+.v-paper .key, .v-paper .facts div { box-shadow: inset 0 0 0 1px var(--line); }
+.v-paper .mini-ring::before { box-shadow: none; }
+.v-paper .tabbar { box-shadow: inset 0 0 0 1px var(--line), 0 8px 18px -12px rgba(0,0,0,.25); }
+
+/* Ink sidebar */
+.v-ink .soft-rail { background: var(--ink-rail); box-shadow: none; }
+.v-ink .brand span:last-child { color: #F2EEE6; }
+.v-ink .sni { color: #AAA091; } .v-ink .sg { color: #77664B; }
+.v-ink .sni em { background: rgba(255,255,255,.08); color: #E7DECA; }
+.v-ink .sni.on { background: #E7DECA; color: #141414; box-shadow: none; }
+.v-ink .sni.on .ico { background: #141414; color: #E7DECA; }
+.v-ink .modepill { background: rgba(255,255,255,.06); box-shadow: none; }
+.v-ink .modepill span { color: #8E8778; } .v-ink .modepill .on { background: #E7DECA; color: #141414; }
+.v-ink .dz-lg i { background: #E7DECA; }
+
+/* Cream */
+.v-cream .m-page { box-shadow: 0 24px 50px -30px rgba(90,70,30,.45); }
+.v-cream .tile, .v-cream .mw, .v-cream .dw { box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 6px 16px -12px rgba(90,70,30,.35); }
+.v-cream .soft-rail { box-shadow: none; }
+.v-cream .sni.on { box-shadow: 0 8px 16px -10px rgba(119,102,75,.8); }
+.v-cream .lr, .v-cream .key, .v-cream .facts div { background: var(--panel); }
+.v-cream .mw, .v-cream .dw { background: var(--field); }
+.v-cream .sni.on .ico { background: rgba(255,255,255,.22); color: var(--nav-on-ic); }
+
+/* Outline */
+.v-line .tile, .v-line .mw, .v-line .dw, .v-line .soft-rail { box-shadow: inset 0 0 0 1px var(--line); }
+.v-line .tile.sel { box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
+.v-line .tile.sel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--gold-ring); }
+.v-line .sni.on { background: var(--panel); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.v-line .sni.on .ico { background: var(--ink); color: var(--surface); }
+.v-line .sni.on em { background: var(--gold); }
+.v-line .dtabs { background: transparent; border-bottom: 1px solid var(--line); border-radius: 0; padding: 0; gap: 0; }
+.v-line .dtabs span { border-radius: 0; height: 34px; line-height: 34px; }
+.v-line .dtabs .on { background: transparent; box-shadow: inset 0 -2px 0 var(--ink); }
+.v-line .seg { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.v-line .lr { box-shadow: none; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+.v-line .lrows { gap: 0; }
+.v-line .lr.open { background: var(--panel); border-radius: 12px; box-shadow: inset 0 0 0 1.5px var(--ink); }
+.v-line .key { box-shadow: inset 0 0 0 1px var(--line); }
+.v-line .mini-ring::before { box-shadow: none; background: transparent; }
+"""
+
+base_l = SOFT["light"]; base_d = SOFT["dark"]
+VARS = [
+    ("v-paper", "Paper", "Flat and quiet: no shadows, fine lines, the list as a simple table, and a thin gold bar beside the page you're on.",
+     base_l.replace("--panel:#F6F4F0", "--panel:#FAF8F5").replace("--rail:#F6F4F0", "--rail:#FAF8F5").replace("--backdrop:#E7E3DC", "--backdrop:#EFECE6"),
+     base_d.replace("--backdrop:#0B0A09", "--backdrop:#0E0D0C")),
+    ("v-ink", "Ink sidebar", "A Luex Black sidebar with cream text frames every page, like the black business card. The work area stays light and calm.",
+     base_l + " --ink-rail:#141414;", base_d + " --ink-rail:#0B0A09;"),
+    ("v-cream", "Cream", "The whole app sits on a soft Cloud Cream tint with crisp white cards on top. Warm Ochre marks the page you're on.",
+     "--backdrop:#E2D9C8; --surface:#F3ECDF; --panel:#FFFDF9; --field:#F8F3EA; --sel:#EFE6D6; --line:#E6DCC9; --ink:#141414; --ink2:#4F4636; --muted:#8C7F66; --acc:#141414; --on-acc:#FFFFFF; --gold:#CFB783; --gold-ring:#A68B55; --rail:#F3ECDF; --rail-ic:#4F4636; --rail-line:#E0D3BB; --nav-on:#A68B55; --nav-on-ic:#FFFFFF; --badge:#CFB783; --badge-ic:#141414; --logo:#141414; --soft-sh: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 24px -18px rgba(90,70,30,.4);",
+     "--backdrop:#0E0C09; --surface:#1A1712; --panel:#24201A; --field:#2D2820; --sel:#332C22; --line:#3A3328; --ink:#F3ECDD; --ink2:#D2C6AE; --muted:#9A8D74; --acc:#CFB783; --on-acc:#141414; --gold:#CFB783; --gold-ring:#CFB783; --rail:#1A1712; --rail-ic:#D2C6AE; --rail-line:#3A3328; --nav-on:#A68B55; --nav-on-ic:#FFFFFF; --badge:#CFB783; --badge-ic:#141414; --logo:#E7DECA; --soft-sh: inset 0 1px 0 rgba(255,255,255,.04), 0 12px 26px -16px rgba(0,0,0,.75);"),
+    ("v-line", "Outline", "White panels drawn with fine outlines, underline tabs and a gold top edge on the chosen tile. The crispest of the set.",
+     base_l.replace("--panel:#F6F4F0", "--panel:#FFFFFF").replace("--rail:#F6F4F0", "--rail:#FFFFFF").replace("--surface:#FFFFFF", "--surface:#FBFAF7").replace("--backdrop:#E7E3DC", "--backdrop:#ECE8E1"),
+     base_d.replace("--panel:#1F1D1A", "--panel:#151412").replace("--rail:#1F1D1A", "--rail:#151412").replace("--surface:#171614", "--surface:#100F0E")),
+]
+vb = ""
+for cls, name, blurb, L, D in VARS:
+    vb += f'''<h2>{name}</h2><p class="lead">{blurb}</p>
+    <div class="pair">
+      <div><p class="tag-l"><i style="background:#fff"></i>Light</p><div class="frame soft {cls}" style="{L} {STATUS_L}">{SF}</div></div>
+      <div><p class="tag-l"><i style="background:#141414"></i>Dark</p><div class="frame soft {cls}" style="{D} {STATUS_D}">{to_dark(SF)}</div></div>
+    </div>'''
+page4 = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Clean Variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{css}{SOFT_CSS}{VAR_CSS}</style></head><body>
+<div class="wrap">
+  <h1>Luex, clean variations</h1>
+  <p class="lead">Four clean takes on the soft style, each in Venus light and dark. Same layout, same labelled sidebar; only the surfaces, lines and the way the active item is marked change.</p>
+  {vb}
+</div>
+<script>{M.JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-clean-variations.html").write_text(page4)
+print("wrote app-clean-variations.html", len(page4))
