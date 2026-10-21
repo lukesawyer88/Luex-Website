@@ -601,3 +601,19 @@ page = f"""<!doctype html>
 </body></html>"""
 pathlib.Path(__file__).with_name("app-ai-options.html").write_text(page)
 print("wrote app-ai-options.html", len(page))
+
+# =============================================================== clean module page (final look, AI closed)
+clean = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luex Module Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap">
+<style>{CSS}{AI_CSS}
+body {{ padding: 24px 16px; display: grid; place-items: center; min-height: 100vh; }}
+.wrap {{ width: 100%; }}
+</style></head><body>
+<div class="wrap"><div class="frame">{ai_frame("closed")}</div></div>
+<script>{JS}</script>
+</body></html>"""
+pathlib.Path(__file__).with_name("app-module-page.html").write_text(clean)
+print("wrote app-module-page.html")
