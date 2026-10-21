@@ -121,7 +121,7 @@ def main_window(view="cards", marks=True):
           <span class="pill srch2">{ic("search")}Search this list</span>
           <span class="pill">Category {ic("down")}</span><span class="pill">Person {ic("down")}</span><span class="pill">Date {ic("down")}</span>
           <span class="pill ghost">{ic("star")}Saved views {ic("down")}</span>
-          <span class="seg"><span class="{"on" if view == "cards" else ""}">{ic("grid")}</span><span class="{"on" if view == "list" else ""}">{ic("list")}</span></span>
+          <span class="seg"><span class="{"on" if view == "cards" else ""}">{ic("grid")}</span><span class="{"on" if view.startswith("list") else ""}">{ic("list")}</span></span>
         </div>
       </div>'''
     if view == "cards":
@@ -130,13 +130,14 @@ def main_window(view="cards", marks=True):
     else:
         rows = ""
         for k, (i, name, who, site, date, left, c, frac) in enumerate(RECS):
-            sel = k in (0, 1, 3)
-            rows += f'''<div class="lr{" sel" if sel else ""}" style="--c:{c}">
+            sel = view == "list" and k in (0, 1, 3)
+            opn = view == "listplain" and k == 0
+            rows += f'''<div class="lr{" sel" if sel else ""}{" open" if opn else ""}" style="--c:{c}">
               <span class="tk">{ic("tick") if sel else ""}</span><span class="ci sm">{ic(i)}</span>
               <span class="lr-n"><b>{name}</b><small>{who}</small></span><span class="lr-s">{site}</span><span class="lr-d">{date}</span>
               <span class="st-pill"><span class="sdot"></span>{left}</span></div>'''
-        body = f'''<div class="lhead"><span class="tk all"></span><span></span><span>Name</span><span>Site</span><span>Date</span><span>Status</span></div><div class="lrows">{rows}</div>'''
-        bar = f'''<div class="tabbar bulk">{num(8)}<b>3 selected</b><span>{ic("bellring")}Remind</span><span>{ic("export")}Export</span><span>{ic("archive")}Archive</span><span class="x">{ic("x")}</span></div>'''
+        body = f'''<div class="lhead"><span class="tk{" all" if view == "list" else ""}"></span><span></span><span>Name</span><span>Site</span><span>Date</span><span>Status</span></div><div class="lrows">{rows}</div>'''
+        bar = f'''<div class="tabbar"><span class="on">{ic("list")}List</span><span>{ic("cal")}Calendar</span><span>{ic("filter")}Insights</span><span>{ic("doc")}Requirements</span><span class="add">{ic("plus")}</span></div>''' if view == "listplain" else f'''<div class="tabbar bulk">{num(8)}<b>3 selected</b><span>{ic("bellring")}Remind</span><span>{ic("export")}Export</span><span>{ic("archive")}Archive</span><span class="x">{ic("x")}</span></div>'''
     return f'<section class="mw">{top}{body}{bar}</section>'
 
 def detail(marks=True):
@@ -502,11 +503,11 @@ def guide_bar():
 def ai_frame(kind):
     if kind == "always":
         main = f'''<div class="m-main ai-on">{header_ai(False)}{tiles(2, False)}
-          <div class="m-body narrow">{main_window("cards", False).replace('class="cards"', 'class="cards two"')}{detail_glow()}</div>{ai_panel(False)}</div>'''
+          <div class="m-body narrow">{main_window("listplain", False)}{detail_glow()}</div>{ai_panel(False)}</div>'''
     elif kind == "closed":
-        main = f'''<div class="m-main">{header_ai(True)}{tiles(2, False)}<div class="m-body">{main_window("cards", False)}{detail(False)}</div></div>'''
+        main = f'''<div class="m-main">{header_ai(True)}{tiles(2, False)}<div class="m-body">{main_window("listplain", False)}{detail(False)}</div></div>'''
     else:
-        main = f'''<div class="m-main guide-on">{header_ai(True)}{guide_bar()}{tiles(2, False)}<div class="m-body">{main_window("cards", False)}{detail_glow()}</div></div>'''
+        main = f'''<div class="m-main guide-on">{header_ai(True)}{guide_bar()}{tiles(2, False)}<div class="m-body">{main_window("listplain", False)}{detail_glow()}</div></div>'''
     return f'<div class="fit"><div class="m-page">{rail()}{main}</div></div>'
 
 AI_CSS = """
@@ -519,6 +520,9 @@ AI_CSS = """
 .m-main.ai-on .tile b { font-size: 26px; }
 .m-body.narrow { grid-template-columns: 1fr 330px; }
 .cards.two { grid-template-columns: repeat(2, 1fr); }
+.lr.open { box-shadow: 0 0 0 2px #1C1C1E; }
+.m-body.narrow .lhead, .m-body.narrow .lr { grid-template-columns: 22px 30px 1.5fr 1fr 104px; }
+.m-body.narrow .lr-s, .m-body.narrow .lhead span:nth-child(4) { display: none; }
 .m-body.narrow .mw-tools .pill:nth-of-type(n+3) { display: none; }
 .m-body.narrow .srch2 { width: 150px; }
 .m-main.guide-on { grid-template-rows: 54px 46px 86px 1fr; }
@@ -575,7 +579,7 @@ page = f"""<!doctype html>
   <p class="lead">In both, the AI is part of the frame like the nav and header. It never reloads, keeps the conversation as you move between modules, and never covers the records or the detail window. The thing it's pointing at glows.</p>
 
   <h2>Option A: a dedicated spot, always on</h2>
-  <p class="lead">A fixed column on the right, always showing. The records window gives up the space: two cards across instead of three, and fewer filters showing.</p>
+  <p class="lead">A fixed column on the right, always showing. The records list gives up the space: the Site column and some filters hide to make room.</p>
   <div class="frame">{ai_frame("always")}</div>
 
   <h2>Option B: there when you want it</h2>
